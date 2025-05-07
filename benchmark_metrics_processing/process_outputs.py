@@ -5,14 +5,12 @@ import pandas as pd
 from pathlib import Path
 from datetime import datetime
 
-
 def parse_args():
     parser = argparse.ArgumentParser(description="Augment CSV with GPU metrics from JSON files.")
     parser.add_argument("--input_csv", required=True, help="Path to the input CSV file")
     parser.add_argument("--output_csv", required=True, help="Path to the output augmented CSV file")
     parser.add_argument("--runs_dir", required=True, help="Directory containing output runs with metrics JSONs")
     return parser.parse_args()
-
 
 def main():
     args = parse_args()
@@ -21,7 +19,9 @@ def main():
     output_csv = Path(args.output_csv)
     runs_dir = Path(args.runs_dir)
 
+    # Read CSV and drop rows with any missing values
     df = pd.read_csv(input_csv)
+    df = df.dropna()
     full_gpu_rows = []
 
     for index, row in df.iterrows():
@@ -30,7 +30,6 @@ def main():
 
         if not run_dir.exists():
             print(f"[!] Skipping: run folder not found for {run_name}")
-            full_gpu_rows.append({})
             continue
 
         try:
@@ -38,7 +37,6 @@ def main():
             end_iso = datetime.strptime(row["end_date"].split(",")[0], "%Y-%m-%d %H:%M:%S").strftime("%Y-%m-%dT%H:%M:%SZ")
         except Exception as e:
             print(f"[!] Date parsing error for {run_name}: {e}")
-            full_gpu_rows.append({})
             continue
 
         expected_json_filename = f"{start_iso}_{end_iso}.json"
@@ -68,11 +66,11 @@ def main():
 
         full_gpu_rows.append(row_data)
 
+    # Combine and save
     gpu_df = pd.DataFrame(full_gpu_rows)
-    df_combined = pd.concat([df, gpu_df], axis=1)
+    df_combined = pd.concat([df.reset_index(drop=True), gpu_df], axis=1)
     df_combined.to_csv(output_csv, index=False)
     print(f"[✓] Augmented CSV saved to: {output_csv}")
-
 
 if __name__ == "__main__":
     main()

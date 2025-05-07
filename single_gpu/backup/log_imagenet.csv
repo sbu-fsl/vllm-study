@@ -1,0 +1,6 @@
+start_date,end_date,model_name,run_name,batch_size,num_epochs,learning_rate,input_shape,gpu_type,epoch_duration_sec,max_gpu_memory_mb,activation_functions,num_parameters,num_classes,dropout_rate,train_sample_count,val_sample_count
+2025-04-29 01:40:03,2025-05-01 04:58:02,resnet18,resnet18_bsAUTO_lr0.001_do0.3_train5000_epoch6,256,6,0.001,"(3, 384, 384)",Quadro RTX 6000,30706.77,16417.84,['ReLU'],11689512,1000,0.3,5000,200
+2025-05-01 04:58:02,2025-05-02 05:44:23,resnet18,resnet18_bsAUTO_lr0.0001_do0.5_train500_epoch4,256,4,0.0001,"(3, 384, 384)",Quadro RTX 6000,22252.53,16417.21,['ReLU'],11689512,1000,0.5,500,100
+2025-05-02 05:44:24,2025-05-03 07:20:05,resnet18,resnet18_bsAUTO_lr0.01_do0.5_train500_epoch4,256,4,0.01,"(3, 384, 384)",Quadro RTX 6000,22996.95,16417.21,['ReLU'],11689512,1000,0.5,500,500
+2025-05-03 07:20:05,2025-05-04 04:13:17,resnet18,resnet18_bsAUTO_lr0.0001_do0.5_train500_epoch4,512,4,0.0001,"(3, 224, 224)",Quadro RTX 6000,18762.26,11276.29,['ReLU'],11689512,1000,0.5,500,500
+2025-05-04 04:13:17,2025-05-05 00:51:06,resnet18,resnet18_bsAUTO_lr0.01_do0.5_train2000_epoch4,512,4,0.01,"(3, 224, 224)",Quadro RTX 6000,18528.09,11276.29,['ReLU'],11689512,1000,0.5,2000,500
