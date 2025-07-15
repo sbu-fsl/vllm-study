@@ -7,7 +7,7 @@ if [ -z "$script" ]; then
   exit 1
 fi
 
-script="scripts/$script"
+script="$script"
 if [ ! -f "$script" ]; then
   echo "Script $script not found!"
   exit 1
