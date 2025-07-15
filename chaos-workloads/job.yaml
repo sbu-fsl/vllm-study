@@ -1,0 +1,33 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: gpu-test
+  namespace: ml-scheduling
+spec:
+  template:
+    spec:
+      containers:
+      - name: stress-container
+        image: pytorch/pytorch:latest
+        command: ["python", "-u", "/gpu.py"]
+        resources:
+          requests:
+            nvidia.com/gpu: 1
+            ephemeral-storage: 10M
+          limits:
+            nvidia.com/gpu: 1
+            ephemeral-storage: 10M
+        volumeMounts:
+        - name: script
+          mountPath: /gpu.py
+          subPath: gpu.py
+        - name: tmp-dir
+          mountPath: /tmp
+      restartPolicy: Never
+      volumes:
+      - name: tmp-dir
+        emptyDir: {}
+      - name: script
+        configMap:
+          name: gpu-script
+  backoffLimit: 0
