@@ -19,7 +19,7 @@ cp $script gpu.py
 kubectl delete configmap gpu-script --ignore-not-found
 kubectl delete -f job.yaml --ignore-not-found
 
-kubectl create configmap gpu-script --from-file=gpu.py
+kubectl create configmap gpu-script --from-file=gpu.py --namespace=ml-scheduling
 kubectl apply -f job.yaml
 
 rm gpu.py
