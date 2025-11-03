@@ -181,6 +181,7 @@ venv
 # logs
 logs/
 logs.txt
+plots.html
 
 # system
 .vscode/
