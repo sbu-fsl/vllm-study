@@ -172,3 +172,12 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+# virtualenv
+myven
+myvenv
+venv
+
+# logs
+logs/
+logs.txt
