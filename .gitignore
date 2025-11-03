@@ -181,3 +181,7 @@ venv
 # logs
 logs/
 logs.txt
+
+# system
+.vscode/
+.DS_Store
