@@ -182,6 +182,7 @@ venv
 logs/
 logs.txt
 plots.html
+new_logs.txt
 
 # system
 .vscode/
