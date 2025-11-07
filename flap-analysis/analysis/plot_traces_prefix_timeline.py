@@ -52,16 +52,29 @@ if not prefix_times:
 # build interactive scatter plot
 fig = go.Figure()
 
+# compute min/max for normalization
+counts = [len(v) for v in prefix_times.values()]
+min_count, max_count = min(counts), max(counts)
+
+def scale_size(count, min_size=6, max_size=30):
+    # linearly scale count to marker size range
+    if max_count == min_count:
+        return (min_size + max_size) / 2
+    return min_size + (count - min_count) / (max_count - min_count) * (max_size - min_size)
+
 for i, (prefix, times) in enumerate(sorted(prefix_times.items())):
     times = sorted(times)
+    count = len(times)
+    size = scale_size(count)
+
     fig.add_trace(
         go.Scattergl(
-            x=times,
-            y=[prefix] * len(times),
+            x=[times[0]] if times else [],
+            y=[prefix] if times else [],
             mode="markers",
-            marker=dict(size=6, opacity=0.7),
-            name=prefix,
-            hovertemplate="<b>%{y}</b><br>%{x}<extra></extra>"
+            marker=dict(size=size, opacity=0.7),
+            name=f"{prefix} ({count})",
+            hovertemplate="<b>%{y}</b><br>Count: "+str(count)+"<extra></extra>"
         )
     )
 

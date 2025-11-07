@@ -5,7 +5,7 @@
 DIR="logs"
 DS="datasets"
 TRS="traces"
-INP="logs.txt"
+INP="counts.txt"
 
 # remove the old directory
 rm -rf $DIR
@@ -25,4 +25,4 @@ grep -e "read_bytes" "${INP}" > "${DIR}/read_bytes.txt"
 grep -e "write_bytes" "${INP}" > "${DIR}/write_bytes.txt"
 grep -e "read_count" "${INP}" > "${DIR}/read_counts.txt"
 grep -e "write_count" "${INP}" > "${DIR}/write_counts.txt"
-grep -E '^\[[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}\] (START tracing|[0-9]+ [A-Za-z0-9_-]+ (ENTER|EXIT) (open|openat|read|write|close|dup|dup2))' "$INP" > "${DIR}"/traces.txt
+grep -E '^\[[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}\] (START tracing|[0-9]+ [A-Za-z0-9_-]+ (ENTER|EXIT) (open|openat|read|write|close|dup|dup2))' "$1" > "${DIR}"/traces.txt
