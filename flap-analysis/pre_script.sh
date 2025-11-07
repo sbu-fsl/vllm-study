@@ -1,15 +1,21 @@
 #!/bin/bash
-# file: logs_pipeline.sh
+# file: pre_script.sh
 
 # global vars
 DIR="logs"
-INP="new_logs.txt"
+DS="datasets"
+TRS="traces"
+INP="logs.txt"
 
 # remove the old directory
 rm -rf $DIR
+rm -rf $DS
+rm -rf $TRS
 
 # create a new logs directory
 mkdir $DIR
+mkdir $DS
+mkdir $TRS
 
 # take the logs and export it into 4 files
 # read_times, read_bytes, write_times, write_bytes
@@ -19,3 +25,4 @@ grep -e "read_bytes" "${INP}" > "${DIR}/read_bytes.txt"
 grep -e "write_bytes" "${INP}" > "${DIR}/write_bytes.txt"
 grep -e "read_count" "${INP}" > "${DIR}/read_counts.txt"
 grep -e "write_count" "${INP}" > "${DIR}/write_counts.txt"
+grep -E '^\[[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}\] (START tracing|[0-9]+ [A-Za-z0-9_-]+ (ENTER|EXIT) (open|openat|read|write|close|dup|dup2))' "$INP" > "${DIR}"/traces.txt
