@@ -15,7 +15,7 @@ LOGFILE_PATH = [
     "logs/read_counts.txt",
     "logs/write_counts.txt",
 ]
-TOPNQ = 200
+TOPNQ = 500
 
 # regex patterns
 RGX_PTRN = "@(\w+)\[(.+?)\]:\s*(\d+)"
@@ -95,6 +95,7 @@ def main():
     # total operations
     totals = df.sum(numeric_only=True).to_frame().T  # ← convert Series → single-row DataFrame
     totals = totals.round(2).reset_index(drop=True)
+    totals = totals.rename(columns=columns)
     totals.to_csv("datasets/totals.csv", index=False)
 
 if __name__ == "__main__":

@@ -30,10 +30,6 @@ with input_file.open("r", encoding="utf-8", errors="ignore") as f:
         if match:
             cmd = match.group(1)
             logs_by_cmd[cmd].append(line)
-        elif "START tracing" in line:
-            # Optional: put START line in all files
-            for cmd_list in logs_by_cmd.values():
-                cmd_list.append(line)
 
 # write to separate files
 for cmd, lines in logs_by_cmd.items():
