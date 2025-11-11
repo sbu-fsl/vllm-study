@@ -93,13 +93,14 @@ fig.add_vrect(
 )
 fig.add_vrect(
     x0=events["memory profiling start"], x1=events["memory profiling end"],
-    fillcolor="LightGray", opacity=0.3, layer="below", line_width=0,
-    annotation_text="Memory Profiling", annotation_position="top left"
+    fillcolor="Black", opacity=0.3, layer="below", line_width=0,
+    annotation_text="Mem Prof", annotation_position="top left",
+    annotation_y=1.02
 )
 fig.add_vrect(
     x0=events["graph capture start"], x1=events["graph capture end"],
     fillcolor="Khaki", opacity=0.3, layer="below", line_width=0,
-    annotation_text="Graph Capture", annotation_position="top left"
+    annotation_text="Graph Capture", annotation_position="top left",
 )
 
 # key event lines
@@ -108,13 +109,14 @@ for label in ["tracing start", "container start", "vLLM ready", "tracing stopped
     fig.add_vline(x=t, line_dash="dot", line_color="black", opacity=0.8)
     fig.add_annotation(
         x=t,
-        y=1.05,
+        y=1.06,
         xref="x",
         yref="paper",
         text=label.replace("_", " ").title(),
         showarrow=False,
         font=dict(size=10, color="black"),
-        align="center"
+        align="center",
+        textangle=-20 if label in ["tracing start", "container start"] else 0
     )
 
 fig.update_layout(
@@ -122,7 +124,7 @@ fig.update_layout(
     xaxis_title="Time (seconds)",
     yaxis_title="Path Prefix (first N levels)",
     height=1000,
-    template="plotly_white",
+    template="plotly",
     legend=dict(
         title="Path Prefixes",
         orientation="v",
