@@ -8,8 +8,9 @@
    The run these commands to rebuild the modules.
    - rm -rf build
    - mkdir build
-   - cmake -S . -B build
-   - cmake --build build -j
+   - cd build
+   - cmake .. -DNVBench_ENABLE_EXAMPLES=ON -DCMAKE_CUDA_ARCHITECTURES=86 -DCMAKE_BUILD_TYPE=Release
+   - cmake --build . -j
 */
 
 #include <nvbench/nvbench.cuh>
