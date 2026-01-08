@@ -1,0 +1,81 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: tensor-core-stress-script
+data:
+  tensor_load.py: |
+    #!/usr/bin/env python3
+    import torch
+    import time
+    from threading import Thread
+    import argparse
+
+    def tensor_core_worker(matrix_size: int, device: str, worker_id: int):
+        torch.cuda.set_device(device)
+        dtype = torch.float16
+        a = torch.randn((matrix_size, matrix_size), device=device, dtype=dtype)
+        b = torch.randn((matrix_size, matrix_size), device=device, dtype=dtype)
+        iteration = 0
+        try:
+            while True:
+                start_time = time.time()
+                c = torch.matmul(a, b)
+                torch.cuda.synchronize()
+                iteration += 1
+                elapsed = time.time() - start_time
+                print(f"[Worker {worker_id}] Iteration {iteration} completed in {elapsed:.4f} s")
+        except KeyboardInterrupt:
+            print(f"[Worker {worker_id}] Stopping.")
+
+    def main(matrix_size: int, device: str, num_workers: int):
+        print(f"Starting tensor core stress test on {device} with matrix size {matrix_size} using {num_workers} workers")
+        threads = []
+        for i in range(num_workers):
+            t = Thread(target=tensor_core_worker, args=(matrix_size, device, i))
+            t.start()
+            threads.append(t)
+        for t in threads:
+            t.join()
+
+    if __name__ == "__main__":
+        parser = argparse.ArgumentParser(description="GPU Tensor Core Stress Test")
+        parser.add_argument("--matrix-size", type=int, default=4096, help="Size of square matrices for FP16 matmul")
+        parser.add_argument("--device", type=str, default="cuda:0", help="GPU device to use")
+        parser.add_argument("--num-workers", type=int, default=4, help="Number of parallel workers")
+        args = parser.parse_args()
+        
+        # Dynamic load: start with a base worker count, increase until OOM
+        try:
+            main(args.matrix_size, args.device, args.num_workers)
+        except RuntimeError as e:
+            print(f"RuntimeError (probably OOM): {e}")
+            print("Reducing worker count and restarting...")
+            if args.num_workers > 1:
+                args.num_workers = max(1, args.num_workers // 2)
+                main(args.matrix_size, args.device, args.num_workers)
+            else:
+                print("Cannot reduce workers further. Exiting.")
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: gpu-tensor-load
+spec:
+  restartPolicy: Never
+  containers:
+    - name: tensor-load
+      image: pytorch/pytorch:2.4.1-cuda12.4-cudnn9-runtime
+      command: ["python", "/scripts/tensor_load.py"]
+      args: ["--matrix-size", "8192", "--num-workers", "1"]
+      resources:
+        limits:
+          nvidia.com/gpu: 1
+      volumeMounts:
+        - name: script-volume
+          mountPath: /scripts
+  volumes:
+    - name: script-volume
+      configMap:
+        name: tensor-core-stress-script
+        defaultMode: 0o755

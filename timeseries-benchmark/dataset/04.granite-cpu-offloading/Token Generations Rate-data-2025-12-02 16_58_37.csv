@@ -1,9 +1,0 @@
-"Time","{container=""vllm-container"", endpoint=""http-vllm"", engine=""0"", instance=""192.168.126.212:8000"", job=""vllm-service"", model_name=""ibm-granite/granite-3.3-8b-instruct"", namespace=""llm-servings"", pod=""vllm-granite-cpuoffload-kshw6"", service=""vllm-service""}"
-2025-12-02 11:48:00,0
-2025-12-02 11:48:15,0
-2025-12-02 11:48:30,0
-2025-12-02 11:48:45,0
-2025-12-02 11:49:00,0.685
-2025-12-02 11:49:15,1.03
-2025-12-02 11:49:30,2.09
-2025-12-02 11:49:45,2.79
