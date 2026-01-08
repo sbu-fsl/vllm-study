@@ -1,0 +1,82 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: dcgm-autopilot-rules
+  namespace: monitoring
+spec:
+  groups:
+    - name: autopilot-health-rules
+      rules:
+        - alert: DCGMHealthCheckFailure
+          expr: autopilot_health_checks{health="dcgm"} > 0
+          for: 1m
+          labels:
+            severity: critical
+          annotations:
+            summary: "DCGM Health Check Failure on {{ $labels.node }}"
+            description: "Autopilot health check for DCGM is reporting an issue on node {{ $labels.node }}."
+
+        - alert: PCIEBandwidthThresholdExceeded
+          expr: autopilot_health_checks{health="pciebw"} > 16
+          for: 2m
+          labels:
+            severity: warning
+          annotations:
+            summary: "High PCIe Bandwidth Usage on {{ $labels.node }} GPU-{{ $labels.deviceid }}"
+            description: "PCIe bandwidth usage is above 16 for more than 2 minutes."
+
+        - alert: GPUMemoryFailure
+          expr: autopilot_health_checks{health="remapped"} > 0
+          for: 1m
+          labels:
+            severity: critical
+          annotations:
+            summary: "GPU Memory Health Check Failure on {{ $labels.node }} for GPU-{{ $labels.deviceid }}"
+            description: "Autopilot health check for remapped is reporting an issue on node {{ $labels.node }} for GPU-{{ $labels.deviceid }}."
+    - name: dcgm-exporter-rules
+      rules:
+        - alert: HighGPUTemperature
+          expr: DCGM_FI_DEV_GPU_TEMP > 35
+          for: 2m
+          labels:
+            severity: warning
+          annotations:
+            summary: "High GPU Temperature {{ $labels.Hostname }} GPU {{ $labels.gpu }}"
+            description: "GPU temperature exceeds 35°C."
+
+        - alert: HighGPUPowerUsage
+          expr: DCGM_FI_DEV_POWER_USAGE > 40
+          for: 2m
+          labels:
+            severity: warning
+          annotations:
+            summary: "High GPU Power Usage {{ $labels.Hostname }} GPU {{ $labels.gpu }}"
+            description: "GPU power usage is above 40W for more than 2 minutes."
+        
+        - alert: HighGPUMemoryUsageByFrameBuffer
+          expr: 100 * DCGM_FI_DEV_FB_USED / (DCGM_FI_DEV_FB_USED + DCGM_FI_DEV_FB_FREE) > 90
+          for: 10s
+          labels:
+            severity: warning
+          annotations:
+            summary: "High GPU memory usage detected on {{ $labels.instance }}"
+            description: "GPU {{ $labels.gpu }} is using over 90% of its memory for more than 1 minute."
+
+        - alert: HighGPUMemoryUsageByFree
+          expr: 100 * DCGM_FI_DEV_FB_FREE / (DCGM_FI_DEV_FB_USED + DCGM_FI_DEV_FB_FREE) < 10
+          for: 10s
+          labels:
+            severity: warning
+          annotations:
+            summary: "High GPU memory usage detected on {{ $labels.instance }}"
+            description: "GPU {{ $labels.gpu }} is using over 90% of its memory for more than 1 minute."
+
+        - alert: HighGPUMemoryUsageByUtil
+          expr: DCGM_FI_DEV_MEM_COPY_UTIL > 90
+          for: 10s
+          labels:
+            severity: warning
+          annotations:
+            summary: "High GPU memory usage detected on {{ $labels.instance }}"
+            description: "GPU {{ $labels.gpu }} is using over 90% of its memory for more than 1 minute."
+
