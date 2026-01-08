@@ -1,4 +1,4 @@
-# vLLM parameters study: storage perspective
+# vLLM parameters study: I/O perspective
 
 - Model Config:
     - I/O related
