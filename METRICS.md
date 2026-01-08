@@ -1,0 +1,48 @@
+# Metrics
+
+33 metrics to investigate.
+
+- Startup latency (from vLLM logs):
+    - Config phase
+    - Load phase
+    - Compile phase
+    - Graph capturing phase
+- FS:
+    - container_fs_reads_bytes_total
+    - container_fs_writes_bytes_total
+    - container_fs_read_seconds_total
+    - container_fs_writes_seconds_total
+    - container_fs_inodes_used
+- Disks:
+    - node_disk_read_bytes_total
+    - node_disk_written_bytes_total
+    - node_disk_read_time_seconds_total
+    - node_disk_write_time_seconds_total
+- Memory:
+    - container_memory_usage_bytes
+    - container_memory_cache
+    - container_memory_mapped_file
+    - container_memory_rss
+    - container_memory_working_set_bytes
+    - container_memory_swap
+    - container_memory_failcnt
+    - container_memory_max_usage_bytes
+    - container_oom_events_total
+- Network:
+    - container_network_receive_bytes_total
+    - container_network_transmit_bytes_total
+    - container_network_receive_packets_total
+    - container_network_transmit_packets_total
+- GPU:
+    - DCGM_FI_DEV_FB_USED
+    - DCGM_FI_DEV_MEM_COPY_UTIL
+    - DCGM_FI_PROF_GR_ENGINE_ACTIVE
+    - DCGM_FI_DEV_SM_CLOCK
+    - DCGM_FI_PROF_PIPE_TENSOR_ACTIVE
+- PCIe:
+    - DCGM_FI_PROF_PCIE_RX_BYTES
+    - DCGM_FI_PROF_PCIE_TX_BYTES
+- vLLM:
+    - TTFT
+    - TPOT
+    - Prefix cache hits
