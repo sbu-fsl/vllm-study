@@ -1,1 +1,68 @@
 # vLLM parameters study: storage perspective
+
+- Model Config:
+    - I/O related
+        - From document
+            - model
+            - tokenizer
+            - tokenizer mode
+            - hf-config-path
+            - allowed-local-media-path
+            - allowed-media-domains
+            - generation-config
+        - Needs investigation
+            - runner
+            - convert
+            - dtype
+            - max-model-len
+            - quantization
+            - enforce-eager
+            - config-format
+            - enable-sleep-mode
+            - model-impl
+    - Not I/O related
+        - trust-remote-code
+        - seed
+        - revisions
+        - logprobs
+        - sliding-window
+        - cascade-attention
+        - served-model-name
+        - hf-token
+        - hf-overrides
+        - pooler-config
+        - logits-processor-pattern
+- Load Config:
+    - I/O related
+        - From document
+            - download-dir
+            - safetensors-load-strategy
+        - Needs investigation
+            - load-format
+            - ignore-patterns
+            - pt-load-map-location
+    - Not I/O related
+        - model-loader-extra-config
+        - use-tqdm-on-load
+- Cache Config:
+    - I/O related
+        - From document
+            - gpu-memory-utilization
+            - swap-space
+            - enable-prefix-caching
+            - cpu-offload-gb
+        - Needs investigation
+            - block-size
+            - kv-cache-memory-bytes
+            - kv-cache-dtype
+            - kv-offloading-size
+            - kv-offloading-backend
+    - Not I/O related
+        - num-gpu-blocks-override
+        - prefix-caching-hash-algo
+        - calculate-kv-scales
+- Compilation Config:
+    - I/O related
+        - Needs investigation
+            - cudagraph-capture-sizes
+            - max-cudagraph-capture-size
