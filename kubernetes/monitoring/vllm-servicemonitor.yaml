@@ -1,0 +1,16 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    app: vllm
+    release: prometheus
+  name: vllm-metrics-monitor
+  namespace: llm-servings
+spec:
+  endpoints:
+  - path: /metrics
+    port: http-vllm
+    scheme: http
+  selector:
+    matchLabels:
+      app: vllm

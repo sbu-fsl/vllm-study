@@ -1,0 +1,37 @@
+# Persistent Volume
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: vllm-local-pv
+  namespace: llm-servings
+spec:
+  capacity:
+    storage: 25Gi
+  accessModes:
+    - ReadWriteOnce # This volume can be used by only one pod at a time
+  persistentVolumeReclaimPolicy: Retain # Data is preserved even if the PVC is deleted
+  hostPath:
+    path: "/mnt/vllm" # Path on the node's filesystem
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+                -  "sunyibm1.fsl.cs.sunysb.edu"
+---
+# Persistent Volume Claim
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: vllm-local-pvc
+  namespace: llm-servings
+spec:
+  accessModes:
+    - ReadWriteOnce # Must match the PV's access mode
+  resources:
+    requests:
+      storage: 10Gi # Must be less than or equal to the PV's capacity
+  volumeName: vllm-local-pv
+  storageClassName: "" # Ensure it matches the PV's storage class (empty means no storage class)
