@@ -13,19 +13,3 @@ spec:
       storage: 50Gi
   storageClassName: gpfs-nfs
   volumeMode: Filesystem
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: hfcache-pvc
-  namespace: llm-servings
-  labels:
-    app: vllm
-spec:
-  accessModes:
-  - ReadWriteOnce
-  resources:
-    requests:
-      storage: 10Gi
-  storageClassName: gpfs-nfs
-  volumeMode: Filesystem
