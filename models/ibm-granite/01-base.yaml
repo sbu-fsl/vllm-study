@@ -8,7 +8,7 @@ metadata:
   name: vllm-ibm-granite-01-base
   namespace: llm-servings
   labels:
-    app: vllm
+    app: vllm    
     model: ibm-granite
     version: v0.1
 spec:
@@ -19,6 +19,7 @@ spec:
         app: vllm
         model: ibm-granite
         version: v0.1
+        serviceid: 1
     spec:
       tolerations: # must have this to schedule on GPU nodes
       - key: "level"

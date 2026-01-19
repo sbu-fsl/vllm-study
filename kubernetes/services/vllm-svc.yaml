@@ -1,17 +1,42 @@
+---
 apiVersion: v1
 kind: Service
 metadata:
-  name: vllm-service
+  name: vllm-service-1
   namespace: llm-servings
   labels:
     app: vllm
+    serviceid: 1
 spec:
   ports:
   - name: http-vllm
     port: 80
     protocol: TCP
     targetPort: 8000
+    NodePort: 30101
   selector:
     app: vllm
+    serviceid: 1
   sessionAffinity: None
-  type: ClusterIP
+  type: NodePort
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vllm-service-2
+  namespace: llm-servings
+  labels:
+    app: vllm
+    serviceid: 2
+spec:
+  ports:
+  - name: http-vllm
+    port: 80
+    protocol: TCP
+    targetPort: 8000
+    NodePort: 30102
+  selector:
+    app: vllm
+    serviceid: 2
+  sessionAffinity: None
+  type: NodePort

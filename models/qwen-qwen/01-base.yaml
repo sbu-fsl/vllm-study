@@ -19,6 +19,7 @@ spec:
         app: vllm
         model: qwen-qwen
         version: v0.1
+        serviceid: 1
     spec:
       tolerations: # must have this to schedule on GPU nodes
       - key: "level"
