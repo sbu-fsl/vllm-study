@@ -1,6 +1,6 @@
 # Metrics
 
-33 metrics to investigate.
+34 metrics to investigate.
 
 - Startup latency (from vLLM logs):
     - Config phase
@@ -35,6 +35,7 @@
     - container_network_transmit_packets_total
 - GPU:
     - DCGM_FI_DEV_FB_USED
+    - DCGM_FI_DEV_FB_FREE
     - DCGM_FI_DEV_MEM_COPY_UTIL
     - DCGM_FI_PROF_GR_ENGINE_ACTIVE
     - DCGM_FI_DEV_SM_CLOCK
