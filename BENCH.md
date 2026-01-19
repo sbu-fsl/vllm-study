@@ -1,29 +1,33 @@
 # LLM Benchmarks
 
-6 separate tasks, using 11 different datasets. Using OpenAI API to send our requests. Sampling 20 data from these datasets for our benchmarks.
+6 separate tasks, using 6 different datasets. Using OpenAI API to send our requests. Sampling 20 data from these datasets for our benchmarks.
 
-- Single Prompt Single Response (4 test cases)
-    - alpac
-    - triviaqa
-    - narrativeqa
-    - wikitext
-- Beam Search Evaluation (4 test cases)
-    - longbench_gov
-    - longbench_qmsum
-    - narrativeqa
-    - triviaqa
-- Shared Prefix (4 test cases)
-    - kvprobe
-    - sharegpt
-    - leval
-    - longchat
-- Chatbot Evaluation (2 test cases)
-    - sharegpt
-    - longchat
-- Question Answering (2 test cases)
-    - triviaqa
-    - narrativeqa
-- Summarization (3 test cases)
-    - longbench_gov
-    - longbench_qmsum
-    - loogle
+## Datasets
+
+- [MMLU (Massive Multitask Language Understanding)](https://huggingface.co/datasets/cais/mmlu)
+    - Benchmark for GPT-scale models; used in many evaluation papers.
+- [HumanEval](https://huggingface.co/datasets/openai/openai_humaneval)
+    - By OpenAI.
+- [Natural Questions](https://huggingface.co/datasets/google-research-datasets/natural_questions)
+    - By Google research, Long-form question answering from real Google search queries + Wikipedia.
+- [LooGLE](https://huggingface.co/datasets/bigai-nlco/LooGLE)
+    - [Long documents + QA designed to test context >24k tokens.](https://arxiv.org/abs/2311.04939)
+- [QMSum](https://huggingface.co/datasets/pszemraj/qmsum-cleaned)
+    - Academic/industry collaborations for meeting summarization.
+- [OpenChat](openchat/openchat_sharegpt4_dataset)
+    - Cleaned GPT-4-based ShareGPT data used for training OpenChat.
+
+## Tasks
+
+- Single Prompt Single Response
+    - HumanEval
+- Beam Search Evaluation
+    - Natural Questions
+- Shared Prefix
+    - LooGLE
+- Chatbot Evaluation
+    - OpenChat
+- Question Answering
+    - MMLU
+- Summarization
+    - QMSum
