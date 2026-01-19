@@ -1,5 +1,8 @@
 # Prometheus
 
+By running this script, you can select a metric, with specific labels, in a time range and
+get the output as a CSV file.
+
 ```sh
 python metric_to_csv.py \
   --url http://localhost:9090 \
@@ -10,3 +13,5 @@ python metric_to_csv.py \
   --step 1s \
   --output cpu_idle.csv
 ```
+
+You need to adjust metric, labels, start, end, and output name. The url and step values are the same most of the time. You can find the list of the prometheus metrics in `../METRICS.md`.
