@@ -50,8 +50,8 @@ spec:
             --no-enable-prefix-caching
             --trust-remote-code
             --seed 42
-            --max-model-len 40k
             --gpu-memory-utilization 0.95
+            --hf-token ${HUGGING_FACE_HUB_TOKEN}
         env:
         - name: HUGGING_FACE_HUB_TOKEN
           valueFrom:
