@@ -5,7 +5,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: vllm-qwen-qwen-01-base
+  name: vllm-qwen-qwen
   namespace: llm-servings
   labels:
     app: vllm
