@@ -6,7 +6,7 @@ metadata:
   namespace: llm-servings
   labels:
     app: vllm
-    serviceid: 1
+    serviceid: "1"
 spec:
   ports:
   - name: http-vllm
@@ -27,7 +27,7 @@ metadata:
   namespace: llm-servings
   labels:
     app: vllm
-    serviceid: 2
+    serviceid: "2"
 spec:
   ports:
   - name: http-vllm
