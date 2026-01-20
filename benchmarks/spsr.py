@@ -33,6 +33,9 @@ def http_post(prompt: str, osize: int) -> int:
             timeout=30
         )
 
+        print(response.json())
+        print()
+
         return response.status_code
     except Exception as e:
         print(e)
@@ -54,7 +57,7 @@ def main():
     data = read_csv_as_list_of_dicts("datasets/humaneval_20_samples.csv")
 
     for d in data:
-        http_post(d["prompt"], len(d["canonical_solution"]))
+        print(http_post(d["prompt"], len(d["canonical_solution"])))
     
     print(f"finished: {datetime.datetime.now()}")
 
