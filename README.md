@@ -10,11 +10,10 @@
             - allowed-local-media-path
             - allowed-media-domains
             - generation-config
+            - max-model-len
         - Needs investigation
-            - runner
             - convert
             - dtype
-            - max-model-len
             - quantization
             - enforce-eager
             - config-format
@@ -32,6 +31,7 @@
         - hf-overrides
         - pooler-config
         - logits-processor-pattern
+        - runner
 - Load Config:
     - I/O related
         - From document

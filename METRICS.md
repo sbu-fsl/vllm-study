@@ -8,42 +8,39 @@
     - Compile phase
     - Graph capturing phase
 - FS:
-    - container_fs_reads_bytes_total
-    - container_fs_writes_bytes_total
-    - container_fs_read_seconds_total
-    - container_fs_writes_seconds_total
-    - container_fs_inodes_used
-- Disks:
-    - node_disk_read_bytes_total
-    - node_disk_written_bytes_total
-    - node_disk_read_time_seconds_total
-    - node_disk_write_time_seconds_total
+    - container_fs_reads_bytes_total{namespace="llm-servings", pod="facebook-opt", container="vllm-container"}
+    - container_fs_writes_bytes_total{namespace="llm-servings", pod="facebook-opt", container="vllm-container"}
+    - container_file_descriptors{namespace="llm-servings", pod="facebook-opt", container="vllm-container"}
+- Disks
 - Memory:
-    - container_memory_usage_bytes
-    - container_memory_cache
-    - container_memory_mapped_file
-    - container_memory_rss
-    - container_memory_working_set_bytes
-    - container_memory_swap
-    - container_memory_failcnt
-    - container_memory_max_usage_bytes
-    - container_oom_events_total
+    - container_memory_usage_bytes{namespace="llm-servings", pod="facebook-opt", container="vllm-container"}
+    - container_memory_cache{namespace="llm-servings", pod="facebook-opt", container="vllm-container"}
+    - container_memory_mapped_file{namespace="llm-servings", pod="facebook-opt", container="vllm-container"}
+    - container_memory_rss{namespace="llm-servings", pod="facebook-opt", container="vllm-container"}
+    - container_memory_working_set_bytes{namespace="llm-servings", pod="facebook-opt", container="vllm-container"}
+    - container_memory_swap{namespace="llm-servings", pod="facebook-opt", container="vllm-container"}
+    - container_memory_failcnt{namespace="llm-servings", pod="facebook-opt", container="vllm-container"}
+    - container_memory_max_usage_bytes{namespace="llm-servings", pod="facebook-opt", container="vllm-container"}
+    - container_oom_events_total{namespace="llm-servings", pod="facebook-opt", container="vllm-container"}
 - Network:
-    - container_network_receive_bytes_total
-    - container_network_transmit_bytes_total
-    - container_network_receive_packets_total
-    - container_network_transmit_packets_total
+    - container_network_receive_bytes_total{namespace="llm-servings", pod="facebook-opt", interface="eth0"}
+    - container_network_transmit_bytes_total{namespace="llm-servings", pod="facebook-opt", interface="eth0"}
+    - container_network_receive_packets_total{namespace="llm-servings", pod="facebook-opt", interface="eth0"}
+    - container_network_transmit_packets_total{namespace="llm-servings", pod="facebook-opt", interface="eth0"}
 - GPU:
-    - DCGM_FI_DEV_FB_USED
-    - DCGM_FI_DEV_FB_FREE
-    - DCGM_FI_DEV_MEM_COPY_UTIL
-    - DCGM_FI_PROF_GR_ENGINE_ACTIVE
-    - DCGM_FI_DEV_SM_CLOCK
-    - DCGM_FI_PROF_PIPE_TENSOR_ACTIVE
+    - DCGM_FI_DEV_FB_USED{exported_namespace="llm-servings", exported_pod="facebook-opt"}
+    - DCGM_FI_DEV_FB_FREE{exported_namespace="llm-servings", exported_pod="facebook-opt"}
+    - DCGM_FI_DEV_MEM_COPY_UTIL{exported_namespace="llm-servings", exported_pod="facebook-opt"}
+    - DCGM_FI_PROF_GR_ENGINE_ACTIVE{exported_namespace="llm-servings", exported_pod="facebook-opt"}
+    - DCGM_FI_DEV_SM_CLOCK{exported_namespace="llm-servings", exported_pod="facebook-opt"}
+    - DCGM_FI_PROF_PIPE_TENSOR_ACTIVE{exported_namespace="llm-servings", exported_pod="facebook-opt"}
 - PCIe:
-    - DCGM_FI_PROF_PCIE_RX_BYTES
-    - DCGM_FI_PROF_PCIE_TX_BYTES
+    - DCGM_FI_PROF_PCIE_RX_BYTES{exported_namespace="llm-servings", exported_pod="facebook-opt"}
+    - DCGM_FI_PROF_PCIE_TX_BYTES{exported_namespace="llm-servings", exported_pod="facebook-opt"}
 - vLLM:
-    - TTFT
-    - TPOT
-    - Prefix cache hits
+    - vllm:time_to_first_token_seconds_sum{model_name="facebook/opt-125m"}
+    - vllm:request_time_per_output_token_seconds_sum{model_name="facebook/opt-125m"}
+    - vllm:prefix_cache_hits_total{model_name="facebook/opt-125m"}
+    - vllm:e2e_request_latency_seconds_sum{model_name="facebook/opt-125m"}
+    - vllm:mm_cache_hits_total{model_name="facebook/opt-125m"}
+    - vllm:request_queue_time_seconds_sum{model_name="facebook/opt-125m"}
