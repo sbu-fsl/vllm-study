@@ -16,7 +16,7 @@ spec:
     NodePort: 30101
   selector:
     app: vllm
-    serviceid: 1
+    serviceid: "1"
   sessionAffinity: None
   type: NodePort
 ---
@@ -37,6 +37,6 @@ spec:
     NodePort: 30102
   selector:
     app: vllm
-    serviceid: 2
+    serviceid: "2"
   sessionAffinity: None
   type: NodePort
