@@ -11,7 +11,7 @@ metadata:
     app: vllm
     model: facebook-opt
     serviceid: "1"
-    benchmark: "ModelConfig/runner:pooling"
+    benchmark: "ModelConfig__runner__draft"
 spec:
   tolerations: # must have this to schedule on GPU nodes
   - key: "level"
