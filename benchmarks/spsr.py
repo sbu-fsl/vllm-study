@@ -8,9 +8,6 @@ import requests
 
 API_URL = "http://localhost:30101/v1/completions"
 HEADERS = {
-    'Accept': '*/*',
-    'Accept-Language': 'en-GB,en;q=0.9,fa-IR;q=0.8,fa;q=0.7,en-US;q=0.6',
-    'Connection': 'keep-alive',
     'Content-Type': 'application/json'
 }
 MODEL = "facebook/opt-125m"
