@@ -19,7 +19,7 @@ spec:
         app: vllm
         model: ibm-granite
         version: v0.1
-        serviceid: 1
+        serviceid: "1"
     spec:
       tolerations: # must have this to schedule on GPU nodes
       - key: "level"
