@@ -82,7 +82,7 @@ def write_csv(results, output_file, append=False):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--url", required=True)
+    parser.add_argument("--url", default="http://localhost:32562")
     parser.add_argument("--metric", required=True)
     parser.add_argument("--labels", default="")
     parser.add_argument("--start", required=True)
