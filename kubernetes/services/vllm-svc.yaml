@@ -13,7 +13,7 @@ spec:
     port: 80
     protocol: TCP
     targetPort: 8000
-    NodePort: 30101
+    nodePort: 30101
   selector:
     app: vllm
     serviceid: "1"
@@ -34,7 +34,7 @@ spec:
     port: 80
     protocol: TCP
     targetPort: 8000
-    NodePort: 30102
+    nodePort: 30102
   selector:
     app: vllm
     serviceid: "2"
