@@ -2,16 +2,13 @@
 
 34 metrics to investigate.
 
-- Startup latency (from vLLM logs):
-    - Config phase
-    - Load phase
-    - Compile phase
-    - Graph capturing phase
-- FS:
+- File System:
     - container_fs_reads_bytes_total{namespace="llm-servings", pod="facebook-opt", container="vllm-container"}
     - container_fs_writes_bytes_total{namespace="llm-servings", pod="facebook-opt", container="vllm-container"}
     - container_file_descriptors{namespace="llm-servings", pod="facebook-opt", container="vllm-container"}
 - Disks
+    - container_blkio_device_usage_total{namespace="llm-servings", pod="facebook-opt", operation="Read"}
+    - container_blkio_device_usage_total{namespace="llm-servings", pod="facebook-opt", operation="Write"}
 - Memory:
     - container_memory_usage_bytes{namespace="llm-servings", pod="facebook-opt", container="vllm-container"}
     - container_memory_cache{namespace="llm-servings", pod="facebook-opt", container="vllm-container"}
@@ -22,11 +19,16 @@
     - container_memory_failcnt{namespace="llm-servings", pod="facebook-opt", container="vllm-container"}
     - container_memory_max_usage_bytes{namespace="llm-servings", pod="facebook-opt", container="vllm-container"}
     - container_oom_events_total{namespace="llm-servings", pod="facebook-opt", container="vllm-container"}
+    - container_memory_total_active_file_bytes{namespace="llm-servings", pod="facebook-opt", container="vllm-container"}
 - Network:
     - container_network_receive_bytes_total{namespace="llm-servings", pod="facebook-opt", interface="eth0"}
     - container_network_transmit_bytes_total{namespace="llm-servings", pod="facebook-opt", interface="eth0"}
     - container_network_receive_packets_total{namespace="llm-servings", pod="facebook-opt", interface="eth0"}
     - container_network_transmit_packets_total{namespace="llm-servings", pod="facebook-opt", interface="eth0"}
+- CPU:
+    - container_processes{namespace="llm-servings", pod="facebook-opt", container="vllm-container"}
+    - container_sockets{namespace="llm-servings", pod="facebook-opt", container="vllm-container"}
+    - container_threads{namespace="llm-servings", pod="facebook-opt", container="vllm-container"}
 - GPU:
     - DCGM_FI_DEV_FB_USED{exported_namespace="llm-servings", exported_pod="facebook-opt"}
     - DCGM_FI_DEV_FB_FREE{exported_namespace="llm-servings", exported_pod="facebook-opt"}
@@ -44,3 +46,4 @@
     - vllm:e2e_request_latency_seconds_sum{model_name="facebook/opt-125m"}
     - vllm:mm_cache_hits_total{model_name="facebook/opt-125m"}
     - vllm:request_queue_time_seconds_sum{model_name="facebook/opt-125m"}
+- vLLM startup latency (using its logs)
