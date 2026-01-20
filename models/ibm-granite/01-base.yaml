@@ -46,6 +46,7 @@ spec:
         --trust-remote-code
         --seed 0
         --gpu-memory-utilization 0.95
+        --max-model-len 44000
 
     env:
     - name: HF_TOKEN
