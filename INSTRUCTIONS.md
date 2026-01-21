@@ -15,7 +15,7 @@
 
 ## Collecting runtime metrics
 
-8. After finishing the benchmarks, run the `metric_to_csv.py` script in the `prometheus/` directory. There is a `README.md` in `prometheus/` directory. Read it and tune the flags when running the script. You have to run the script for all metrics in the [METRICS.md](METRICS.md) document.
+8. After finishing the benchmarks, run the `collect_all.sh` script in the `prometheus/` directory. There is a `README.md` in `prometheus/` directory. Read it and tune the flags before running the script. You must get a `.csv` output for each metric in the [METRICS.md](METRICS.md) document.
 9. After collecting all metrics as csv files, create a new directory with this format `MODEL__CATEGORY__PARAMETER__VALUE` (e.g., facebook-opt__ModelConfig__runner__pooling).
 10. Finally, place all the csv files with the exported logs (from steps 4, 7, and 8) inside the directory and compress it into `.zip` format.
 11. Make sure to run `helm uninstall vllm` to free the resources.

@@ -1,4 +1,3 @@
-
 container_fs_reads_bytes_total{namespace="##NS##", pod="##POD##", container="##CONTAINER##"}
 container_fs_writes_bytes_total{namespace="##NS##", pod="##POD##", container="##CONTAINER##"}
 container_file_descriptors{namespace="##NS##", pod="##POD##", container="##CONTAINER##"}

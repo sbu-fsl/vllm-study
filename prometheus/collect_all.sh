@@ -56,6 +56,8 @@ while IFS= read -r line; do
         --end "$END" \
         --step "$STEP" \
         --output "$output"
+    
+    break
 
 done < current.list
 
