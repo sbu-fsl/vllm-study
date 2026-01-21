@@ -28,6 +28,8 @@ sed -i "s/##POD##/${POD}/g" current.list
 sed -i "s/##CONTAINER##/${CONTAINER}/g" current.list
 sed -i "s/##MODEL##/${MODEL}/g" current.list
 
+INDEX=0
+
 while IFS= read -r line; do
     # skip empty lines
     [[ -z "$line" ]] && continue
@@ -44,7 +46,8 @@ while IFS= read -r line; do
         | sed 's/"//g' \
         | tr ',' ',')
 
-    output="${metric_name}.csv"
+    $INDEX=$INDEX+1
+    output="${$INDEX}.${metric_name}.csv"
 
     echo "fetching $metric_name ($labels) ..."
 
