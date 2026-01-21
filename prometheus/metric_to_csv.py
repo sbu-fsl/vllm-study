@@ -1,7 +1,7 @@
 import requests
 import csv
 import argparse
-from datetime import datetime
+import datetime
 
 
 def build_promql(metric, labels):
@@ -60,12 +60,13 @@ def write_csv(results, output_file, append=False):
             writer.writerow([
                 "timestamp",
                 "value",
-                "metric",
+                "metric_name",
                 "labels"
             ])
 
         for series in results:
             metric_name = series["metric"].get("__name__", "")
+
             labels = {
                 k: v for k, v in series["metric"].items()
                 if k != "__name__"
@@ -73,7 +74,7 @@ def write_csv(results, output_file, append=False):
 
             for ts, value in series["values"]:
                 writer.writerow([
-                    datetime.utcfromtimestamp(float(ts)).isoformat(),
+                    datetime.datetime.fromtimestamp(float(ts), datetime.UTC).isoformat(),
                     value,
                     metric_name,
                     labels
