@@ -7,12 +7,12 @@ There are two ways to fetch metrics from our Prometheus API.
 By running `metric_to_csv.py` script, you select a metric with specific labels in a time range and it returns the output as a CSV file.
 
 ```sh
-python metric_to_csv.py \
-  --url http://localhost:9090 \
+python3 metric_to_csv.py \
+  --url http://localhost:32562 \
   --metric node_cpu_seconds_total \
   --labels mode=idle,cpu=0 \
-  --start 2026-01-01T00:00:00Z \
-  --end +1:00:00:00 \
+  --start 2026-01-20T00:00:00Z \
+  --end 2026-01-20T01:00:00Z \
   --step 1s \
   --output cpu_idle.csv
 ```
