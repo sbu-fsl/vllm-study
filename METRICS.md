@@ -1,6 +1,6 @@
 # Metrics
 
-34 metrics to investigate.
+37 metrics to investigate.
 
 - File System:
     - container_fs_reads_bytes_total{namespace="llm-servings", pod="facebook-opt", container="vllm-container"}

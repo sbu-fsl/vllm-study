@@ -14,7 +14,7 @@
     - [Long documents + QA designed to test context >24k tokens.](https://arxiv.org/abs/2311.04939)
 - [QMSum](https://huggingface.co/datasets/pszemraj/qmsum-cleaned)
     - Academic/industry collaborations for meeting summarization.
-- [OpenChat](openchat/openchat_sharegpt4_dataset)
+- [OpenChat](https://huggingface.co/datasets/openchat/openchat_sharegpt4_dataset)
     - Cleaned GPT-4-based ShareGPT data used for training OpenChat.
 
 ## Tasks
