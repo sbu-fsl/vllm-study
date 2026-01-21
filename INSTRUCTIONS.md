@@ -1,9 +1,9 @@
 # Benchmarks instructions
 
-## vLLM Deployment
+## vLLM Deployment (using HelmCharts)
 
 1. In `models/` directory, you will find 4 models. In each model's directory there is `01-base.yaml` file that deploys the model as a Kubernetes pod (READ NOTE 1.).
-2. Deply a model by running `kubectl apply -f 01-base.yaml`, then you will see a pod in the `llm-servings` namespace. Run `kubectl get pods -n llm-servings` to see it.
+2. Deply a model by running `helm install -f models/facebook-opt/values.yaml vllm-<name> models/`, then you will see a pod in the `llm-servings` namespace. Run `kubectl get pods -n llm-servings` to see it.
 3. It might take up to 5 minutes until the pod gets ready. Until the pod is not in the ready status, it won't accept any requests. You musdt wait until you see the `Read 1/1` when running `kubectl get pods -n llm-servings` (READ NOTE 2.).
 4. After the pod is ready, export its logs into a file. E.g., run `k logs <pod-name> > logs.txt`.
 
@@ -18,6 +18,7 @@
 8. After finishing the benchmarks, run the `metric_to_csv.py` script in the `prometheus/` directory. There is a `README.md` in `prometheus/` directory. Read it and tune the flags when running the script. You have to run the script for all metrics in the [METRICS.md](METRICS.md) document.
 9. After collecting all metrics as csv files, create a new directory with this format `MODEL__CATEGORY__PARAMETER__VALUE` (e.g., facebook-opt__ModelConfig__runner__pooling).
 10. Finally, place all the csv files with the exported logs (from steps 4, 7, and 8) inside the directory and compress it into `.zip` format.
+11. Make sure to run `helm uninstall vllm` to free the resources.
 
 ## NOTES
 
