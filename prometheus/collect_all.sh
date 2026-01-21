@@ -47,7 +47,7 @@ while IFS= read -r line; do
         | tr ',' ',')
 
     ((INDEX++))
-    output="${$INDEX}.${metric_name}.csv"
+    output="${INDEX}.${metric_name}.csv"
 
     echo "fetching $metric_name ($labels) ..."
 
