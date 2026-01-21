@@ -46,7 +46,7 @@ while IFS= read -r line; do
         | sed 's/"//g' \
         | tr ',' ',')
 
-    $INDEX=$INDEX+1
+    ((INDEX++))
     output="${$INDEX}.${metric_name}.csv"
 
     echo "fetching $metric_name ($labels) ..."
