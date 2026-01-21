@@ -13,7 +13,7 @@ END="2026-01-01T00:00:00Z"
 STEP="1s"
 
 # prometheus
-PROM_URL="http://localhost:9090"
+PROM_URL="http://localhost:32562"
 
 # python
 PC="python3"
