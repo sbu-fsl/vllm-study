@@ -185,6 +185,7 @@ plots.html
 new_logs.txt
 traces
 counts.txt
+results/
 
 # system
 .vscode/
