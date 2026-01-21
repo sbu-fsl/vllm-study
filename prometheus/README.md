@@ -12,7 +12,7 @@ python metric_to_csv.py \
   --metric node_cpu_seconds_total \
   --labels mode=idle,cpu=0 \
   --start 2026-01-01T00:00:00Z \
-  --end 2026-01-01T01:00:00Z \
+  --end +1:00:00:00 \
   --step 1s \
   --output cpu_idle.csv
 ```
@@ -32,7 +32,7 @@ MODEL="facebook\/opt-125m"
 
 # time settings, must be set in the benchmark timestamp range (start = the time you deployed the instance, end = the time you finished your benchmarks)
 START="2026-01-01T00:00:00Z"
-END="2026-01-01T00:00:00Z"
+END="+1:00:00:00" # one day after
 
 # Prometheus settings stay the same most of the time
 PROM_URL="http://localhost:32562"

@@ -9,7 +9,7 @@ MODEL="facebook\/opt-125m"
 
 # time settings
 START="2026-01-01T00:00:00Z"
-END="2026-01-01T00:00:00Z"
+END="+1:00:00:00"
 STEP="1s"
 
 # prometheus
