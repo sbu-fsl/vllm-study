@@ -10,7 +10,7 @@ metadata:
   labels:
     app: vllm
     model: {{ .Values.configs.name }}
-    serviceid: {{ .Values.serviceid }}
+    serviceid: "{{ .Values.serviceid }}"
 spec:
   tolerations: # must have this to schedule on GPU nodes
   - key: "level"

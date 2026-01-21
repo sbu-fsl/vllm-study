@@ -17,4 +17,4 @@ configs:
       --max-model-len 44000
 
 # service id
-serviceid: "1"
+serviceid: 1
