@@ -186,6 +186,7 @@ new_logs.txt
 traces
 counts.txt
 results/
+images/
 
 # system
 .vscode/
