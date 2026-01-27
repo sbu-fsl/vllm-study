@@ -1,3 +1,4 @@
+{{- if eq .Values.storage.type "local" }}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -11,3 +12,4 @@ spec:
     requests:
       storage: 100Gi # must be less than or equal to the PV's capacity
   storageClassName: vllm-local
+{{- end }}
