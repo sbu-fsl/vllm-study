@@ -17,8 +17,14 @@ spec:
     value: "important"
     effect: "NoSchedule"
 
-  nodeSelector: # RTX A5000 with 24.5 GB of VRAM
+  nodeSelector:
+    {{- if eq .Values.gpu.type "a5000" }}
     kubernetes.io/hostname: sunyibm1.fsl.cs.sunysb.edu
+    {{- else if eq .Values.gpu.type "q6000" }}
+    kubernetes.io/hostname: sunyibm2.fsl.cs.sunysb.edu
+    {{- else }}
+    {{ fail "Invalid gpu type value. Use 'a5000' or 'q6000'." }}
+    {{- end }}
 
   restartPolicy: Never
 
