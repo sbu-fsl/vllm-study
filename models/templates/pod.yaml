@@ -1,7 +1,4 @@
-# Base pod manifest for vLLM deployment
-# Node: SUNY/iBM 1
-# Storage: local
-# Version: v0.1
+---
 apiVersion: v1
 kind: Pod
 metadata:
@@ -28,10 +25,16 @@ spec:
 
   restartPolicy: Never
 
-  volumes: # a host path volume
+  volumes:
   - name: cache-volume
     persistentVolumeClaim:
+      {{- if eq .Values.storage.type "local" }}
       claimName: vllm-local-pvc
+      {{- else if eq .Values.storage.type "gpfs" }}
+      claimName: vllm-pvc
+      {{- else }}
+      {{ fail "Invalid storage type value. Use 'local' or 'gpfs'." }}
+      {{- end }}
   - name: shm
     emptyDir:
       medium: Memory
