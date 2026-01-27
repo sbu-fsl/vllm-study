@@ -3,10 +3,10 @@ namespace: llm-servings
 
 # model configs
 configs:
-  name: meta-llama
+  name: liquidai-lfm
   serve:
     - >
-      vllm serve meta-llama/Llama-3.1-8B-Instruct
+      vllm serve LiquidAI/LFM2.5-1.2B-Thinking
       --host 0.0.0.0
       --port 8000
       --tensor-parallel-size 1
@@ -14,7 +14,6 @@ configs:
       --trust-remote-code
       --seed 0
       --gpu-memory-utilization 0.9
-      --max-model-len 36000
 
 # gpu configs
 # RTX A5000 with 24.5 GB of VRAM (1) / Quadro 6000 with 24.5 GB of VRAM (2)
