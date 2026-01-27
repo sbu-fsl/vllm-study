@@ -15,6 +15,3 @@ configs:
       --seed 0
       --gpu-memory-utilization 0.95
       --max-model-len 44000
-
-# service id
-serviceid: 1

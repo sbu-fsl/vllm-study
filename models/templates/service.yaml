@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.configs.name }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: vllm
+    model: {{ .Values.configs.name }}
+spec:
+  ports:
+  - name: http-vllm
+    port: 80
+    protocol: TCP
+    targetPort: 8000
+  selector:
+    app: vllm
+    model: {{ .Values.configs.name }}
+  sessionAffinity: None
+  type: NodePort
