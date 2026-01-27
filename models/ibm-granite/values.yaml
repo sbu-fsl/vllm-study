@@ -13,7 +13,7 @@ configs:
       --no-enable-prefix-caching
       --trust-remote-code
       --seed 0
-      --gpu-memory-utilization 0.95
+      --gpu-memory-utilization 0.9
       --max-model-len 44000
 
 # gpu configs
