@@ -19,7 +19,8 @@ spec:
             - key: kubernetes.io/hostname
               operator: In
               values:
-                -  "sunyibm1.fsl.cs.sunysb.edu"
+                - "sunyibm1.fsl.cs.sunysb.edu"
+                - "sunyibm2.fsl.cs.sunysb.edu"
 ---
 # Persistent Volume Claim
 apiVersion: v1

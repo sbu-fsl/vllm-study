@@ -1,1 +1,3 @@
-The vLLM instance for {{ .Values.configs.name }} is deployed (serviceid = {{ .Values.serviceid }}).
+The vLLM instance for {{ .Values.configs.name }} is deployed.
+Run `kubectl get svc {{ .Values.configs.name }} -n {{ .Values.namespace }} -o wide` and get your service port number.
+The OpenAI API is exported on the `localhost:port`.
