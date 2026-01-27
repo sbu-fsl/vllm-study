@@ -27,14 +27,16 @@ spec:
 
   volumes:
   - name: cache-volume
+    {{- if eq .Values.storage.type "local" }}
+    hostPath:
+      path: /mnt/vllm
+      type: DirectoryOrCreate
+    {{- else if eq .Values.storage.type "gpfs" }}
     persistentVolumeClaim:
-      {{- if eq .Values.storage.type "local" }}
-      claimName: {{ print .Values.configs.name "-local-pvc" }}
-      {{- else if eq .Values.storage.type "gpfs" }}
       claimName: vllm-pvc
-      {{- else }}
-      {{ fail "Invalid storage type value. Use 'local' or 'gpfs'." }}
-      {{- end }}
+    {{- else }}
+    {{ fail "Invalid storage type value. Use 'local' or 'gpfs'." }}
+    {{- end }}
   - name: shm
     emptyDir:
       medium: Memory
