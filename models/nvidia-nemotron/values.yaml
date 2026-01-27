@@ -3,10 +3,10 @@ namespace: llm-servings
 
 # model configs
 configs:
-  name: openai-gpt
+  name: qwen-qwen2
   serve:
     - >
-      vllm serve openai/gpt-oss-20b
+      vllm serve nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-BF16
       --host 0.0.0.0
       --port 8000
       --tensor-parallel-size 1
@@ -14,6 +14,7 @@ configs:
       --trust-remote-code
       --seed 0
       --gpu-memory-utilization 0.9
+      --max-model-len 36000
 
 # gpu configs
 # RTX A5000 with 24.5 GB of VRAM (1) / Quadro 6000 with 24.5 GB of VRAM (2)

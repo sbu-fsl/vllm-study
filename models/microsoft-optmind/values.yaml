@@ -3,10 +3,10 @@ namespace: llm-servings
 
 # model configs
 configs:
-  name: qwen-qwen2
+  name: microsoft-optmind
   serve:
     - >
-      vllm serve Qwen/Qwen2.5-1.5B-Instruct
+      vllm serve microsoft/OptiMind-SFT
       --host 0.0.0.0
       --port 8000
       --tensor-parallel-size 1
@@ -14,6 +14,7 @@ configs:
       --trust-remote-code
       --seed 0
       --gpu-memory-utilization 0.9
+      --max-model-len 36000
 
 # gpu configs
 # RTX A5000 with 24.5 GB of VRAM (1) / Quadro 6000 with 24.5 GB of VRAM (2)
