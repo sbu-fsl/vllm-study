@@ -1,14 +1,24 @@
+---
+# Storage class
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: vllm-local
+provisioner: kubernetes.io/no-provisioner
+volumeBindingMode: WaitForFirstConsumer
+---
 # Persistent Volume
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: vllm-local-pv
+  name: vllm-local-pv-ibm1
   namespace: llm-servings
 spec:
   capacity:
     storage: 25Gi
   accessModes:
     - ReadWriteOnce # This volume can be used by only one pod at a time
+  storageClassName: vllm-local
   persistentVolumeReclaimPolicy: Retain # Data is preserved even if the PVC is deleted
   hostPath:
     path: "/mnt/vllm" # Path on the node's filesystem
@@ -20,6 +30,29 @@ spec:
               operator: In
               values:
                 - "sunyibm1.fsl.cs.sunysb.edu"
+---
+# Persistent Volume
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: vllm-local-pv-ibm2
+  namespace: llm-servings
+spec:
+  capacity:
+    storage: 25Gi
+  accessModes:
+    - ReadWriteOnce # This volume can be used by only one pod at a time
+  storageClassName: vllm-local
+  persistentVolumeReclaimPolicy: Retain # Data is preserved even if the PVC is deleted
+  hostPath:
+    path: "/mnt/vllm" # Path on the node's filesystem
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
                 - "sunyibm2.fsl.cs.sunysb.edu"
 ---
 # Persistent Volume Claim
@@ -35,4 +68,4 @@ spec:
     requests:
       storage: 10Gi # Must be less than or equal to the PV's capacity
   volumeName: vllm-local-pv
-  storageClassName: "" # Ensure it matches the PV's storage class (empty means no storage class)
+  storageClassName: vllm-local
