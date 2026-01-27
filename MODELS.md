@@ -6,5 +6,3 @@
 - [ibm-granite/granite-3.3-8b-instruct](https://huggingface.co/ibm-granite/granite-3.3-8b-instruct), 8B
 - [meta-llama/Llama-3.1-8B-Instruct](https://huggingface.co/meta-llama/Llama-3.1-8B-Instruct), 8B
 - [Qwen/Qwen3-14B](https://huggingface.co/Qwen/Qwen3-14B), 15B
-- [microsoft/OptiMind-SFT](https://huggingface.co/microsoft/OptiMind-SFT), 22B
-- [nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-BF16](https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-BF16), 32B
