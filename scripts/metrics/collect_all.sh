@@ -25,6 +25,6 @@ sed -i "s/##CONTAINER##/${CONTAINER}/g" current.list
 sed -i "s/##MODEL##/${MODEL}/g" current.list
 
 # call promdigger
-./promdigger batch --input current.list --start "${START}" --end "${END}"
+promdigger batch --input current.list --start "${START}" --end "${END}"
 
 rm -f current.list
