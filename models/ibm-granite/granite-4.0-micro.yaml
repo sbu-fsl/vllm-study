@@ -1,0 +1,25 @@
+# namespace configs
+namespace: llm-servings
+
+# model configs
+configs:
+  name: ibm-granite-4.0-micro
+  serve:
+    - >
+      vllm serve ibm-granite/granite-4.0-micro
+      --host 0.0.0.0
+      --port 8000
+      --tensor-parallel-size 1
+      --no-enable-prefix-caching
+      --trust-remote-code
+      --seed 0
+      --gpu-memory-utilization 0.95
+
+# gpu configs
+# RTX A5000 with 24.5 GB of VRAM (1) / Quadro 6000 with 24.5 GB of VRAM (2)
+gpu:
+  type: "q6000" # must be a5000 or q6000
+
+# storage configs
+storage:
+  type: "local" # must be local or gpfs

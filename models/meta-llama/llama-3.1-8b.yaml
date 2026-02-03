@@ -3,7 +3,7 @@ namespace: llm-servings
 
 # model configs
 configs:
-  name: meta-llama
+  name: meta-llama-3.1-8b
   serve:
     - >
       vllm serve meta-llama/Llama-3.1-8B-Instruct
