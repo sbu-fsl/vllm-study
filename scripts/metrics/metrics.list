@@ -5,28 +5,12 @@ container_fs_write_count : container_fs_writes_total{namespace="##NS##", pod="##
 container_file_descriptors : container_file_descriptors{namespace="##NS##", pod="##POD##", container="##CONTAINER##"}
 container_blkio_read : container_blkio_device_usage_total{namespace="##NS##", pod="##POD##", operation="Read"}
 container_blkio_write : container_blkio_device_usage_total{namespace="##NS##", pod="##POD##", operation="Write"}
-container_memory_usage : container_memory_usage_bytes{namespace="##NS##", pod="##POD##", container="##CONTAINER##"}
-container_memory_cache : container_memory_cache{namespace="##NS##", pod="##POD##", container="##CONTAINER##"}
-container_memory_mapped : container_memory_mapped_file{namespace="##NS##", pod="##POD##", container="##CONTAINER##"}
-container_memory_rss : container_memory_rss{namespace="##NS##", pod="##POD##", container="##CONTAINER##"}
-container_memory_working_set : container_memory_working_set_bytes{namespace="##NS##", pod="##POD##", container="##CONTAINER##"}
-container_memory_swap : container_memory_swap{namespace="##NS##", pod="##POD##", container="##CONTAINER##"}
-container_memory_failcnt : container_memory_failcnt{namespace="##NS##", pod="##POD##", container="##CONTAINER##"}
-container_memory_max_usage : container_memory_max_usage_bytes{namespace="##NS##", pod="##POD##", container="##CONTAINER##"}
-container_oom : container_oom_events_total{namespace="##NS##", pod="##POD##", container="##CONTAINER##"}
-container_memory_total_active_file : container_memory_total_active_file_bytes{namespace="##NS##", pod="##POD##", container="##CONTAINER##"}
 container_network_receive : container_network_receive_bytes_total{namespace="##NS##", pod="##POD##", interface="eth0"}
 container_network_transmit : container_network_transmit_bytes_total{namespace="##NS##", pod="##POD##", interface="eth0"}
 container_network_receive_pkt : container_network_receive_packets_total{namespace="##NS##", pod="##POD##", interface="eth0"}
 container_network_transmit_pkt : container_network_transmit_packets_total{namespace="##NS##", pod="##POD##", interface="eth0"}
-container_processes : container_processes{namespace="##NS##", pod="##POD##", container="##CONTAINER##"}
-container_sockets : container_sockets{namespace="##NS##", pod="##POD##", container="##CONTAINER##"}
-container_threads : container_threads{namespace="##NS##", pod="##POD##", container="##CONTAINER##"}
 gpu_fb_used : DCGM_FI_DEV_FB_USED{exported_namespace="##NS##", exported_pod="##POD##"}
 gpu_fb_free : DCGM_FI_DEV_FB_FREE{exported_namespace="##NS##", exported_pod="##POD##"}
 gpu_mem_copy : DCGM_FI_DEV_MEM_COPY_UTIL{exported_namespace="##NS##", exported_pod="##POD##"}
-gpu_tensor_core : DCGM_FI_PROF_GR_ENGINE_ACTIVE{exported_namespace="##NS##", exported_pod="##POD##"}
-gpu_sm : DCGM_FI_DEV_SM_CLOCK{exported_namespace="##NS##", exported_pod="##POD##"}
-gpu_tensore_active : DCGM_FI_PROF_PIPE_TENSOR_ACTIVE{exported_namespace="##NS##", exported_pod="##POD##"}
 pcie_rx : DCGM_FI_PROF_PCIE_RX_BYTES{exported_namespace="##NS##", exported_pod="##POD##"}
 pcie_tx : DCGM_FI_PROF_PCIE_TX_BYTES{exported_namespace="##NS##", exported_pod="##POD##"}
