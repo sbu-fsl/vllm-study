@@ -44,7 +44,7 @@ spec:
 
   containers:
   - name: vllm-container
-    image: vllm/vllm-openai:latest
+    image: vllm/vllm-openai:v0.15.0
     command: ["/bin/sh", "-c"]
     args: {{ .Values.configs.serve }}
 

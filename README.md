@@ -7,7 +7,7 @@
 |                 Model                 |                            Access Link                             | Number of Parameters | Type                                                      |
 |:-------------------------------------:|:------------------------------------------------------------------:|:--------------------:|-----------------------------------------------------------|
 |          `facebook/opt-125m`          |          [link](https://huggingface.co/facebook/opt-125m)          |         125M         | Text generation (base LLM)                                |
-|       `openai/circuit-sparsity`       |       [link](https://huggingface.co/openai/circuit-sparsity)       |         400M         | Text generation / research model                          |
+|          `facebook/opt-350m`          |          [link](https://huggingface.co/facebook/opt-350m)          |         350M         | Text generation                                           |
 |           `Qwen/Qwen3-0.6B`           |           [link](https://huggingface.co/Qwen/Qwen3-0.6B)           |         800M         | Text generation                                           |
 |    `ibm-granite/granite-4.0-h-1b`     |    [link](https://huggingface.co/ibm-granite/granite-4.0-h-1b)     |          1B          | Text generation / enterprise LLM                          |
 |    `ibm-granite/granite-4.0-micro`    |    [link](https://huggingface.co/ibm-granite/granite-4.0-micro)    |          3B          | Text generation / lightweight assistant                   |
@@ -16,8 +16,10 @@
 |  `meta-llama/Llama-3.1-8B-Instruct`   |  [link](https://huggingface.co/meta-llama/Llama-3.1-8B-Instruct)   |          8B          | Instruction-following assistant (chat, code, reasoning)   |
 | `ibm-granite/granite-3.3-8b-instruct` | [link](https://huggingface.co/ibm-granite/granite-3.3-8b-instruct) |          8B          | Instruction-following assistant                           |
 |            `Qwen/Qwen3-8B`            |            [link](https://huggingface.co/Qwen/Qwen3-8B)            |          8B          | Text generation / reasoning                               |
-|          `google/gemma-2-9b`          |          [link](https://huggingface.co/google/gemma-2-9b)          |          9B          | Text generation / reasoning                               |
-|     `google/recurrentgemma-9b-it`     |     [link](https://huggingface.co/google/recurrentgemma-9b-it)     |         10B          | Instruction-following assistant (long-context, reasoning) |
+
+### Too big
+
+- https://huggingface.co/google/gemma-2-9b
 
 ## All Parameters
 
@@ -91,16 +93,14 @@
 ## Helm
 
 ```sh
-helm install -f models/facebook-opt/opt-125m.yaml vllm-opt models/
-helm install -f models/google/gemma-2-9b.yaml vllm-gemma-2-9b models/
+helm install -f models/facebook/opt-125m.yaml vllm-opt-125m models/
+helm install -f models/facebook/opt-350m.yaml vllm-opt-350m models/
 helm install -f models/google/gemma-2b.yaml vllm-gemma-2b models/
-helm install -f models/google/recurrentgemma-9b.yaml vllm-recurrentgemma models/
-helm install -f models/ibm-granite/granite-3.3-8b.yaml vllm-granite-3.3 models/
-helm install -f models/ibm-granite/granite-4.0-h-1b.yaml vllm-granite-4.0-h models/
-helm install -f models/ibm-granite/granite-4.0-h-tiny.yaml vllm-granite-4.0-h-tiny models/
-helm install -f models/ibm-granite/granite-4.0-micro.yaml vllm-granite-4.0-micro models/
+helm install -f models/ibm-granite/granite-3.3-8b.yaml vllm-granite-33 models/
+helm install -f models/ibm-granite/granite-4.0-h-1b.yaml vllm-granite-40-h models/
+helm install -f models/ibm-granite/granite-4.0-h-tiny.yaml vllm-granite-40-h-tiny models/
+helm install -f models/ibm-granite/granite-4.0-micro.yaml vllm-granite-40-micro models/
 helm install -f models/meta-llama/llama-3.1-8b.yaml vllm-meta-llama models/
-helm install -f models/openai/circuit.yaml vllm-openai-circuit models/
 helm install -f models/qwen/qwen3-0.6b.yaml vllm-qwen3 models/
 helm install -f models/qwen/qwen3-8b.yaml vllm-qwen3-8b models/
 ```
@@ -196,3 +196,41 @@ helm install -f models/qwen/qwen3-8b.yaml vllm-qwen3-8b models/
     - vllm:mm_cache_hits_total{model_name="facebook/opt-125m"}
     - vllm:request_queue_time_seconds_sum{model_name="facebook/opt-125m"}
 - vLLM startup latency (using its logs)
+
+## NOTES
+
+List deployments:
+
+```sh
+helm list
+```
+
+Uninstall deployment:
+
+```sh
+helm uninstall
+```
+
+List pods:
+
+```sh
+kubectl -n llm-servings get pods
+```
+
+Export pod logs:
+
+```sh
+kubectl -n llm-servings logs $POD_NAME > "$POD_NAME.log"
+```
+
+Extract timestamps:
+
+```sh
+./scripts/extract_ts.sh "$POD_NAME.log"
+```
+
+Get metrics (make sure to edit the values in the `collect_all.sh` script):
+
+```sh
+./scripts/metrics/collect_all.sh
+```

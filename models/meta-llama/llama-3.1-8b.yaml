@@ -3,7 +3,7 @@ namespace: llm-servings
 
 # model configs
 configs:
-  name: meta-llama-3.1-8b
+  name: meta-llama-31-8b
   serve:
     - >
       vllm serve meta-llama/Llama-3.1-8B-Instruct
@@ -13,7 +13,7 @@ configs:
       --no-enable-prefix-caching
       --trust-remote-code
       --seed 0
-      --gpu-memory-utilization 0.95
+      --gpu-memory-utilization 0.9
       --max-model-len 36000
 
 # gpu configs

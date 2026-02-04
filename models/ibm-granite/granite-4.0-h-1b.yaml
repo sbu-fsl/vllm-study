@@ -3,7 +3,7 @@ namespace: llm-servings
 
 # model configs
 configs:
-  name: ibm-granite-4.0-h-1b
+  name: ibm-granite-40-h-1b
   serve:
     - >
       vllm serve ibm-granite/granite-4.0-h-1b
@@ -13,8 +13,7 @@ configs:
       --no-enable-prefix-caching
       --trust-remote-code
       --seed 0
-      --gpu-memory-utilization 0.95
-      --max-model-len 36000
+      --gpu-memory-utilization 0.9
 
 # gpu configs
 # RTX A5000 with 24.5 GB of VRAM (1) / Quadro 6000 with 24.5 GB of VRAM (2)
