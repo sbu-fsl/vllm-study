@@ -1,5 +1,7 @@
 # vLLM study: I/O perspective
 
+(sum by (node) (kube_node_status_capacity{resource="nvidia_com_gpu"}) - sum by (node) (kube_pod_container_resource_limits{resource="nvidia_com_gpu", unit="integer"})) or on (node) sum by (node) (kube_node_status_capacity{resource="nvidia_com_gpu"})
+
 ## Models
 
 > Models larger than 10B don't fit with our GPUs (24 GB limited VRAM space)!
