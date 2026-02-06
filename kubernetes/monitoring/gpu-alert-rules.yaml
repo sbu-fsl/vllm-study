@@ -6,23 +6,23 @@ metadata:
 spec:
   groups:
   - name: GPUStatus
-      rules:
-      - alert: NodeGPUFreeChanged
-        expr: changes(node:gpu_free[5m]) > 0
-        for: 0s
-        labels:
-          severity: info
-        annotations:
-          summary: "GPU availability changed on {{ $labels.node }}"
-          description: |
-            GPU availability changed on node {{ $labels.node }}.
-            {{ $q := query (printf "node:gpu_free{node=\"%s\"}" $labels.node) }}
-            {{ if gt (len $q) 0 }}
-            Free GPUs: {{ printf "%.0f" (index $q 0).Value }}
-            {{ $qt := query (printf "kube_node_status_capacity{resource=\"nvidia_com_gpu\", node=\"%s\"}" $labels.node) }}
-            {{ if gt (len $qt) 0 }}
-            Total GPUs: {{ printf "%.0f" (index $qt 0).Value }}
-            {{ end }}
-            {{ else }}
-            Free GPUs: unknown
-            {{ end }}
+    rules:
+    - alert: NodeGPUFreeChanged
+      expr: changes(node:gpu_free[5m]) > 0
+      for: 0s
+      labels:
+        severity: info
+      annotations:
+        summary: "GPU availability changed on {{ $labels.node }}"
+        description: |
+          GPU availability changed on node {{ $labels.node }}.
+          {{ $q := query (printf "node:gpu_free{node=\"%s\"}" $labels.node) }}
+          {{ if gt (len $q) 0 }}
+          Free GPUs: {{ printf "%.0f" (index $q 0).Value }}
+          {{ $qt := query (printf "kube_node_status_capacity{resource=\"nvidia_com_gpu\", node=\"%s\"}" $labels.node) }}
+          {{ if gt (len $qt) 0 }}
+          Total GPUs: {{ printf "%.0f" (index $qt 0).Value }}
+          {{ end }}
+          {{ else }}
+          Free GPUs: unknown
+          {{ end }}
