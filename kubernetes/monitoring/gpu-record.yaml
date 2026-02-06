@@ -10,6 +10,8 @@ spec:
   - name: gpu-recording
     rules:
     - record: node:gpu_free
+      labels:
+        namespace: monitoring
       expr: |
         (
           sum by (node) (
