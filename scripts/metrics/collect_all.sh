@@ -18,7 +18,7 @@ NAMESPACE="llm-servings"
 DELTA_TIME="30 seconds"
 
 usage() {
-  echo "Usage: $0 [-p pod] [-m model] [-n namespace] [-c container]"
+  echo "Usage: $0 [-p pod] [-m model] [-n namespace] [-c container] [-d delta-time]"
   exit 1
 }
 
