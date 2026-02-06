@@ -13,26 +13,6 @@ metadata:
   namespace: monitoring
 spec:
   groups:
-  - name: gpu-recording
-    rules:
-      - record: node:gpu_free
-        expr: |
-          (
-            sum by (node) (
-              kube_node_status_capacity{resource="nvidia_com_gpu"}
-            )
-            -
-            sum by (node) (
-              kube_pod_container_resource_limits{
-                resource="nvidia_com_gpu",
-                unit="integer"
-              }
-            )
-          )
-          or on (node)
-          sum by (node) (
-            kube_node_status_capacity{resource="nvidia_com_gpu"}
-          )
   - name: GPUStatus
     rules:
     - alert: NodeGPUFreeChanged
@@ -50,6 +30,7 @@ spec:
           {{ $qt := query (printf "kube_node_status_capacity{resource=\"nvidia_com_gpu\", node=\"%s\"}" $labels.node) }}
           {{ if gt (len $qt) 0 }}
           Total GPUs: {{ printf "%.0f" (index $qt 0).Value }}
+          {{ end }}
           {{ else }}
           Free GPUs: unknown
           {{ end }}

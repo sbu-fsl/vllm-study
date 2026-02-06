@@ -1,0 +1,29 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: gpu-recording-rules
+  namespace: monitoring
+  labels:
+    release: kube-prometheus-stack
+spec:
+  groups:
+  - name: gpu-recording
+    rules:
+    - record: node:gpu_free
+      expr: |
+        (
+          sum by (node) (
+            kube_node_status_capacity{resource="nvidia_com_gpu"}
+          )
+          -
+          sum by (node) (
+            kube_pod_container_resource_limits{
+              resource="nvidia_com_gpu",
+              unit="integer"
+            }
+          )
+        )
+        or on (node)
+        sum by (node) (
+          kube_node_status_capacity{resource="nvidia_com_gpu"}
+        )
