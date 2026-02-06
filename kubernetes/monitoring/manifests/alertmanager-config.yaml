@@ -1,0 +1,28 @@
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: AlertmanagerConfig
+metadata:
+  name: gpu-alerts
+  namespace: monitoring
+spec:
+  route:
+    receiver: slack-gpu
+    matchers:
+    - name: alertname
+      value: NodeGPUFreeChanged
+    groupBy: ["node"]
+    groupWait: 0s
+    groupInterval: 1s
+    repeatInterval: 1h
+
+  receivers:
+  - name: slack-gpu
+    slackConfigs:
+    - apiURL:
+        name: slack-webhook
+        key: url
+      channel: "#gpus-status"
+      title: "{{ .CommonAnnotations.summary }}"
+      text: >-
+        {{ range .Alerts }}
+        {{ .Annotations.description }}
+        {{ end }}
