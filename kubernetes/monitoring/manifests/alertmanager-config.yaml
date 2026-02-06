@@ -12,7 +12,7 @@ spec:
     groupBy: ["node"]
     groupWait: 0s
     groupInterval: 1s
-    repeatInterval: 1m
+    repeatInterval: 5m
 
   receivers:
   - name: slack-gpu
