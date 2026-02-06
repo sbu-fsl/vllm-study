@@ -8,7 +8,7 @@ spec:
   - name: GPUStatus
     rules:
     - alert: NodeGPUFreeChanged
-      expr: changes(node:gpu_free[30s]) > 0
+      expr: changes(node:gpu_free[1m]) > 0
       labels:
         severity: warning
       annotations:
