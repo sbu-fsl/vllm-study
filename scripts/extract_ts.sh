@@ -1,9 +1,29 @@
 #!/bin/bash
 
-FILE=$1
+FILE="$1"
+DELTA_TIME="$2"
 
-echo "START: "
-grep "vLLM API server version" "${FILE}"
+# START TIME
+START_TIME=$(
+  awk -v year="$(date +%Y)" '
+    NR == 1 {
+      printf "%s-%s %s\n", year, $4, $5
+    }
+  ' "$FILE"
+)
+START_TIME=$(date -u -d "$START_TIME $DELTA_TIME ago" +"%Y-%m-%dT%H:%M:%SZ")
+echo "START: $START_TIME"
 
-echo "END: "
-grep -B 1 "Started server process" "${FILE}" | grep -v "Started server process"
+
+# END TIME
+END_TIME=$(
+  awk -v year="$(date +%Y)" '
+    /Started server process/ {
+      split(prev, f)
+      printf "%s-%s %s\n", year, f[4], f[5]
+    }
+    { prev = $0 }
+  ' "$FILE"
+)
+END_TIME=$(date -u -d "$END_TIME $DELTA_TIME" +"%Y-%m-%dT%H:%M:%SZ")
+echo "END: $END_TIME"

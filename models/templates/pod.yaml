@@ -54,6 +54,8 @@ spec:
         secretKeyRef:
           name: hf-token-secret
           key: token
+    - name: TZ
+      value: UTC
 
     ports:
     - containerPort: 8000
