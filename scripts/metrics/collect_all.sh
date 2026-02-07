@@ -2,7 +2,10 @@
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-FILE="$1"
+usage() {
+  echo "Usage: $0 [-p pod] [-m model] [-n namespace] [-c container] [-d delta-time] <file>"
+  exit 1
+}
 
 ############### config parameters ##################
 # metrics labels
@@ -16,11 +19,6 @@ NAMESPACE="llm-servings"
 
 # time difference
 DELTA_TIME="30 seconds"
-
-usage() {
-  echo "Usage: $0 [-p pod] [-m model] [-n namespace] [-c container] [-d delta-time]"
-  exit 1
-}
 
 while getopts ":p:m:n:c:d:h" opt; do
   case "$opt" in
@@ -36,6 +34,12 @@ while getopts ":p:m:n:c:d:h" opt; do
 done
 
 shift $((OPTIND - 1))
+
+if [[ $# -ne 1 ]]; then
+  usage
+fi
+
+FILE="$1"
 
 # compute start time
 START_TIME=$(

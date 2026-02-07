@@ -1,33 +1,32 @@
 #!/bin/bash
 
-
 set -euo pipefail
 
-if [[ $# -ne 1 ]]; then
-  echo "Usage: $0 <metrics_dir>"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ROOT_DIR="$(realpath "$SCRIPT_DIR/..")"
+
+usage() {
+  echo "Usage: $0 <metrics-dir>"
   exit 1
+}
+
+if [[ $# -ne 1 ]]; then
+  usage
 fi
+
+METRICS_DIR="$1"
 
 rm -rf images
 mkdir images
 
-METRICS_DIR="$1"
+mapfile -t METRIC_NAMES < <(
+  find "$METRICS_DIR" -type f -name '*.csv' \
+    -exec basename {} .csv \; \
+    | sort -u
+)
 
-for csv in "$METRICS_DIR"/*.csv; do
-  # Skip if no csv files exist
-  [[ -e "$csv" ]] || continue
-
-  filename=$(basename "$csv" .csv)
-
-  echo running "${filename}" ...
-
-  python plots/plot.py "$filename" \
-    results/facebook-opt-draft \
-    results/facebook-opt-generate \
-    results/facebook-opt-pooling \
-    results/qwen-qwen-draft \
-    results/qwen-qwen-generate \
-    results/qwen-qwen-pooling
-
-  echo done "${filename}"
+for metric in "${METRIC_NAMES[@]}"; do
+  echo running "$metric"...
+  python "$ROOT_DIR/plots/plot.py" "$metric" "$METRICS_DIR"/*
+  echo done "$metric"
 done
