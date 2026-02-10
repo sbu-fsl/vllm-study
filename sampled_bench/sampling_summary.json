@@ -1,0 +1,39 @@
+{
+  "mmlu": {
+    "status": "ok",
+    "sampled": 1000,
+    "total": 14042
+  },
+  "humaneval": {
+    "status": "ok",
+    "sampled": 164,
+    "total": 164
+  },
+  "natural_questions": {
+    "status": "ok",
+    "sampled": 1000,
+    "total": 7830
+  },
+  "loogle": {
+    "status": "error",
+    "error": "Config name is missing.\nPlease pick one among the available configs: ['longdep_qa', 'shortdep_qa', 'shortdep_cloze', 'summarization']\nExample of usage:\n\t`load_dataset('bigai-nlco/LooGLE', 'longdep_qa')`"
+  },
+  "qmsum": {
+    "status": "ok",
+    "sampled": 1000,
+    "total": 1257
+  },
+  "openchat": {
+    "status": "error",
+    "error": "An error occurred while generating the dataset\n\nAll the data files must have the same columns, but at some point there are 1 new columns ({'text'}) and 2 missing columns ({'0', '1'}).\n\nThis happened while the json dataset builder was generating data using\n\nhf://datasets/openchat/openchat_sharegpt4_dataset/openchat.train.text.json (at revision ef43fd2adc007847dba74001094a8d68170b457f), [/home/anstyagi/.cache/huggingface/hub/datasets--openchat--openchat_sharegpt4_dataset/snapshots/ef43fd2adc007847dba74001094a8d68170b457f/openchat.train.json (origin=hf://datasets/openchat/openchat_sharegpt4_dataset@ef43fd2adc007847dba74001094a8d68170b457f/openchat.train.json), /home/anstyagi/.cache/huggingface/hub/datasets--openchat--openchat_sharegpt4_dataset/snapshots/ef43fd2adc007847dba74001094a8d68170b457f/openchat.train.text.json (origin=hf://datasets/openchat/openchat_sharegpt4_dataset@ef43fd2adc007847dba74001094a8d68170b457f/openchat.train.text.json), /home/anstyagi/.cache/huggingface/hub/datasets--openchat--openchat_sharegpt4_dataset/snapshots/ef43fd2adc007847dba74001094a8d68170b457f/openchat_8192.train.embeddings.json (origin=hf://datasets/openchat/openchat_sharegpt4_dataset@ef43fd2adc007847dba74001094a8d68170b457f/openchat_8192.train.embeddings.json), /home/anstyagi/.cache/huggingface/hub/datasets--openchat--openchat_sharegpt4_dataset/snapshots/ef43fd2adc007847dba74001094a8d68170b457f/openchat_8192.train.json (origin=hf://datasets/openchat/openchat_sharegpt4_dataset@ef43fd2adc007847dba74001094a8d68170b457f/openchat_8192.train.json), /home/anstyagi/.cache/huggingface/hub/datasets--openchat--openchat_sharegpt4_dataset/snapshots/ef43fd2adc007847dba74001094a8d68170b457f/openchat_8192.train.text.json (origin=hf://datasets/openchat/openchat_sharegpt4_dataset@ef43fd2adc007847dba74001094a8d68170b457f/openchat_8192.train.text.json), /home/anstyagi/.cache/huggingface/hub/datasets--openchat--openchat_sharegpt4_dataset/snapshots/ef43fd2adc007847dba74001094a8d68170b457f/openchat_8192.train.visualizer.json (origin=hf://datasets/openchat/openchat_sharegpt4_dataset@ef43fd2adc007847dba74001094a8d68170b457f/openchat_8192.train.visualizer.json), /home/anstyagi/.cache/huggingface/hub/datasets--openchat--openchat_sharegpt4_dataset/snapshots/ef43fd2adc007847dba74001094a8d68170b457f/opencoder.train.json (origin=hf://datasets/openchat/openchat_sharegpt4_dataset@ef43fd2adc007847dba74001094a8d68170b457f/opencoder.train.json), /home/anstyagi/.cache/huggingface/hub/datasets--openchat--openchat_sharegpt4_dataset/snapshots/ef43fd2adc007847dba74001094a8d68170b457f/opencoder.train.text.json (origin=hf://datasets/openchat/openchat_sharegpt4_dataset@ef43fd2adc007847dba74001094a8d68170b457f/opencoder.train.text.json)]\n\nPlease either edit the data files to have matching columns, or separate them into different configurations (see docs at https://hf.co/docs/hub/datasets-manual-configuration#multiple-configurations)"
+  },
+  "alpaca": {
+    "status": "ok",
+    "sampled": 1000,
+    "total": 52002
+  },
+  "longbench": {
+    "status": "error",
+    "error": "Dataset scripts are no longer supported, but found LongBench.py"
+  }
+}
