@@ -4,13 +4,13 @@ namespace: llm-servings
 # model configs
 configs:
   name: google-gemma-2-9b
+  gpus: 2
   serve:
     - >
-      vllm google/gemma-2-9b
+      vllm serve google/gemma-2-9b
       --host 0.0.0.0
       --port 8000
       --tensor-parallel-size 2
-      --data-parallel-size 2
       --no-enable-prefix-caching
       --trust-remote-code
       --seed 0
@@ -24,3 +24,8 @@ gpu:
 # storage configs
 storage:
   type: "local" # must be local or gpfs
+
+# customized
+initdelay: 300
+period: 300
+

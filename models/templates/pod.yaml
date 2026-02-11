@@ -26,6 +26,9 @@ spec:
   restartPolicy: Never
 
   volumes:
+  - name: shm
+    emptyDir:
+      medium: Memory
   - name: cache-volume
     {{- if eq .Values.storage.type "local" }}
     hostPath:
@@ -37,10 +40,6 @@ spec:
     {{- else }}
     {{ fail "Invalid storage type value. Use 'local' or 'gpfs'." }}
     {{- end }}
-  - name: shm
-    emptyDir:
-      medium: Memory
-      sizeLimit: "1G"
 
   containers:
   - name: vllm-container
@@ -64,28 +63,29 @@ spec:
       limits:
         cpu: "10"
         memory: 25G
-        nvidia.com/gpu: "1"
+        nvidia.com/gpu: {{ .Values.configs.gpus | default 1 }}
       requests:
         cpu: "5"
         memory: 12G
-        nvidia.com/gpu: "1"
+        nvidia.com/gpu: {{ .Values.configs.gpus | default 1 }}
 
     volumeMounts:
+    - mountPath: /dev/shm
+      name: shm
     - mountPath: /root/.cache/huggingface
       name: cache-volume
-    - name: shm
-      mountPath: /dev/shm
 
     livenessProbe:
       httpGet:
         path: /health
         port: 8000
-      initialDelaySeconds: 120
-      periodSeconds: 60
+      initialDelaySeconds: {{ .Values.initdelay | default 120 }}
+      periodSeconds: {{ .Values.period | default 60 }}
 
     readinessProbe:
       httpGet:
         path: /health
         port: 8000
-      initialDelaySeconds: 120
-      periodSeconds: 60
+      initialDelaySeconds: {{ .Values.initdelay | default 120 }}
+      periodSeconds: {{ .Values.period | default 60 }}
+
