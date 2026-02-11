@@ -4,13 +4,14 @@ namespace: llm-servings
 # model configs
 configs:
   name: google-gemma-2-9b
-  gpus: 2
+  gpus: 4
   serve:
     - >
       vllm serve google/gemma-2-9b
       --host 0.0.0.0
       --port 8000
-      --tensor-parallel-size 2
+      --tensor-parallel-size 4
+      --max-num-seqs 1
       --no-enable-prefix-caching
       --trust-remote-code
       --seed 0
