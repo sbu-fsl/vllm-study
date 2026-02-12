@@ -1,4 +1,5 @@
 import os.path
+import os
 import pandas as pd
 import matplotlib.pyplot as plt
 from pandas.errors import EmptyDataError
@@ -6,6 +7,12 @@ from sklearn.metrics import mean_squared_error
 from itertools import combinations
 from dtaidistance import dtw
 
+
+plt.rcParams.update({
+    "figure.dpi": 150,
+    "savefig.dpi": 300,
+    "font.size": 12
+})
 
 ROOT = "results"
 SUBS = [
@@ -24,7 +31,24 @@ MODELS = [
     "qwen-3-06b",
     "qwen-3-8b"
 ]
-METRIC = "container_fs_write"
+METRICS = [
+    "container_blkio_read",
+    "container_blkio_write",
+    "container_file_descriptors",
+    "container_fs_read_count",
+    "container_fs_read",
+    "container_fs_write_count",
+    "container_fs_write",
+    "container_network_receive_pkt",
+    "container_network_receive",
+    "container_network_transmit_pkt",
+    "container_network_transmit",
+    "gpu_fb_free",
+    "gpu_fb_used",
+    "gpu_mem_copy",
+    "pcie_rx",
+    "pcie_tx"
+]
 
 # read CSV, convert timestamp to seconds since start, and return DataFrame
 def load_and_normalize(csv_path: str) -> pd.DataFrame:
@@ -53,15 +77,19 @@ def load_and_normalize(csv_path: str) -> pd.DataFrame:
 # Helper Functions
 # -----------------------------
 def zscore(series):
-    return (series - series.mean()) / series.std()
+    std = series.std()
+    if std == 0 or pd.isna(std):
+        return pd.Series(0.0, index=series.index)
+    return (series - series.mean()) / std
 
+def main(metric: str):
+    os.makedirs(os.path.join("images", metric), exist_ok=True)
 
-if __name__ == "__main__":
     # load the datasets into DataFrame
     dfs = {}
     for sub in SUBS:
         for model in MODELS:
-            path = os.path.join(ROOT, sub, model, METRIC + ".csv")
+            path = os.path.join(ROOT, sub, model, metric + ".csv")
             df = load_and_normalize(path)
             if df is not None:
                 dfs[sub + ":" + model] = df
@@ -111,28 +139,46 @@ if __name__ == "__main__":
     # Visualization
     # -----------------------------
 
-    # 1️⃣ Overlay Plot
-    plt.figure()
+    # 1️⃣ Overlay Plot (Large SVG)
+    plt.figure(figsize=(24, 14))  # BIG figure
+
     for col in aligned_df.columns:
-        plt.plot(aligned_df.index, aligned_df[col], label=col)
+        plt.plot(aligned_df.index, aligned_df[col], linewidth=1)
 
-    plt.title("Overlay of Time Series (Normalized)")
-    plt.xlabel("Timestamp")
-    plt.ylabel("Value")
-    plt.legend()
-    plt.show()
+    plt.title("Overlay of Time Series (Normalized)", fontsize=20)
+    plt.xlabel("Time (seconds)", fontsize=16)
+    plt.ylabel("Z-score Value", fontsize=16)
 
+    plt.xticks(fontsize=12)
+    plt.yticks(fontsize=12)
+
+    # move legend outside (critical for 20 items)
+    plt.legend(
+        aligned_df.columns,
+        loc="center left",
+        bbox_to_anchor=(1.02, 0.5),
+        fontsize=10
+    )
+
+    plt.tight_layout()
+    plt.savefig("images/" + metric + "/overlay.svg", format="svg")
+    plt.close()
 
     # 2️⃣ Heatmap Function
     def plot_heatmap(matrix, title):
-        plt.figure()
-        plt.imshow(matrix.astype(float), interpolation='nearest')
-        plt.colorbar()
-        plt.xticks(range(n), names, rotation=45)
-        plt.yticks(range(n), names)
-        plt.title(title)
+        plt.figure(figsize=(18, 16))  # Large square heatmap
+
+        im = plt.imshow(matrix.astype(float), interpolation='nearest')
+        plt.colorbar(im, fraction=0.046, pad=0.04)
+
+        plt.xticks(range(n), names, rotation=60, ha="right", fontsize=10)
+        plt.yticks(range(n), names, fontsize=10)
+
+        plt.title(title, fontsize=18)
+
         plt.tight_layout()
-        plt.show()
+        plt.savefig("images/" + metric + "/" + title.replace(" ", "_").lower() + ".svg", format="svg")
+        plt.close()
 
     plot_heatmap(correlation_matrix, "Correlation Matrix")
     plot_heatmap(mse_matrix, "MSE Matrix")
@@ -151,3 +197,8 @@ if __name__ == "__main__":
 
     for p in pairs_sorted:
         print(f"{p[0]} vs {p[1]} -> Correlation: {correlation_matrix.loc[p[0], p[1]]:.4f}")
+
+
+if __name__ == "__main__":
+    for metric in METRICS:
+        main(metric)
