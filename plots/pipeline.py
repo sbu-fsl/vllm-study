@@ -1,7 +1,9 @@
 import os.path
 import os
+import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+from matplotlib import colors
 from pandas.errors import EmptyDataError
 from sklearn.metrics import mean_squared_error
 from itertools import combinations
@@ -32,22 +34,22 @@ MODELS = [
     "qwen-3-8b"
 ]
 METRICS = [
-    "container_blkio_read",
-    "container_blkio_write",
-    "container_file_descriptors",
-    "container_fs_read_count",
-    "container_fs_read",
-    "container_fs_write_count",
-    "container_fs_write",
-    "container_network_receive_pkt",
-    "container_network_receive",
-    "container_network_transmit_pkt",
-    "container_network_transmit",
-    "gpu_fb_free",
-    "gpu_fb_used",
-    "gpu_mem_copy",
-    "pcie_rx",
-    "pcie_tx"
+    "container_blkio_read"
+    # "container_blkio_write",
+    # "container_file_descriptors",
+    # "container_fs_read_count",
+    # "container_fs_read",
+    # "container_fs_write_count",
+    # "container_fs_write",
+    # "container_network_receive_pkt",
+    # "container_network_receive",
+    # "container_network_transmit_pkt",
+    # "container_network_transmit",
+    # "gpu_fb_free",
+    # "gpu_fb_used",
+    # "gpu_mem_copy",
+    # "pcie_rx",
+    # "pcie_tx"
 ]
 
 # read CSV, convert timestamp to seconds since start, and return DataFrame
@@ -166,13 +168,36 @@ def main(metric: str):
 
     # 2️⃣ Heatmap Function
     def plot_heatmap(matrix, title):
-        plt.figure(figsize=(18, 16))  # Large square heatmap
+        n = matrix.shape[0]
 
-        im = plt.imshow(matrix.astype(float), interpolation='nearest')
+        plt.figure(figsize=(18, 16))
+
+        norm = colors.Normalize(vmin=np.min(matrix), vmax=np.max(matrix))
+
+        im = plt.imshow(matrix.astype(float),
+                        interpolation='nearest',
+                        cmap='viridis',
+                        norm=norm)
+
         plt.colorbar(im, fraction=0.046, pad=0.04)
 
         plt.xticks(range(n), names, rotation=60, ha="right", fontsize=10)
         plt.yticks(range(n), names, fontsize=10)
+
+        # add grid lines
+        plt.gca().set_xticks(np.arange(-.5, n, 1), minor=True)
+        plt.gca().set_yticks(np.arange(-.5, n, 1), minor=True)
+        plt.grid(which='minor', color='white', linestyle='-', linewidth=0.5)
+        plt.gca().tick_params(which='minor', bottom=False, left=False)
+
+        # add X on diagonal
+        for i in range(n):
+            plt.text(i, i, 'X',
+                    ha='center',
+                    va='center',
+                    color='black',
+                    fontsize=14,
+                    fontweight='bold')
 
         plt.title(title, fontsize=18)
 
