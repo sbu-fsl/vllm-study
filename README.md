@@ -2,24 +2,35 @@
 
 ## Models
 
-> Models larger than 10B don't fit with our GPUs (24 GB limited VRAM space)!
+1. OPT by Facebook
+2. Qwen by QwenAI
+3. Granite by iBM
+4. LlaMa by Meta
 
-|                 Model                 |                            Access Link                             | Number of Parameters | Type                                                      |
-|:-------------------------------------:|:------------------------------------------------------------------:|:--------------------:|-----------------------------------------------------------|
-|          `facebook/opt-125m`          |          [link](https://huggingface.co/facebook/opt-125m)          |         125M         | Text generation (base LLM)                                |
-|          `facebook/opt-350m`          |          [link](https://huggingface.co/facebook/opt-350m)          |         350M         | Text generation                                           |
-|           `Qwen/Qwen3-0.6B`           |           [link](https://huggingface.co/Qwen/Qwen3-0.6B)           |         800M         | Text generation                                           |
-|    `ibm-granite/granite-4.0-h-1b`     |    [link](https://huggingface.co/ibm-granite/granite-4.0-h-1b)     |          1B          | Text generation / enterprise LLM                          |
-|    `ibm-granite/granite-4.0-micro`    |    [link](https://huggingface.co/ibm-granite/granite-4.0-micro)    |          3B          | Text generation / lightweight assistant                   |
-|           `google/gemma-2b`           |           [link](https://huggingface.co/google/gemma-2b)           |          3B          | Text generation                                           |
-|   `ibm-granite/granite-4.0-h-tiny`    |   [link](https://huggingface.co/ibm-granite/granite-4.0-h-tiny)    |          7B          | Text generation / reasoning                               |
-|  `meta-llama/Llama-3.1-8B-Instruct`   |  [link](https://huggingface.co/meta-llama/Llama-3.1-8B-Instruct)   |          8B          | Instruction-following assistant (chat, code, reasoning)   |
-| `ibm-granite/granite-3.3-8b-instruct` | [link](https://huggingface.co/ibm-granite/granite-3.3-8b-instruct) |          8B          | Instruction-following assistant                           |
-|            `Qwen/Qwen3-8B`            |            [link](https://huggingface.co/Qwen/Qwen3-8B)            |          8B          | Text generation / reasoning                               |
+> Models larger than 10B don't fit within our GPUs (24 GB limited VRAM space)!
 
-### Big Models (for quantization or sharding)
-
-- https://huggingface.co/google/gemma-2-9b
+| INX |                 Model                 |                            Access Link                             | Number of Parameters | Type                                                      |
+|:---:|:-------------------------------------:|:------------------------------------------------------------------:|:--------------------:|-----------------------------------------------------------|
+|1    |          `facebook/opt-125m`          |          [link](https://huggingface.co/facebook/opt-125m)          |         125M         | Text generation (base LLM)                                |
+|2    |          `facebook/opt-350m`          |          [link](https://huggingface.co/facebook/opt-350m)          |         350M         | Text generation                                           |
+|3    |          `facebook/opt-1.3b`          |          [link](https://huggingface.co/facebook/opt-1.3b)          |          3B          | Text generation                                           |
+|4    |          `facebook/opt-6.7b`          |          [link](https://huggingface.co/facebook/opt-6.7b)          |          7B          | Text generation                                           |
+|5    |          `facebook/opt-13b`           |          [link](https://huggingface.co/facebook/opt-13b)           |       **13B**        | Text generation                                           |
+|6    | `ibm-granite/granite-4.0-h-350m-base` | [link](https://huggingface.co/ibm-granite/granite-4.0-h-350m-base) |         350M         | Text generation                                           |
+|7    |    `ibm-granite/granite-4.0-h-1b`     |    [link](https://huggingface.co/ibm-granite/granite-4.0-h-1b)     |          1B          | Text generation / enterprise LLM                          |
+|8    |   `ibm-granite/granite-4.0-h-micro`   |   [link](https://huggingface.co/ibm-granite/granite-4.0-h-micro)   |          3B          | Text generation / lightweight assistant                   |
+|9    |   `ibm-granite/granite-4.0-h-tiny`    |   [link](https://huggingface.co/ibm-granite/granite-4.0-h-tiny)    |          7B          | Text generation / reasoning                               |
+|10   | `ibm-granite/granite-3.3-2b-instruct` | [link](https://huggingface.co/ibm-granite/granite-3.3-2b-instruct) |          2B          | Instruction-following assistant                           |
+|11   | `ibm-granite/granite-3.3-8b-instruct` | [link](https://huggingface.co/ibm-granite/granite-3.3-8b-instruct) |          8B          | Instruction-following assistant                           |
+|12   |           `Qwen/Qwen3-0.6B`           |           [link](https://huggingface.co/Qwen/Qwen3-0.6B)           |         800M         | Text generation                                           |
+|13   |           `Qwen/Qwen3-1.7B`           |           [link](https://huggingface.co/Qwen/Qwen3-1.7B)           |         1.7B         | Text generation                                           |
+|14   |            `Qwen/Qwen3-4B`            |            [link](https://huggingface.co/Qwen/Qwen3-4B)            |          4B          | Text generation / reasoning                               |
+|15   |            `Qwen/Qwen3-8B`            |            [link](https://huggingface.co/Qwen/Qwen3-8B)            |          8B          | Text generation / reasoning                               |
+|16   |           `Qwen/Qwen3-14B`            |           [link](https://huggingface.co/Qwen/Qwen3-14B)            |       **14B**        | Text generation / reasoning                               |
+|17   |           `Qwen/Qwen3-32B`            |           [link](https://huggingface.co/Qwen/Qwen3-32B)            |       **32B**        | Text generation / reasoning                               |
+|18   |  `meta-llama/Llama-3.2-1B-Instruct`   |  [link](https://huggingface.co/meta-llama/Llama-3.2-1B-Instruct)   |          1B          | Instruction-following assistant (chat, code, reasoning)   |
+|19   |  `meta-llama/Llama-3.2-3B-Instruct`   |  [link](https://huggingface.co/meta-llama/Llama-3.2-3B-Instruct)   |          3B          | Instruction-following assistant (chat, code, reasoning)   |
+|20   |  `meta-llama/Llama-3.1-8B-Instruct`   |  [link](https://huggingface.co/meta-llama/Llama-3.1-8B-Instruct)   |          8B          | Instruction-following assistant (chat, code, reasoning)   |
 
 ## Parameters for study
 
@@ -46,24 +57,9 @@
   - cudagraph-capture-sizes
   - max-cudagraph-capture-size
 
-## Helm
-
-```sh
-helm install -f models/facebook/opt-125m.yaml vllm-opt-125m models/
-helm install -f models/facebook/opt-350m.yaml vllm-opt-350m models/
-helm install -f models/google/gemma-2b.yaml vllm-gemma-2b models/
-helm install -f models/ibm-granite/granite-3.3-8b.yaml vllm-granite-33 models/
-helm install -f models/ibm-granite/granite-4.0-h-1b.yaml vllm-granite-40-h models/
-helm install -f models/ibm-granite/granite-4.0-h-tiny.yaml vllm-granite-40-h-tiny models/
-helm install -f models/ibm-granite/granite-4.0-micro.yaml vllm-granite-40-micro models/
-helm install -f models/meta-llama/llama-3.1-8b.yaml vllm-meta-llama models/
-helm install -f models/qwen/qwen3-0.6b.yaml vllm-qwen3 models/
-helm install -f models/qwen/qwen3-8b.yaml vllm-qwen3-8b models/
-```
-
 ## LLM Benchmarks
 
-6 separate tasks, using 8 different datasets. Using OpenAI API to send our requests. Sampling `1,000` data from these datasets for our benchmarks.
+Using OpenAI API exported by vLLM to send our requests.
 
 ### Datasets
 
@@ -142,6 +138,12 @@ helm install -f models/qwen/qwen3-8b.yaml vllm-qwen3-8b models/
 - vLLM startup latency (using its logs)
 
 ## NOTES
+
+Deploy:
+
+```sh
+helm install -f models/qwen/qwen3-8b.yaml vllm-qwen3-8b models/
+```
 
 List deployments:
 
