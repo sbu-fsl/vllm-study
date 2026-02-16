@@ -6,7 +6,7 @@ namespace: llm-servings
 
 # model configs
 configs:
-  name: qwen3-14B
+  name: qwen3-14b
   serve:
     - >
       vllm serve Qwen/Qwen3-14B

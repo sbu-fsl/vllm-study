@@ -16,6 +16,7 @@ configs:
       --enable-prefix-caching
       --seed 0
       --gpu-memory-utilization 0.9
+      --max-model-len 36000
 
 # gpu configs
 # RTX A5000 with 24.5 GB of VRAM (1) / Quadro 6000 with 24.5 GB of VRAM (2)
