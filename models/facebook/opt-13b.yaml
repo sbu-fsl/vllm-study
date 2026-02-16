@@ -6,23 +6,32 @@ namespace: llm-servings
 
 # model configs
 configs:
-  name: facebook-opt-125m
+  name: facebook-opt-13b
   serve:
     - >
-      vllm serve facebook/opt-125m
+      vllm serve facebook/opt-13b
       --host 0.0.0.0
       --port 8000
-      --tensor-parallel-size 1
+      --tensor-parallel-size 2
       --enable-prefix-caching
       --seed 0
       --gpu-memory-utilization 0.9
+      --max-num-seqs 1
 
 # gpu configs
 # RTX A5000 with 24.5 GB of VRAM (1) / Quadro 6000 with 24.5 GB of VRAM (2)
 gpu:
   type: "q6000" # must be a5000 or q6000
-  count: 1   # adjust this based on tensor-parallel-size
+  count: 2   # adjust this based on tensor-parallel-size
 
 # storage configs
 storage:
   type: "local" # must be local or gpfs
+
+# Kubernetes liveness and readiness probes
+liveprobe:
+  initdelay: 300
+  period: 300
+readyprobe:
+  initdelay: 300
+  period: 300
