@@ -34,22 +34,22 @@ MODELS = [
     "qwen-3-8b"
 ]
 METRICS = [
-    "container_blkio_read"
-    # "container_blkio_write",
-    # "container_file_descriptors",
-    # "container_fs_read_count",
-    # "container_fs_read",
-    # "container_fs_write_count",
-    # "container_fs_write",
-    # "container_network_receive_pkt",
-    # "container_network_receive",
-    # "container_network_transmit_pkt",
-    # "container_network_transmit",
-    # "gpu_fb_free",
-    # "gpu_fb_used",
-    # "gpu_mem_copy",
-    # "pcie_rx",
-    # "pcie_tx"
+    "container_blkio_read",
+    "container_blkio_write",
+    "container_file_descriptors",
+    "container_fs_read_count",
+    "container_fs_read",
+    "container_fs_write_count",
+    "container_fs_write",
+    "container_network_receive_pkt",
+    "container_network_receive",
+    "container_network_transmit_pkt",
+    "container_network_transmit",
+    "gpu_fb_free",
+    "gpu_fb_used",
+    "gpu_mem_copy",
+    "pcie_rx",
+    "pcie_tx"
 ]
 
 # read CSV, convert timestamp to seconds since start, and return DataFrame
