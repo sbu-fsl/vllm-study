@@ -1,17 +1,19 @@
+## NOTE: This file is template for model values configuration.
+## Please create a copy of this file and fill in the values accordingly.
+
 # namespace configs
 namespace: llm-servings
 
 # model configs
 configs:
-  name: google-gemma-2b
+  name: qwen3-06B
   serve:
     - >
-      vllm serve google/gemma-2b
+      vllm serve Qwen/Qwen3-0.6B
       --host 0.0.0.0
       --port 8000
       --tensor-parallel-size 1
-      --no-enable-prefix-caching
-      --trust-remote-code
+      --enable-prefix-caching
       --seed 0
       --gpu-memory-utilization 0.9
 
@@ -19,6 +21,7 @@ configs:
 # RTX A5000 with 24.5 GB of VRAM (1) / Quadro 6000 with 24.5 GB of VRAM (2)
 gpu:
   type: "q6000" # must be a5000 or q6000
+  count: 1   # adjust this based on tensor-parallel-size
 
 # storage configs
 storage:

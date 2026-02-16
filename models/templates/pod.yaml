@@ -63,11 +63,11 @@ spec:
       limits:
         cpu: "10"
         memory: 25G
-        nvidia.com/gpu: {{ .Values.configs.gpus | default 1 }}
+        nvidia.com/gpu: {{ .Values.gpu.count | default 1 }}
       requests:
         cpu: "5"
         memory: 12G
-        nvidia.com/gpu: {{ .Values.configs.gpus | default 1 }}
+        nvidia.com/gpu: {{ .Values.gpu.count | default 1 }}
 
     volumeMounts:
     - mountPath: /dev/shm
@@ -79,13 +79,12 @@ spec:
       httpGet:
         path: /health
         port: 8000
-      initialDelaySeconds: {{ .Values.initdelay | default 120 }}
-      periodSeconds: {{ .Values.period | default 60 }}
+      initialDelaySeconds: {{ .Values.liveprobe.initdelay | default 120 }}
+      periodSeconds: {{ .Values.liveprobe.period | default 60 }}
 
     readinessProbe:
       httpGet:
         path: /health
         port: 8000
-      initialDelaySeconds: {{ .Values.initdelay | default 120 }}
-      periodSeconds: {{ .Values.period | default 60 }}
-
+      initialDelaySeconds: {{ .Values.readyprobe.initdelay | default 120 }}
+      periodSeconds: {{ .Values.readyprobe.period | default 60 }}
