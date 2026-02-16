@@ -139,10 +139,12 @@ Using OpenAI API exported by vLLM to send our requests.
 
 ## NOTES
 
+### helm
+
 Deploy:
 
 ```sh
-helm install -f models/qwen/qwen3-8b.yaml vllm-qwen3-8b models/
+helm install -f models/qwen/2b.yaml vllm-qwen3-2b models/
 ```
 
 List deployments:
@@ -154,8 +156,10 @@ helm list
 Uninstall deployment:
 
 ```sh
-helm uninstall
+helm uninstall vllm-qwen3-2b
 ```
+
+### logs & metrics
 
 List pods:
 
