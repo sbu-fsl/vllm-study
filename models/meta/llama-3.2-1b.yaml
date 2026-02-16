@@ -1,0 +1,28 @@
+## NOTE: This file is template for model values configuration.
+## Please create a copy of this file and fill in the values accordingly.
+
+# namespace configs
+namespace: llm-servings
+
+# model configs
+configs:
+  name: meta-llama-32-1B-Instruct
+  serve:
+    - >
+      vllm serve meta-llama/Llama-3.2-1B-Instruct
+      --host 0.0.0.0
+      --port 8000
+      --tensor-parallel-size 1
+      --enable-prefix-caching
+      --seed 0
+      --gpu-memory-utilization 0.9
+
+# gpu configs
+# RTX A5000 with 24.5 GB of VRAM (1) / Quadro 6000 with 24.5 GB of VRAM (2)
+gpu:
+  type: "q6000" # must be a5000 or q6000
+  count: 1   # adjust this based on tensor-parallel-size
+
+# storage configs
+storage:
+  type: "local" # must be local or gpfs
