@@ -6,31 +6,37 @@
 2. Qwen by QwenAI
 3. Granite by iBM
 4. LlaMa by Meta
+5. R1 by DeepSeek
 
 > Models larger than 10B don't fit within our GPUs (24 GB limited VRAM space)!
 
-| INX |                 Model                 |                            Access Link                             | Number of Parameters | Type                                                      |
-|:---:|:-------------------------------------:|:------------------------------------------------------------------:|:--------------------:|-----------------------------------------------------------|
-|1    |          `facebook/opt-125m`          |          [link](https://huggingface.co/facebook/opt-125m)          |         125M         | Text generation (base LLM)                                |
-|2    |          `facebook/opt-350m`          |          [link](https://huggingface.co/facebook/opt-350m)          |         350M         | Text generation                                           |
-|3    |          `facebook/opt-1.3b`          |          [link](https://huggingface.co/facebook/opt-1.3b)          |          3B          | Text generation                                           |
-|4    |          `facebook/opt-6.7b`          |          [link](https://huggingface.co/facebook/opt-6.7b)          |          7B          | Text generation                                           |
-|5    |          `facebook/opt-13b`           |          [link](https://huggingface.co/facebook/opt-13b)           |       **13B**        | Text generation                                           |
-|6    | `ibm-granite/granite-4.0-h-350m-base` | [link](https://huggingface.co/ibm-granite/granite-4.0-h-350m-base) |         350M         | Text generation                                           |
-|7    |    `ibm-granite/granite-4.0-h-1b`     |    [link](https://huggingface.co/ibm-granite/granite-4.0-h-1b)     |          1B          | Text generation / enterprise LLM                          |
-|8    |   `ibm-granite/granite-4.0-h-micro`   |   [link](https://huggingface.co/ibm-granite/granite-4.0-h-micro)   |          3B          | Text generation / lightweight assistant                   |
-|9    |   `ibm-granite/granite-4.0-h-tiny`    |   [link](https://huggingface.co/ibm-granite/granite-4.0-h-tiny)    |          7B          | Text generation / reasoning                               |
-|10   | `ibm-granite/granite-3.3-2b-instruct` | [link](https://huggingface.co/ibm-granite/granite-3.3-2b-instruct) |          2B          | Instruction-following assistant                           |
-|11   | `ibm-granite/granite-3.3-8b-instruct` | [link](https://huggingface.co/ibm-granite/granite-3.3-8b-instruct) |          8B          | Instruction-following assistant                           |
-|12   |           `Qwen/Qwen3-0.6B`           |           [link](https://huggingface.co/Qwen/Qwen3-0.6B)           |         800M         | Text generation                                           |
-|13   |           `Qwen/Qwen3-1.7B`           |           [link](https://huggingface.co/Qwen/Qwen3-1.7B)           |         1.7B         | Text generation                                           |
-|14   |            `Qwen/Qwen3-4B`            |            [link](https://huggingface.co/Qwen/Qwen3-4B)            |          4B          | Text generation / reasoning                               |
-|15   |            `Qwen/Qwen3-8B`            |            [link](https://huggingface.co/Qwen/Qwen3-8B)            |          8B          | Text generation / reasoning                               |
-|16   |           `Qwen/Qwen3-14B`            |           [link](https://huggingface.co/Qwen/Qwen3-14B)            |       **14B**        | Text generation / reasoning                               |
-|17   |           `Qwen/Qwen3-32B`            |           [link](https://huggingface.co/Qwen/Qwen3-32B)            |       **32B**        | Text generation / reasoning                               |
-|18   |  `meta-llama/Llama-3.2-1B-Instruct`   |  [link](https://huggingface.co/meta-llama/Llama-3.2-1B-Instruct)   |          1B          | Instruction-following assistant (chat, code, reasoning)   |
-|19   |  `meta-llama/Llama-3.2-3B-Instruct`   |  [link](https://huggingface.co/meta-llama/Llama-3.2-3B-Instruct)   |          3B          | Instruction-following assistant (chat, code, reasoning)   |
-|20   |  `meta-llama/Llama-3.1-8B-Instruct`   |  [link](https://huggingface.co/meta-llama/Llama-3.1-8B-Instruct)   |          8B          | Instruction-following assistant (chat, code, reasoning)   |
+| INX |                    Model                    |                               Access Link                                | Number of Parameters | Type                                                    |
+|:---:|:-------------------------------------------:|:------------------------------------------------------------------------:|:--------------------:|---------------------------------------------------------|
+|  1  |             `facebook/opt-125m`             |             [link](https://huggingface.co/facebook/opt-125m)             |         125M         | Text generation (base LLM)                              |
+|  2  |             `facebook/opt-350m`             |             [link](https://huggingface.co/facebook/opt-350m)             |         350M         | Text generation                                         |
+|  3  |             `facebook/opt-1.3b`             |             [link](https://huggingface.co/facebook/opt-1.3b)             |          3B          | Text generation                                         |
+|  4  |             `facebook/opt-6.7b`             |             [link](https://huggingface.co/facebook/opt-6.7b)             |          7B          | Text generation                                         |
+|  5  |             `facebook/opt-13b`              |             [link](https://huggingface.co/facebook/opt-13b)              |       **13B**        | Text generation                                         |
+|  6  |             `facebook/opt-30b`              |             [link](https://huggingface.co/facebook/opt-30b)              |       **30B**        | Text generation                                         |
+|  7  |    `ibm-granite/granite-4.0-h-350m-base`    |    [link](https://huggingface.co/ibm-granite/granite-4.0-h-350m-base)    |         350M         | Text generation                                         |
+|  8  |       `ibm-granite/granite-4.0-h-1b`        |       [link](https://huggingface.co/ibm-granite/granite-4.0-h-1b)        |          1B          | Text generation / enterprise LLM                        |
+|  9  |      `ibm-granite/granite-4.0-h-micro`      |      [link](https://huggingface.co/ibm-granite/granite-4.0-h-micro)      |          3B          | Text generation / lightweight assistant                 |
+| 10  |      `ibm-granite/granite-4.0-h-tiny`       |      [link](https://huggingface.co/ibm-granite/granite-4.0-h-tiny)       |          7B          | Text generation / reasoning                             |
+| 11  |    `ibm-granite/granite-3.3-2b-instruct`    |    [link](https://huggingface.co/ibm-granite/granite-3.3-2b-instruct)    |          2B          | Instruction-following assistant                         |
+| 12  |    `ibm-granite/granite-3.3-8b-instruct`    |    [link](https://huggingface.co/ibm-granite/granite-3.3-8b-instruct)    |          8B          | Instruction-following assistant                         |
+| 13  |              `Qwen/Qwen3-0.6B`              |              [link](https://huggingface.co/Qwen/Qwen3-0.6B)              |         800M         | Text generation                                         |
+| 14  |              `Qwen/Qwen3-1.7B`              |              [link](https://huggingface.co/Qwen/Qwen3-1.7B)              |         1.7B         | Text generation                                         |
+| 15  |               `Qwen/Qwen3-4B`               |               [link](https://huggingface.co/Qwen/Qwen3-4B)               |          4B          | Text generation / reasoning                             |
+| 16  |               `Qwen/Qwen3-8B`               |               [link](https://huggingface.co/Qwen/Qwen3-8B)               |          8B          | Text generation / reasoning                             |
+| 17  |              `Qwen/Qwen3-14B`               |              [link](https://huggingface.co/Qwen/Qwen3-14B)               |       **14B**        | Text generation / reasoning                             |
+| 18  |              `Qwen/Qwen3-32B`               |              [link](https://huggingface.co/Qwen/Qwen3-32B)               |       **32B**        | Text generation / reasoning                             |
+| 19  |     `meta-llama/Llama-3.2-1B-Instruct`      |     [link](https://huggingface.co/meta-llama/Llama-3.2-1B-Instruct)      |          1B          | Instruction-following assistant (chat, code, reasoning) |
+| 20  |     `meta-llama/Llama-3.2-3B-Instruct`      |     [link](https://huggingface.co/meta-llama/Llama-3.2-3B-Instruct)      |          3B          | Instruction-following assistant (chat, code, reasoning) |
+| 21  |     `meta-llama/Llama-3.1-8B-Instruct`      |     [link](https://huggingface.co/meta-llama/Llama-3.1-8B-Instruct)      |          8B          | Instruction-following assistant (chat, code, reasoning) |
+| 22  | `deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B` | [link](https://huggingface.co/deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B) |         1.5B         | Text generation                                         |
+| 23  |  `deepseek-ai/DeepSeek-R1-Distill-Qwen-7B`  |  [link](https://huggingface.co/deepseek-ai/DeepSeek-R1-Distill-Qwen-7B)  |          7B          | Text generation                                         |
+| 24  | `deepseek-ai/DeepSeek-R1-Distill-Qwen-14B`  | [link](https://huggingface.co/deepseek-ai/DeepSeek-R1-Distill-Qwen-14B)  |       **14B**        | Text generation                                         |
+| 25  | `deepseek-ai/DeepSeek-R1-Distill-Qwen-32B`  | [link](https://huggingface.co/deepseek-ai/DeepSeek-R1-Distill-Qwen-32B)  |       **32B**        | Text generation                                         |
 
 ## Parameters for study
 
