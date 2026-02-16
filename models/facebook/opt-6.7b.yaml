@@ -6,7 +6,7 @@ namespace: llm-servings
 
 # model configs
 configs:
-  name: facebook-opt-6.7b
+  name: facebook-opt-7b
   serve:
     - >
       vllm serve facebook/opt-6.7b
