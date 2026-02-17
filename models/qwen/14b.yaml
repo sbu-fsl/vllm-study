@@ -27,3 +27,11 @@ gpu:
 # storage configs
 storage:
   type: "local" # must be local or gpfs
+
+# Kubernetes liveness and readiness probes
+liveprobe:
+  initdelay: 300
+  period: 300
+readyprobe:
+  initdelay: 300
+  period: 300
