@@ -1,24 +1,21 @@
 ## NOTE: This file is template for model values configuration.
 ## Please create a copy of this file and fill in the values accordingly.
 
-## This model has 40 attention heads, which must be divisible by the tensor parallel size.
-
 # namespace configs
 namespace: llm-servings
 
 # model configs
 configs:
-  name: deepseek-r1-32b
+  name: facebook-opt-30b
   serve:
     - >
-      vllm serve deepseek-ai/DeepSeek-R1-Distill-Qwen-32B
+      vllm serve facebook/opt-30b
       --host 0.0.0.0
       --port 8000
       --tensor-parallel-size 4
       --enable-prefix-caching
       --seed 0
       --gpu-memory-utilization 0.9
-      --max-model-len 36000
       --max-num-seqs 1
 
 # gpu configs
@@ -30,3 +27,11 @@ gpu:
 # storage configs
 storage:
   type: "local" # must be local or gpfs
+
+# Kubernetes liveness and readiness probes
+liveprobe:
+  initdelay: 300
+  period: 300
+readyprobe:
+  initdelay: 300
+  period: 300
