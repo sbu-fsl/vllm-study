@@ -273,15 +273,28 @@ def main():
             print(f"  ✗ FAILED: {e}  ({elapsed}s)\n")
             results.append({"name": name, "status": "error", "error": str(e)})
 
-    # write manifest
-    manifest = {
-        "version_tag": tag,
-        "created_at": datetime.now(timezone.utc).isoformat(),
-        "seed": args.seed,
-        "num_samples": args.num_samples,
-        "results": results,
-    }
     manifest_path = out / "manifest.json"
+    if manifest_path.exists():
+        with open(manifest_path, "r") as f:
+            manifest = json.load(f)
+        # update existing results, keep ones not in this run
+        existing = {r["name"]: r for r in manifest.get("results", [])}
+        for r in results:
+            existing[r["name"]] = r
+        manifest["results"] = list(existing.values())
+        manifest["version_tag"] = tag
+        manifest["created_at"] = datetime.now(timezone.utc).isoformat()
+        manifest["seed"] = args.seed
+        manifest["num_samples"] = args.num_samples
+    else:
+        manifest = {
+            "version_tag": tag,
+            "created_at": datetime.now(timezone.utc).isoformat(),
+            "seed": args.seed,
+            "num_samples": args.num_samples,
+            "results": results,
+        }
+
     with open(manifest_path, "w") as f:
         json.dump(manifest, f, indent=2)
 
