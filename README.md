@@ -163,3 +163,9 @@ Get metrics (make sure to edit the values in the `collect_all.sh` script):
 ```sh
 ./scripts/metrics/collect_all.sh
 ```
+
+Get your vLLM instance port (use the Node port not container port):
+
+```sh
+kubectl get svc -n llm-servings $POD_NAME -o wide
+```
