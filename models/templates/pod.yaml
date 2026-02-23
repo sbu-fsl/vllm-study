@@ -47,13 +47,13 @@ spec:
   - name: lmcache-storage
     hostPath:
       {{- if eq .Values.configs.lmcache.cache_type "local_storage" }}
-      path: /mnt/localstorage/cache
+      path: /mnt/lmcache/localstorage/cache
       {{- else if eq .Values.configs.lmcache.cache_type "gds" }}
-      path: /mnt/gds/cache
+      path: /mnt/lmcache/gds/cache
       {{- else if eq .Values.configs.lmcache.cache_type "nixl_posix" }}
-      path: /mnt/nixl/cache/posix
+      path: /mnt/lmcache/nixl/cache/posix
       {{- else if eq .Values.configs.lmcache.cache_type "nixl_gds" }}
-      path: /mnt/nixl/cache/gds
+      path: /mnt/lmcache/nixl/cache/gds
       {{- else }}
       {{ fail "Invalid lmcache cache_type." }}
       {{- end }}
