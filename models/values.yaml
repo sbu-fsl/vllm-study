@@ -24,7 +24,7 @@ configs:
       --max-model-len 1000
       --kv-transfer-config '{"kv_connector":"LMCacheConnectorV1", "kv_role":"kv_both"}'
   lmcache:
-    enable: false
+    enable: true
     cache_type: "local_storage"
 
 # gpu configs

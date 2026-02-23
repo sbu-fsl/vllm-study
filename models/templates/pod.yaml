@@ -44,6 +44,20 @@ spec:
   - name: lmcache-config
     configMap:
       name: {{ .Values.configs.name }}-lmcache-config
+  - name: lmcache-storage
+    hostPath:
+      {{- if eq .Values.configs.lmcache.cache_type "local_storage" }}
+      path: /mnt/localstorage/cache
+      {{- else if eq .Values.configs.lmcache.cache_type "gds" }}
+      path: /mnt/gds/cache
+      {{- else if eq .Values.configs.lmcache.cache_type "nixl_posix" }}
+      path: /mnt/nixl/cache/posix
+      {{- else if eq .Values.configs.lmcache.cache_type "nixl_gds" }}
+      path: /mnt/nixl/cache/gds
+      {{- else }}
+      {{ fail "Invalid lmcache cache_type." }}
+      {{- end }}
+      type: Directory
   {{- end }}
 
   containers:
@@ -90,6 +104,16 @@ spec:
     - name: lmcache-config
       mountPath: /etc/lmcache
       readOnly: true
+    - name: lmcache-storage
+      {{- if eq .Values.configs.lmcache.cache_type "local_storage" }}
+      mountPath: /mnt/localstorage/cache
+      {{- else if eq .Values.configs.lmcache.cache_type "gds" }}
+      mountPath: /mnt/gds/cache
+      {{- else if eq .Values.configs.lmcache.cache_type "nixl_posix" }}
+      mountPath: /mnt/nixl/cache/posix
+      {{- else if eq .Values.configs.lmcache.cache_type "nixl_gds" }}
+      mountPath: /mnt/nixl/cache/gds
+      {{- end }}
     {{- end }}
 
     livenessProbe:
