@@ -5,28 +5,37 @@
 namespace: llm-servings
 
 # model configs
+# NOTES:
+# - replace all `placeholder` parts
+# - must set tensor-parallel-size to the gpu.count
+# - remove max-model-len if it's not needed
+# - remove the kv-transfer-config and disable lmcache if its not needed
 configs:
-  name: ??
+  name: name-placeholder
   serve:
     - >
-      vllm serve ??
+      vllm serve model-placeholder
       --host 0.0.0.0
       --port 8000
       --tensor-parallel-size 1
       --enable-prefix-caching
       --seed 0
       --gpu-memory-utilization 0.9
-      --max-model-len ??
+      --max-model-len 1000
+      --kv-transfer-config '{"kv_connector":"LMCacheConnectorV1", "kv_role":"kv_both"}'
+  lmcache:
+    enable: false
+    cache_type: "local_storage"
 
 # gpu configs
 # RTX A5000 with 24.5 GB of VRAM (1) / Quadro 6000 with 24.5 GB of VRAM (2)
 gpu:
-  type: "??" # must be a5000 or q6000
+  type: "q6000" # must be a5000 or q6000
   count: 1   # adjust this based on tensor-parallel-size
 
 # storage configs
 storage:
-  type: "??" # must be local or gpfs
+  type: "local" # must be local or gpfs
 
 # Kubernetes liveness and readiness probes
 liveprobe:
