@@ -32,7 +32,11 @@ spec:
   - name: cache-volume
     {{- if eq .Values.storage.type "local" }}
     hostPath:
+      {{- if or (hasPrefix "deepseek" .Values.configs.name) (hasPrefix "ibm" .Values.configs.name) }}
+      path: /mnt/data/vllm-cache
+      {{- else }}
       path: /mnt/vllm
+      {{- end }}
       type: DirectoryOrCreate
     {{- else if eq .Values.storage.type "gpfs" }}
     persistentVolumeClaim:
