@@ -1,0 +1,26 @@
+devicePlugin:
+  enabled: false
+
+dcgm:
+  enabled: false
+
+dcgmExporter:
+  enabled: false
+
+driver:
+  enabled: false   # set to true ONLY if operator should manage driver
+
+toolkit:
+  enabled: false   # disable if container toolkit already installed
+
+migManager:
+  enabled: false
+
+nfd:
+  enabled: false
+
+gds:
+  enabled: true
+
+operator:
+  defaultRuntime: containerd
