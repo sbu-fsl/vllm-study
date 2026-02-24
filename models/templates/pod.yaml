@@ -63,6 +63,7 @@ spec:
   containers:
   - name: vllm-container
     image: vllm/vllm-openai:v0.15.0
+    imagePullPolicy: IfNotPresent
     command: ["/bin/sh", "-c"]
     args:
     {{- toYaml .Values.configs.serve | nindent 6 }}
