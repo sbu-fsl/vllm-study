@@ -54,11 +54,15 @@ START_TIME=$(date -u -d "$START_TIME $DELTA_TIME ago" +"%Y-%m-%dT%H:%M:%SZ")
 # compute end time
 END_TIME=$(
   awk -v year="$(date +%Y)" '
-    /Started server process/ {
-      split(prev, f)
-      printf "%s-%s %s\n", year, f[4], f[5]
+    /INFO [0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}/ {
+      last_date = $4
+      last_time = $5
     }
-    { prev = $0 }
+    END {
+      if (last_date && last_time) {
+        printf "%s-%s %s\n", year, last_date, last_time
+      }
+    }
   ' "$FILE"
 )
 END_TIME=$(date -u -d "$END_TIME $DELTA_TIME" +"%Y-%m-%dT%H:%M:%SZ")
