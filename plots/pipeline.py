@@ -16,21 +16,16 @@ plt.rcParams.update({
     "font.size": 12
 })
 
-ROOT = "results"
+ROOT = "."
 SUBS = [
-    "ansh",
-    "tahsin"
+    "results"
 ]
 MODELS = [
-    "facebook-opt-125m",
-    "facebook-opt-350m",
-    "google-gemma-2b",
-    "ibm-granite-33-8b",
-    "ibm-granite-40-h-1b",
-    "ibm-granite-40-h-tiny",
-    "ibm-granite-40-micro",
-    "meta-llama-31-8b",
     "qwen-3-06b",
+    "qwen-3-2b",
+    "qwen-3-4b",
+    "qwen-3-14b",
+    "qwen-3-32b",
     "qwen-3-8b"
 ]
 METRICS = [
@@ -99,11 +94,10 @@ def main(metric: str):
     series_dict = {}
 
     for name, df in dfs.items():
-        s = df.set_index("t_norm")["value"]  # use only value column
+        s = df.groupby("t_norm")["value"].mean() # use only value column
         series_dict[name] = s
 
     aligned_df = pd.concat(series_dict, axis=1, join="inner")
-    aligned_df.columns = dfs.keys()
 
     # normalize
     aligned_df = aligned_df.apply(zscore)
@@ -226,4 +220,7 @@ def main(metric: str):
 
 if __name__ == "__main__":
     for metric in METRICS:
+        print("\nProcessing metric:", metric)
         main(metric)
+        print(f"[info] Completed processing for {metric}. Plots saved in images/{metric}/")
+
