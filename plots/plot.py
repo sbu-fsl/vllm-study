@@ -26,9 +26,9 @@ def load_and_normalize(csv_path, label):
 
         df["source"] = label
 
-        df.to_csv(f'{csv_path}.normalized', index=False)
+        # Optional debug export
+        # df.to_csv(f'{csv_path}.normalized', index=False)
 
-        # Detect true duplicates
         dup = df["t_norm"].duplicated().sum()
         if dup > 0:
             print(f"WARNING: {dup} duplicate timestamps in {csv_path}")
@@ -40,20 +40,23 @@ def load_and_normalize(csv_path, label):
         return None
 
 
-def main(directories, metric_name):
+def main(csv_files, metric_name):
     os.makedirs("images", exist_ok=True)
 
     plt.figure(figsize=(10, 5))
     plotted_any = False
 
-    for directory in directories:
-        csv_path = os.path.join(directory, metric_name + ".csv")
+    for csv_path in csv_files:
 
         if not os.path.isfile(csv_path):
             print(f"Warning: {csv_path} not found, skipping")
             continue
 
-        label = os.path.basename(os.path.normpath(directory))
+        # Label = model + short hash
+        model_name = os.path.basename(os.path.dirname(os.path.dirname(csv_path)))
+        hash_name = os.path.splitext(os.path.basename(csv_path))[0][:8]
+
+        label = f"{model_name}:{hash_name}"
 
         df = load_and_normalize(csv_path, label)
         if df is None:
@@ -64,7 +67,7 @@ def main(directories, metric_name):
             df["value"],
             label=label,
             linestyle='-',
-            linewidth=1.5
+            linewidth=1.2
         )
 
         plotted_any = True
@@ -76,7 +79,7 @@ def main(directories, metric_name):
     plt.title(f"Values of {metric_name}")
     plt.xlabel("Time since start (seconds)")
     plt.ylabel("Value")
-    plt.legend()
+    plt.legend(fontsize=8)
     plt.tight_layout()
 
     output_path = f"images/{metric_name}.png"
@@ -88,11 +91,12 @@ def main(directories, metric_name):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        description="Plot normalized metric values from multiple directories"
+        description="Plot normalized metric values from multiple CSV files"
     )
 
     parser.add_argument("metric_name")
-    parser.add_argument("directories", nargs="+")
+    parser.add_argument("csv_files", nargs="+")
 
     args = parser.parse_args()
-    main(args.directories, args.metric_name)
+
+    main(args.csv_files, args.metric_name)

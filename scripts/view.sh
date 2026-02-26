@@ -17,16 +17,32 @@ fi
 METRICS_DIR="$1"
 
 rm -rf images
-mkdir images
+mkdir -p images
 
+# --------------------------------------------
+# Find metric directory names dynamically
+# --------------------------------------------
 mapfile -t METRIC_NAMES < <(
-  find "$METRICS_DIR" -type f -name '*.csv' \
-    -exec basename {} .csv \; \
+  find "$METRICS_DIR" -type f -name "*.csv" \
+    -printf "%h\n" \
+    | xargs -n1 basename \
     | sort -u
 )
 
 for metric in "${METRIC_NAMES[@]}"; do
-  echo running "$metric"...
-  python "$ROOT_DIR/plots/plot.py" "$metric" "$METRICS_DIR"/*
-  echo done "$metric"
+  echo "running $metric..."
+
+  # Collect all CSV files under this metric
+  mapfile -t FILES < <(
+    find "$METRICS_DIR" -type f -path "*/$metric/*.csv"
+  )
+
+  if [[ ${#FILES[@]} -eq 0 ]]; then
+    echo "  no files found for $metric, skipping"
+    continue
+  fi
+
+  python "$ROOT_DIR/plots/plot.py" "$metric" "${FILES[@]}"
+
+  echo "done $metric"
 done

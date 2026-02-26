@@ -1,5 +1,5 @@
-import os.path
 import os
+import glob
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -17,13 +17,8 @@ plt.rcParams.update({
 })
 
 ROOT = "."
-SUBS = [
-    "data"
-]
-MODELS = [
-    "ibm-2b",
-    "ibm-8b"
-]
+SUBS = ["data"]
+MODELS = ["ibm-2b-lmcache", "ibm-2b-no-lmcache"]
 METRICS = [
     "container_blkio_read",
     "container_blkio_write",
@@ -31,43 +26,49 @@ METRICS = [
     "container_fs_read_count",
     "container_fs_read",
     "container_fs_write_count",
-    "container_fs_write",
-    "container_network_receive_pkt",
-    "container_network_receive",
-    "container_network_transmit_pkt",
-    "container_network_transmit",
-    "gpu_fb_free",
-    "gpu_fb_used",
-    "gpu_mem_copy",
-    "pcie_rx",
-    "pcie_tx"
+    "container_fs_write"
+    # "container_network_receive_pkt",
+    # "container_network_receive",
+    # "container_network_transmit_pkt",
+    # "container_network_transmit",
+    # "gpu_fb_free",
+    # "gpu_fb_used",
+    # "gpu_mem_copy",
+    # "pcie_rx",
+    # "pcie_tx"
 ]
 
-# read CSV, convert timestamp to seconds since start, and return DataFrame
-def load_and_normalize(csv_path: str) -> pd.DataFrame:
+
+# ---------------------------------------
+# Load split CSV (hash-based file)
+# ---------------------------------------
+def load_and_normalize(csv_path: str) -> pd.DataFrame | None:
     try:
         df = pd.read_csv(csv_path, usecols=["timestamp", "value"])
 
-        # CSV exists but has no rows
         if df.empty:
-            print(f"[info] {csv_path} is empty, skipping")
             return None
 
-        df["timestamp"] = pd.to_datetime(df["timestamp"])
+        # If timestamp is numeric epoch
+        if np.issubdtype(df["timestamp"].dtype, np.number):
+            df["timestamp"] = pd.to_datetime(df["timestamp"], unit="s")
+        else:
+            df["timestamp"] = pd.to_datetime(df["timestamp"])
 
         t0 = df["timestamp"].iloc[0]
         df["t_norm"] = (df["timestamp"] - t0).dt.total_seconds()
 
         return df
+
     except EmptyDataError:
-        print(f"[info] {csv_path} is empty, skipping")
         return None
     except Exception as e:
         print(f"[error] {csv_path}: {e}")
         return None
-    
+
+
 # -----------------------------
-# Helper Functions
+# Helper
 # -----------------------------
 def zscore(series):
     std = series.std()
@@ -75,33 +76,45 @@ def zscore(series):
         return pd.Series(0.0, index=series.index)
     return (series - series.mean()) / std
 
+
+# -----------------------------
+# Main
+# -----------------------------
 def main(metric: str):
     os.makedirs(os.path.join("images", metric), exist_ok=True)
 
-    # load the datasets into DataFrame
-    dfs = {}
-    for sub in SUBS:
-        for model in MODELS:
-            path = os.path.join(ROOT, sub, model, metric + ".csv")
-            df = load_and_normalize(path)
-            if df is not None:
-                dfs[sub + ":" + model] = df
-
     series_dict = {}
 
-    for name, df in dfs.items():
-        s = df.groupby("t_norm")["value"].mean() # use only value column
-        series_dict[name] = s
+    # 🔹 Scan new directory structure
+    for sub in SUBS:
+        for model in MODELS:
 
+            metric_dir = os.path.join(ROOT, sub, model, metric)
+
+            if not os.path.isdir(metric_dir):
+                continue
+
+            csv_files = glob.glob(os.path.join(metric_dir, "*.csv"))
+
+            for csv_path in csv_files:
+                df = load_and_normalize(csv_path)
+                if df is None:
+                    continue
+
+                # Use hash filename as identifier
+                hash_name = os.path.splitext(os.path.basename(csv_path))[0]
+                name = f"{sub}:{model}:{hash_name[:8]}"
+
+                s = df.groupby("t_norm")["value"].mean()
+                series_dict[name] = s
+
+    # Align
     aligned_df = pd.concat(series_dict, axis=1, join="inner")
 
-    # normalize
+    # Normalize
     aligned_df = aligned_df.apply(zscore)
     print("[info] aligned shape:", aligned_df.shape)
 
-    # -----------------------------
-    # Compute Metrics
-    # -----------------------------
     names = aligned_df.columns.tolist()
     n = len(names)
 
@@ -114,25 +127,16 @@ def main(metric: str):
             s1 = aligned_df.iloc[:, i]
             s2 = aligned_df.iloc[:, j]
 
-            # Correlation
             correlation_matrix.iloc[i, j] = s1.corr(s2)
-
-            # MSE
             mse_matrix.iloc[i, j] = mean_squared_error(s1, s2)
-
-            # DTW
             dtw_matrix.iloc[i, j] = dtw.distance(s1.values, s2.values)
 
     print("\nCorrelation Matrix:\n", correlation_matrix)
-    print("\nMSE Matrix:\n", mse_matrix)
-    print("\nDTW Matrix:\n", dtw_matrix)
 
     # -----------------------------
-    # Visualization
+    # Overlay Plot
     # -----------------------------
-
-    # 1️⃣ Overlay Plot (Large SVG)
-    plt.figure(figsize=(24, 14))  # BIG figure
+    plt.figure(figsize=(24, 14))
 
     for col in aligned_df.columns:
         plt.plot(aligned_df.index, aligned_df[col], linewidth=1)
@@ -141,58 +145,51 @@ def main(metric: str):
     plt.xlabel("Time (seconds)", fontsize=16)
     plt.ylabel("Z-score Value", fontsize=16)
 
-    plt.xticks(fontsize=12)
-    plt.yticks(fontsize=12)
-
-    # move legend outside (critical for 20 items)
     plt.legend(
         aligned_df.columns,
         loc="center left",
         bbox_to_anchor=(1.02, 0.5),
-        fontsize=10
+        fontsize=9
     )
 
     plt.tight_layout()
-    plt.savefig("images/" + metric + "/overlay.svg", format="svg")
+    plt.savefig(f"images/{metric}/overlay.svg", format="svg")
     plt.close()
 
-    # 2️⃣ Heatmap Function
+    # -----------------------------
+    # Heatmap
+    # -----------------------------
     def plot_heatmap(matrix, title):
-        n = matrix.shape[0]
-
         plt.figure(figsize=(18, 16))
 
-        norm = colors.Normalize(vmin=np.min(matrix), vmax=np.max(matrix))
+        matrix_float = matrix.astype(float)
+        norm = colors.Normalize(
+            vmin=np.min(matrix_float),
+            vmax=np.max(matrix_float)
+        )
 
-        im = plt.imshow(matrix.astype(float),
+        im = plt.imshow(matrix_float,
                         interpolation='nearest',
                         cmap='viridis',
                         norm=norm)
 
-        plt.colorbar(im, fraction=0.046, pad=0.04)
+        plt.colorbar(im)
 
-        plt.xticks(range(n), names, rotation=60, ha="right", fontsize=10)
-        plt.yticks(range(n), names, fontsize=10)
+        plt.xticks(range(n), names, rotation=60, ha="right", fontsize=9)
+        plt.yticks(range(n), names, fontsize=9)
 
-        # add grid lines
-        plt.gca().set_xticks(np.arange(-.5, n, 1), minor=True)
-        plt.gca().set_yticks(np.arange(-.5, n, 1), minor=True)
-        plt.grid(which='minor', color='white', linestyle='-', linewidth=0.5)
-        plt.gca().tick_params(which='minor', bottom=False, left=False)
-
-        # add X on diagonal
         for i in range(n):
             plt.text(i, i, 'X',
-                    ha='center',
-                    va='center',
-                    color='black',
-                    fontsize=14,
-                    fontweight='bold')
+                     ha='center',
+                     va='center',
+                     color='black',
+                     fontsize=12,
+                     fontweight='bold')
 
-        plt.title(title, fontsize=18)
-
+        plt.title(title)
         plt.tight_layout()
-        plt.savefig("images/" + metric + "/" + title.replace(" ", "_").lower() + ".svg", format="svg")
+        plt.savefig(f"images/{metric}/{title.replace(' ', '_').lower()}.svg",
+                    format="svg")
         plt.close()
 
     plot_heatmap(correlation_matrix, "Correlation Matrix")
@@ -200,9 +197,10 @@ def main(metric: str):
     plot_heatmap(dtw_matrix, "DTW Distance Matrix")
 
     # -----------------------------
-    # Summary Interpretation
+    # Most Similar
     # -----------------------------
     print("\nMost Similar Pairs (by highest correlation):")
+
     pairs = list(combinations(names, 2))
     pairs_sorted = sorted(
         pairs,
@@ -211,12 +209,12 @@ def main(metric: str):
     )
 
     for p in pairs_sorted:
-        print(f"{p[0]} vs {p[1]} -> Correlation: {correlation_matrix.loc[p[0], p[1]]:.4f}")
+        print(f"{p[0]} vs {p[1]} -> "
+              f"Correlation: {correlation_matrix.loc[p[0], p[1]]:.4f}")
 
 
 if __name__ == "__main__":
     for metric in METRICS:
         print("\nProcessing metric:", metric)
         main(metric)
-        print(f"[info] Completed processing for {metric}. Plots saved in images/{metric}/")
-
+        print(f"[info] Completed processing for {metric}")
