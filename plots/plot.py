@@ -2,28 +2,38 @@ import argparse
 import os
 import pandas as pd
 import matplotlib.pyplot as plt
-from pandas.errors import EmptyDataError
 
 
-def load_and_normalize(csv_path):
+plt.style.use("default")
+
+
+def load_and_normalize(csv_path, label):
     try:
         df = pd.read_csv(csv_path, usecols=["timestamp", "value"])
 
-        # CSV exists but has no rows
         if df.empty:
             print(f"Info: {csv_path} is empty, skipping")
             return None
 
-        df["timestamp"] = pd.to_datetime(df["timestamp"])
+        # Ensure integer timestamps (epoch seconds)
+        df["timestamp"] = df["timestamp"].astype("int64")
 
+        df = df.sort_values("timestamp").reset_index(drop=True)
+
+        # Normalize using raw integers (NO datetime)
         t0 = df["timestamp"].iloc[0]
-        df["t_norm"] = (df["timestamp"] - t0).dt.total_seconds()
+        df["t_norm"] = df["timestamp"] - t0
+
+        df["source"] = label
+
+        df.to_csv(f'{csv_path}.normalized', index=False)
+
+        # Detect true duplicates
+        dup = df["t_norm"].duplicated().sum()
+        if dup > 0:
+            print(f"WARNING: {dup} duplicate timestamps in {csv_path}")
 
         return df
-
-    except EmptyDataError:
-        print(f"Info: {csv_path} is empty, skipping")
-        return None
 
     except Exception as e:
         print(f"Error processing {csv_path}: {e}")
@@ -31,7 +41,9 @@ def load_and_normalize(csv_path):
 
 
 def main(directories, metric_name):
-    plt.figure()
+    os.makedirs("images", exist_ok=True)
+
+    plt.figure(figsize=(10, 5))
     plotted_any = False
 
     for directory in directories:
@@ -43,11 +55,18 @@ def main(directories, metric_name):
 
         label = os.path.basename(os.path.normpath(directory))
 
-        df = load_and_normalize(csv_path)
+        df = load_and_normalize(csv_path, label)
         if df is None:
             continue
 
-        plt.plot(df["t_norm"], df["value"], label=label)
+        plt.plot(
+            df["t_norm"],
+            df["value"],
+            label=label,
+            linestyle='-',
+            linewidth=1.5
+        )
+
         plotted_any = True
 
     if not plotted_any:
@@ -59,7 +78,12 @@ def main(directories, metric_name):
     plt.ylabel("Value")
     plt.legend()
     plt.tight_layout()
-    plt.savefig(f"images/{metric_name}.png")
+
+    output_path = f"images/{metric_name}.png"
+    plt.savefig(output_path, dpi=150)
+    plt.close()
+
+    print(f"Saved plot to {output_path}")
 
 
 if __name__ == "__main__":
@@ -67,16 +91,8 @@ if __name__ == "__main__":
         description="Plot normalized metric values from multiple directories"
     )
 
-    parser.add_argument(
-        "metric_name",
-        help="Metric CSV filename (without .csv)"
-    )
-
-    parser.add_argument(
-        "directories",
-        nargs="+",
-        help="Directories containing the metric CSV"
-    )
+    parser.add_argument("metric_name")
+    parser.add_argument("directories", nargs="+")
 
     args = parser.parse_args()
     main(args.directories, args.metric_name)

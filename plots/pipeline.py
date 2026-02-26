@@ -18,15 +18,11 @@ plt.rcParams.update({
 
 ROOT = "."
 SUBS = [
-    "results"
+    "data"
 ]
 MODELS = [
-    "qwen-3-06b",
-    "qwen-3-2b",
-    "qwen-3-4b",
-    "qwen-3-14b",
-    "qwen-3-32b",
-    "qwen-3-8b"
+    "ibm-2b",
+    "ibm-8b"
 ]
 METRICS = [
     "container_blkio_read",
