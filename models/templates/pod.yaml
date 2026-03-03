@@ -85,7 +85,7 @@ spec:
   containers:
   {{- if .Values.bedrock.enable }}
   - name: bedrock-sidecar
-    image: ghcr.io/amirhnajafiz/bedrock-tracer:v0.0.0-beta
+    image: ghcr.io/amirhnajafiz/bedrock-tracer:v0.0.1-beta
     imagePullPolicy: IfNotPresent
     securityContext:
       privileged: false
@@ -120,7 +120,11 @@ spec:
       - {{ .Values.configs.name | quote }}
       - --kubernetes__container
       - vllm-container
+      - --filter
+      - vllm
       - --rotate
+      - --rotate_size
+      - 200Mb
       - --debug
   {{- end }}
   - name: vllm-container
