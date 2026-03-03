@@ -37,6 +37,10 @@ gpu:
 storage:
   type: "local" # must be local or gpfs
 
+# bedrock configs
+bedrock:
+  enable: false
+
 # Kubernetes liveness and readiness probes
 liveprobe:
   initdelay: 300

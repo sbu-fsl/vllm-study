@@ -63,14 +63,77 @@ spec:
       {{- end }}
       type: Directory
   {{- end }}
+  {{- if .Values.bedrock.enable }}
+  - name: sys
+    hostPath:
+      path: /sys
+      type: Directory
+  - name: modules
+    hostPath:
+      path: /lib/modules
+      type: Directory
+  - name: bedrock-logs
+    hostPath:
+      path: {{ printf "/mnt/data/bedrock/logs/%s" .Values.configs.name }}
+      type: DirectoryOrCreate
+  - name: containerd-socket
+    hostPath:
+      path: /run/containerd/containerd.sock
+      type: Socket
+  {{- end }}
 
   containers:
+  {{- if .Values.bedrock.enable }}
+  - name: bedrock-sidecar
+    image: ghcr.io/amirhnajafiz/bedrock-tracer:v0.0.0-beta
+    imagePullPolicy: IfNotPresent
+    securityContext:
+      privileged: false
+      capabilities:
+        add:
+          - SYS_ADMIN
+          - SYS_RESOURCE
+          - SYS_PTRACE
+          - NET_ADMIN
+          - PERFMON
+          - BPF
+    volumeMounts:
+    - name: sys
+      mountPath: /sys
+    - name: modules
+      mountPath: /lib/modules
+    - name: bedrock-logs
+      mountPath: /logs
+    - name: containerd-socket
+      mountPath: /run/containerd/containerd.sock
+      readOnly: true
+    env:
+    - name: CONTAINER_RUNTIME_ENDPOINT
+      value: unix:///run/containerd/containerd.sock
+    command: ["bdtrace"]
+    args:
+      - --out
+      - /logs/container
+      - --kubernetes__namespace
+      - {{ .Values.namespace | quote }}
+      - --kubernetes__pod
+      - {{ .Values.configs.name | quote }}
+      - --kubernetes__container
+      - vllm-container
+      - --rotate
+      - --debug
+  {{- end }}
   - name: vllm-container
     image: vllm/vllm-openai:v0.15.0
     imagePullPolicy: IfNotPresent
-    command: ["/bin/sh", "-c"]
-    args:
-    {{- toYaml .Values.configs.serve | nindent 6 }}
+    command:
+    - /bin/sh
+    - -c
+    - >
+      {{- if .Values.bedrock.enable }}
+      sleep 30 &&
+      {{- end }}
+      {{ index .Values.configs.serve 0 }}
 
     env:
     - name: HF_TOKEN
