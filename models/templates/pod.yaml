@@ -85,7 +85,7 @@ spec:
   containers:
   {{- if .Values.bedrock.enable }}
   - name: bedrock-sidecar
-    image: ghcr.io/amirhnajafiz/bedrock-tracer:v0.0.1-beta
+    image: {{ .Values.bedrock.image }}
     imagePullPolicy: IfNotPresent
     securityContext:
       privileged: false
@@ -113,7 +113,7 @@ spec:
     command: ["bdtrace"]
     args:
       - --out
-      - /logs/container
+      - /logs
       - --kubernetes__namespace
       - {{ .Values.namespace | quote }}
       - --kubernetes__pod
