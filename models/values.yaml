@@ -40,7 +40,7 @@ storage:
 # bedrock configs
 bedrock:
   enable: false
-  image: ghcr.io/amirhnajafiz/bedrock-tracer:v0.0.3-beta
+  image: ghcr.io/amirhnajafiz/bedrock-tracer:v0.0.5-beta
 
 # Kubernetes liveness and readiness probes
 liveprobe:

@@ -25,6 +25,10 @@ spec:
 
   restartPolicy: Never
 
+  {{- if .Values.bedrock.enable }}
+  hostPID: true
+  {{- end }}
+
   volumes:
   - name: shm
     emptyDir:
