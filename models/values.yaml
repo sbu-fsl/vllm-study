@@ -3,6 +3,8 @@
 
 # namespace configs
 namespace: llm-servings
+image:
+  tag: v0.15.0
 
 # model configs
 # NOTES:

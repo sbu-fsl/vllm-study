@@ -132,7 +132,7 @@ spec:
       - --debug
   {{- end }}
   - name: vllm-container
-    image: vllm/vllm-openai:v0.15.0
+    image: vllm/vllm-openai:{{ .Values.image.tag }}
     imagePullPolicy: IfNotPresent
     command:
     - /bin/sh
