@@ -55,17 +55,17 @@ spec:
   - name: lmcache-storage
     hostPath:
       {{- if eq .Values.configs.lmcache.cache_type "local_storage" }}
-      path: /mnt/lmcache/localstorage/cache
+      path: /mnt/data/lmcache/localstorage/cache
       {{- else if eq .Values.configs.lmcache.cache_type "gds" }}
-      path: /mnt/lmcache/gds/cache
+      path: /mnt/data/lmcache/gds/cache
       {{- else if eq .Values.configs.lmcache.cache_type "nixl_posix" }}
-      path: /mnt/lmcache/nixl/cache/posix
+      path: /mnt/data/lmcache/nixl/cache/posix
       {{- else if eq .Values.configs.lmcache.cache_type "nixl_gds" }}
-      path: /mnt/lmcache/nixl/cache/gds
+      path: /mnt/data/lmcache/nixl/cache/gds
       {{- else }}
       {{ fail "Invalid lmcache cache_type." }}
       {{- end }}
-      type: Directory
+      type: DirectoryOrCreate
   {{- end }}
   {{- if .Values.bedrock.enable }}
   - name: sys
