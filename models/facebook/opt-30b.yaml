@@ -7,17 +7,9 @@ namespace: llm-servings
 # model configs
 configs:
   name: facebook-opt-30b
-  serve:
-    - >
-      vllm serve facebook/opt-30b
-      --host 0.0.0.0
-      --port 8000
-      --tensor-parallel-size 4
-      --enable-prefix-caching
-      --seed 0
-      --gpu-memory-utilization 0.9
-      --max-model-len 36000
-      --max-num-seqs 1
+  model: facebook/opt-30b
+  max_model_len: 36000
+  max_num_seqs: 1
 
 # gpu configs
 # RTX A5000 with 24.5 GB of VRAM (1) / Quadro 6000 with 24.5 GB of VRAM (2)

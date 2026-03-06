@@ -7,15 +7,7 @@ namespace: llm-servings
 # model configs
 configs:
   name: qwen3-06b
-  serve:
-    - >
-      vllm serve Qwen/Qwen3-0.6B
-      --host 0.0.0.0
-      --port 8000
-      --tensor-parallel-size 1
-      --enable-prefix-caching
-      --seed 0
-      --gpu-memory-utilization 0.9
+  model: Qwen/Qwen3-0.6B
 
 # gpu configs
 # RTX A5000 with 24.5 GB of VRAM (1) / Quadro 6000 with 24.5 GB of VRAM (2)

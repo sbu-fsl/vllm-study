@@ -141,7 +141,7 @@ spec:
       {{- if .Values.bedrock.enable }}
       sleep 30 &&
       {{- end }}
-      {{ index .Values.configs.serve 0 }}
+      vllm serve {{ .Values.configs.model }} --host 0.0.0.0 --port 8000 --enable-prefix-caching --seed 0 --gpu-memory-utilization 0.9 --tensor-parallel-size {{ .Values.gpu.count }} {{- if .Values.configs.max_model_len }} --max-model-len {{ .Values.configs.max_model_len }} {{- end }} {{- if .Values.configs.max_num_seqs }} --max-num-seqs {{ .Values.configs.max_num_seqs }} {{- end }} {{- if .Values.configs.lmcache.enable }} --kv-transfer-config '{{ .Values.configs.kv_transfer_config }}' {{- end }}
 
     env:
     - name: HF_TOKEN
