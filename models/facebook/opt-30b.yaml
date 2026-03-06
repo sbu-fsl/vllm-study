@@ -16,6 +16,7 @@ configs:
       --enable-prefix-caching
       --seed 0
       --gpu-memory-utilization 0.9
+      --max-model-len 36000
       --max-num-seqs 1
 
 # gpu configs

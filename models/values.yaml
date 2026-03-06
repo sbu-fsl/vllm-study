@@ -44,8 +44,8 @@ bedrock:
 
 # Kubernetes liveness and readiness probes
 liveprobe:
-  initdelay: 300
-  period: 300
+  initdelay: 60
+  period: 60
 readyprobe:
-  initdelay: 300
-  period: 300
+  initdelay: 60
+  period: 60
