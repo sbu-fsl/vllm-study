@@ -8,7 +8,8 @@ namespace: llm-servings
 configs:
   name: ibm-granite-40-h-tiny
   model: ibm-granite/granite-4.0-h-tiny
-  max_model_len: 36000
+  gpu_memory_utilization: 0.7
+  max_model_len: 32000
 
 # gpu configs
 # RTX A5000 with 24.5 GB of VRAM (1) / Quadro 6000 with 24.5 GB of VRAM (2)

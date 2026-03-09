@@ -16,8 +16,8 @@
 |  2  |             `facebook/opt-350m`             |             [link](https://huggingface.co/facebook/opt-350m)             |         350M         | Text generation                                         |
 |  3  |             `facebook/opt-1.3b`             |             [link](https://huggingface.co/facebook/opt-1.3b)             |          3B          | Text generation                                         |
 |  4  |             `facebook/opt-6.7b`             |             [link](https://huggingface.co/facebook/opt-6.7b)             |          7B          | Text generation                                         |
-|  5  |             `facebook/opt-13b`              |             [link](https://huggingface.co/facebook/opt-13b)              |       **13B**        | Text generation                                         |
-|  6  |             `facebook/opt-30b`              |             [link](https://huggingface.co/facebook/opt-30b)              |       **30B**        | Text generation                                         |
+|  5  |             `facebook/opt-13b`              |             [link](https://huggingface.co/facebook/opt-13b)              |         13B          | Text generation                                         |
+|  6  |             `facebook/opt-30b`              |             [link](https://huggingface.co/facebook/opt-30b)              |         30B          | Text generation                                         |
 |  7  |    `ibm-granite/granite-4.0-h-350m-base`    |    [link](https://huggingface.co/ibm-granite/granite-4.0-h-350m-base)    |         350M         | Text generation                                         |
 |  8  |       `ibm-granite/granite-4.0-h-1b`        |       [link](https://huggingface.co/ibm-granite/granite-4.0-h-1b)        |          1B          | Text generation / enterprise LLM                        |
 |  9  |      `ibm-granite/granite-4.0-h-micro`      |      [link](https://huggingface.co/ibm-granite/granite-4.0-h-micro)      |          3B          | Text generation / lightweight assistant                 |
@@ -28,26 +28,45 @@
 | 14  |              `Qwen/Qwen3-1.7B`              |              [link](https://huggingface.co/Qwen/Qwen3-1.7B)              |         1.7B         | Text generation                                         |
 | 15  |               `Qwen/Qwen3-4B`               |               [link](https://huggingface.co/Qwen/Qwen3-4B)               |          4B          | Text generation / reasoning                             |
 | 16  |               `Qwen/Qwen3-8B`               |               [link](https://huggingface.co/Qwen/Qwen3-8B)               |          8B          | Text generation / reasoning                             |
-| 17  |              `Qwen/Qwen3-14B`               |              [link](https://huggingface.co/Qwen/Qwen3-14B)               |       **14B**        | Text generation / reasoning                             |
-| 18  |              `Qwen/Qwen3-32B`               |              [link](https://huggingface.co/Qwen/Qwen3-32B)               |       **32B**        | Text generation / reasoning                             |
+| 17  |              `Qwen/Qwen3-14B`               |              [link](https://huggingface.co/Qwen/Qwen3-14B)               |         14B          | Text generation / reasoning                             |
+| 18  |              `Qwen/Qwen3-32B`               |              [link](https://huggingface.co/Qwen/Qwen3-32B)               |         32B          | Text generation / reasoning                             |
 | 19  |     `meta-llama/Llama-3.2-1B-Instruct`      |     [link](https://huggingface.co/meta-llama/Llama-3.2-1B-Instruct)      |          1B          | Instruction-following assistant (chat, code, reasoning) |
 | 20  |     `meta-llama/Llama-3.2-3B-Instruct`      |     [link](https://huggingface.co/meta-llama/Llama-3.2-3B-Instruct)      |          3B          | Instruction-following assistant (chat, code, reasoning) |
 | 21  |     `meta-llama/Llama-3.1-8B-Instruct`      |     [link](https://huggingface.co/meta-llama/Llama-3.1-8B-Instruct)      |          8B          | Instruction-following assistant (chat, code, reasoning) |
 | 22  | `deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B` | [link](https://huggingface.co/deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B) |         1.5B         | Text generation                                         |
 | 23  |  `deepseek-ai/DeepSeek-R1-Distill-Qwen-7B`  |  [link](https://huggingface.co/deepseek-ai/DeepSeek-R1-Distill-Qwen-7B)  |          7B          | Text generation                                         |
-| 24  | `deepseek-ai/DeepSeek-R1-Distill-Qwen-14B`  | [link](https://huggingface.co/deepseek-ai/DeepSeek-R1-Distill-Qwen-14B)  |       **14B**        | Text generation                                         |
-| 25  | `deepseek-ai/DeepSeek-R1-Distill-Qwen-32B`  | [link](https://huggingface.co/deepseek-ai/DeepSeek-R1-Distill-Qwen-32B)  |       **32B**        | Text generation                                         |
+| 24  | `deepseek-ai/DeepSeek-R1-Distill-Qwen-14B`  | [link](https://huggingface.co/deepseek-ai/DeepSeek-R1-Distill-Qwen-14B)  |         14B          | Text generation                                         |
+| 25  | `deepseek-ai/DeepSeek-R1-Distill-Qwen-32B`  | [link](https://huggingface.co/deepseek-ai/DeepSeek-R1-Distill-Qwen-32B)  |         32B          | Text generation                                         |
 
 ### Details
 
-| INX |        Model        | Max Model Length | Model Size (Gb) | GPU Memory Utilization | KV Cache (Gb) |
-| :-: | :-----------------: | :--------------: | :-------------: | :--------------------: | :-----------: |
-|  1  | `facebook/opt-125m` |       2048       |      0.24       |          10%           |     1.62      |
-|  2  | `facebook/opt-350m` |       2048       |      0.62       |          10%           |     1.25      |
-|  3  | `facebook/opt-1.3b` |       2048       |      2.45       |          20%           |     1.77      |
-|  4  | `facebook/opt-6.7b` |       2048       |      12.4       |          60%           |     1.26      |
-|  5  | `facebook/opt-13b`  |       2048       |      12.6       |          60%           |     1.80      |
-|  6  | `facebook/opt-30b`  |       2048       |      14.01      |          65%           |     2.29      |
+| INX |                    Model                    | Max Model Length | Model Size (Gb) | GPU Memory Utilization | KV Cache (Gb) | GPUs |
+| :-: | :-----------------------------------------: | :--------------: | :-------------: | :--------------------: | :-----------: | :--: |
+|  1  |             `facebook/opt-125m`             |       2048       |      0.24       |          10%           |     1.62      |  1   |
+|  2  |             `facebook/opt-350m`             |       2048       |      0.62       |          10%           |     1.25      |  1   |
+|  3  |             `facebook/opt-1.3b`             |       2048       |      2.45       |          20%           |     1.77      |  1   |
+|  4  |             `facebook/opt-6.7b`             |       2048       |      12.4       |          60%           |     1.26      |  1   |
+|  5  |             `facebook/opt-13b`              |       2048       |      12.6       |          60%           |     1.80      |  2   |
+|  6  |             `facebook/opt-30b`              |       2048       |      14.0       |          65%           |     2.29      |  4   |
+|  7  |    `ibm-granite/granite-4.0-h-350m-base`    |      32000       |      0.65       |          15%           |     1.95      |  1   |
+|  8  |       `ibm-granite/granite-4.0-h-1b`        |      32000       |      2.72       |          20%           |     1.05      |  1   |
+|  9  |      `ibm-granite/granite-4.0-h-micro`      |      32000       |      5.97       |          35%           |     1.43      |  1   |
+| 10  |      `ibm-granite/granite-4.0-h-tiny`       |      32000       |      12.9       |          70%           |     2.59      |  1   |
+| 11  |    `ibm-granite/granite-3.3-2b-instruct`    |      36000       |      4.74       |          35%           |     3.04      |  1   |
+| 12  |    `ibm-granite/granite-3.3-8b-instruct`    |      36000       |      15.2       |          90%           |     5.52      |  1   |
+| 13  |              `Qwen/Qwen3-0.6B`              |                  |                 |                        |               |  1   |
+| 14  |              `Qwen/Qwen3-1.7B`              |                  |                 |                        |               |  1   |
+| 15  |               `Qwen/Qwen3-4B`               |                  |                 |                        |               |  1   |
+| 16  |               `Qwen/Qwen3-8B`               |                  |                 |                        |               |  2   |
+| 17  |              `Qwen/Qwen3-14B`               |                  |                 |                        |               |  2   |
+| 18  |              `Qwen/Qwen3-32B`               |                  |                 |                        |               |  4   |
+| 19  |     `meta-llama/Llama-3.2-1B-Instruct`      |                  |                 |                        |               |  1   |
+| 20  |     `meta-llama/Llama-3.2-3B-Instruct`      |                  |                 |                        |               |  1   |
+| 21  |     `meta-llama/Llama-3.1-8B-Instruct`      |                  |                 |                        |               |  1   |
+| 22  | `deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B` |                  |                 |                        |               |  1   |
+| 23  |  `deepseek-ai/DeepSeek-R1-Distill-Qwen-7B`  |                  |                 |                        |               |  1   |
+| 24  | `deepseek-ai/DeepSeek-R1-Distill-Qwen-14B`  |                  |                 |                        |               |  2   |
+| 25  | `deepseek-ai/DeepSeek-R1-Distill-Qwen-32B`  |                  |                 |                        |               |  4   |
 
 Based on our GPU hardware, the rule for setting **GPU Memory Utilization** is:
 
