@@ -8,8 +8,16 @@ namespace: llm-servings
 configs:
   name: facebook-opt-30b
   model: facebook/opt-30b
-  max_model_len: 36000
+  gpu_memory_utilization: 0.65
+  max_model_len: 2048
   max_num_seqs: 1
+
+# resource configs
+resources:
+  cpu_limit: "10"
+  cpu_request: "5"
+  memory_limit: "80G"
+  memory_request: "40G"
 
 # gpu configs
 # RTX A5000 with 24.5 GB of VRAM (1) / Quadro 6000 with 24.5 GB of VRAM (2)

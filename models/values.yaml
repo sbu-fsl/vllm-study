@@ -13,12 +13,20 @@ image:
 configs:
   name: name-placeholder
   model: model-placeholder
+  gpu_memory_utilization: 0.9
   kv_transfer_config: '{"kv_connector":"LMCacheConnectorV1", "kv_role":"kv_both"}'
   # max_model_len: 1000
   # max_num_seqs: 1
   lmcache:
     enable: false
     cache_type: "local_storage"
+  
+# resource configs
+resources:
+  cpu_limit: "10"
+  cpu_request: "5"
+  memory_limit: "25G"
+  memory_request: "12G"
 
 # gpu configs
 # RTX A5000 with 24.5 GB of VRAM (1) / Quadro 6000 with 24.5 GB of VRAM (2)

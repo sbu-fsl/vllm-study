@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: chat-template
+  namespace: llm-servings
+data:
+  chat_template.jinja: |
+    {% for message in messages %}
+    {{ message['role'] }}: {{ message['content'] }}
+    {% endfor %}
+    assistant:

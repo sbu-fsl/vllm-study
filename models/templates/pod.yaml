@@ -33,6 +33,9 @@ spec:
   - name: shm
     emptyDir:
       medium: Memory
+  - name: chat-template
+    configMap:
+      name: chat-template
   - name: cache-volume
     {{- if eq .Values.storage.type "local" }}
     hostPath:
@@ -141,7 +144,7 @@ spec:
       {{- if .Values.bedrock.enable }}
       sleep 30 &&
       {{- end }}
-      vllm serve {{ .Values.configs.model }} --host 0.0.0.0 --port 8000 --enable-prefix-caching --seed 0 --gpu-memory-utilization 0.9 --tensor-parallel-size {{ .Values.gpu.count }} {{- if .Values.configs.max_model_len }} --max-model-len {{ .Values.configs.max_model_len }} {{- end }} {{- if .Values.configs.max_num_seqs }} --max-num-seqs {{ .Values.configs.max_num_seqs }} {{- end }} {{- if .Values.configs.lmcache.enable }} --kv-transfer-config '{{ .Values.configs.kv_transfer_config }}' {{- end }}
+      vllm serve {{ .Values.configs.model }} --host 0.0.0.0 --port 8000 --enable-prefix-caching --seed 0 --chat-template /templates/chat_template.jinja --gpu-memory-utilization {{ .Values.configs.gpu_memory_utilization }} --tensor-parallel-size {{ .Values.gpu.count }} {{- if .Values.configs.max_model_len }} --max-model-len {{ .Values.configs.max_model_len }} {{- end }} {{- if .Values.configs.max_num_seqs }} --max-num-seqs {{ .Values.configs.max_num_seqs }} {{- end }} {{- if .Values.configs.lmcache.enable }} --kv-transfer-config '{{ .Values.configs.kv_transfer_config }}' {{- end }}
 
     env:
     - name: HF_TOKEN
@@ -163,12 +166,12 @@ spec:
 
     resources:
       limits:
-        cpu: "10"
-        memory: 25G
+        cpu: {{ .Values.resources.cpu_limit | default "10" }}
+        memory: {{ .Values.resources.memory_limit | default "25G" }}
         nvidia.com/gpu: {{ .Values.gpu.count | default 1 }}
       requests:
-        cpu: "5"
-        memory: 12G
+        cpu: {{ .Values.resources.cpu_request | default "5" }}
+        memory: {{ .Values.resources.memory_request | default "12G" }}
         nvidia.com/gpu: {{ .Values.gpu.count | default 1 }}
 
     volumeMounts:
@@ -176,6 +179,9 @@ spec:
       name: shm
     - mountPath: /root/.cache/huggingface
       name: cache-volume
+    - mountPath: /templates
+      name: chat-template
+      readOnly: true
     {{- if .Values.configs.lmcache.enable }}
     - name: lmcache-config
       mountPath: /etc/lmcache

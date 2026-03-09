@@ -8,6 +8,8 @@ namespace: llm-servings
 configs:
   name: facebook-opt-125m
   model: facebook/opt-125m
+  gpu_memory_utilization: 0.1
+  max_model_len: 2048
 
 # gpu configs
 # RTX A5000 with 24.5 GB of VRAM (1) / Quadro 6000 with 24.5 GB of VRAM (2)

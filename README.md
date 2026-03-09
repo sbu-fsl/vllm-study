@@ -11,7 +11,7 @@
 > Models larger than 10B don't fit within our GPUs (24 GB limited VRAM space)!
 
 | INX |                    Model                    |                               Access Link                                | Number of Parameters | Type                                                    |
-|:---:|:-------------------------------------------:|:------------------------------------------------------------------------:|:--------------------:|---------------------------------------------------------|
+| :-: | :-----------------------------------------: | :----------------------------------------------------------------------: | :------------------: | ------------------------------------------------------- |
 |  1  |             `facebook/opt-125m`             |             [link](https://huggingface.co/facebook/opt-125m)             |         125M         | Text generation (base LLM)                              |
 |  2  |             `facebook/opt-350m`             |             [link](https://huggingface.co/facebook/opt-350m)             |         350M         | Text generation                                         |
 |  3  |             `facebook/opt-1.3b`             |             [link](https://huggingface.co/facebook/opt-1.3b)             |          3B          | Text generation                                         |
@@ -37,6 +37,23 @@
 | 23  |  `deepseek-ai/DeepSeek-R1-Distill-Qwen-7B`  |  [link](https://huggingface.co/deepseek-ai/DeepSeek-R1-Distill-Qwen-7B)  |          7B          | Text generation                                         |
 | 24  | `deepseek-ai/DeepSeek-R1-Distill-Qwen-14B`  | [link](https://huggingface.co/deepseek-ai/DeepSeek-R1-Distill-Qwen-14B)  |       **14B**        | Text generation                                         |
 | 25  | `deepseek-ai/DeepSeek-R1-Distill-Qwen-32B`  | [link](https://huggingface.co/deepseek-ai/DeepSeek-R1-Distill-Qwen-32B)  |       **32B**        | Text generation                                         |
+
+### Details
+
+| INX |        Model        | Max Model Length | Model Size (Gb) | GPU Memory Utilization | KV Cache (Gb) |
+| :-: | :-----------------: | :--------------: | :-------------: | :--------------------: | :-----------: |
+|  1  | `facebook/opt-125m` |       2048       |      0.24       |          10%           |     1.62      |
+|  2  | `facebook/opt-350m` |       2048       |      0.62       |          10%           |     1.25      |
+|  3  | `facebook/opt-1.3b` |       2048       |      2.45       |          20%           |     1.77      |
+|  4  | `facebook/opt-6.7b` |       2048       |      12.4       |          60%           |     1.26      |
+|  5  | `facebook/opt-13b`  |       2048       |      12.6       |          60%           |     1.80      |
+|  6  | `facebook/opt-30b`  |       2048       |      14.01      |          65%           |     2.29      |
+
+Based on our GPU hardware, the rule for setting **GPU Memory Utilization** is:
+
+$$
+GPU Memory Utilization \geq \frac{2 \times Mode Size + KV Cache}{24}
+$$
 
 ## Parameters for study
 
@@ -94,26 +111,26 @@ Using OpenAI API exported by vLLM to send our requests.
 ## Metrics
 
 - File System:
-    - container_fs_reads_bytes_total
-    - container_fs_writes_bytes_total
-    - container_fs_reads_total
-    - container_fs_writes_total
-    - container_file_descriptors
+  - container_fs_reads_bytes_total
+  - container_fs_writes_bytes_total
+  - container_fs_reads_total
+  - container_fs_writes_total
+  - container_file_descriptors
 - Disks:
-    - container_blkio_device_usage_total
-    - container_blkio_device_usage_total
+  - container_blkio_device_usage_total
+  - container_blkio_device_usage_total
 - Network:
-    - container_network_receive_bytes_total
-    - container_network_transmit_bytes_total
-    - container_network_receive_packets_total
-    - container_network_transmit_packets_total
+  - container_network_receive_bytes_total
+  - container_network_transmit_bytes_total
+  - container_network_receive_packets_total
+  - container_network_transmit_packets_total
 - GPU:
-    - DCGM_FI_DEV_FB_USED
-    - DCGM_FI_DEV_FB_FREE
-    - DCGM_FI_DEV_MEM_COPY_UTIL
+  - DCGM_FI_DEV_FB_USED
+  - DCGM_FI_DEV_FB_FREE
+  - DCGM_FI_DEV_MEM_COPY_UTIL
 - PCIe:
-    - DCGM_FI_PROF_PCIE_RX_BYTES
-    - DCGM_FI_PROF_PCIE_TX_BYTES
+  - DCGM_FI_PROF_PCIE_RX_BYTES
+  - DCGM_FI_PROF_PCIE_TX_BYTES
 - vLLM startup latency (using its logs)
 
 ## NOTES
