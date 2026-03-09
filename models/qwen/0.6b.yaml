@@ -8,6 +8,8 @@ namespace: llm-servings
 configs:
   name: qwen3-06b
   model: Qwen/Qwen3-0.6B
+  gpu_memory_utilization: 0.15
+  max_model_len: 2048
 
 # gpu configs
 # RTX A5000 with 24.5 GB of VRAM (1) / Quadro 6000 with 24.5 GB of VRAM (2)

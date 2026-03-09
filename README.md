@@ -40,6 +40,8 @@
 
 ### Details
 
+Each model requires GPU cards based on the number of parameters it has. The required GPU memory is roughly twice the number of parameters in GB. The following table shows the minimum GPU memory utilization (the minimal value that still enables KV cache offloading) required to run the model with the maximum possible model length.
+
 | INX |                    Model                    | Max Model Length | Model Size (Gb) | GPU Memory Utilization | KV Cache (Gb) | GPUs |
 | :-: | :-----------------------------------------: | :--------------: | :-------------: | :--------------------: | :-----------: | :--: |
 |  1  |             `facebook/opt-125m`             |       2048       |      0.24       |          10%           |     1.62      |  1   |
@@ -54,9 +56,9 @@
 | 10  |      `ibm-granite/granite-4.0-h-tiny`       |      32000       |      12.9       |          70%           |     2.59      |  1   |
 | 11  |    `ibm-granite/granite-3.3-2b-instruct`    |      36000       |      4.74       |          35%           |     3.04      |  1   |
 | 12  |    `ibm-granite/granite-3.3-8b-instruct`    |      36000       |      15.2       |          90%           |     5.52      |  1   |
-| 13  |              `Qwen/Qwen3-0.6B`              |                  |                 |                        |               |  1   |
-| 14  |              `Qwen/Qwen3-1.7B`              |                  |                 |                        |               |  1   |
-| 15  |               `Qwen/Qwen3-4B`               |                  |                 |                        |               |  1   |
+| 13  |              `Qwen/Qwen3-0.6B`              |       2048       |      1.12       |          15%           |     1.00      |  1   |
+| 14  |              `Qwen/Qwen3-1.7B`              |       2048       |      3.22       |          30%           |     2.45      |  1   |
+| 15  |               `Qwen/Qwen3-4B`               |      20480       |      7.56       |          50%           |     2.83      |  1   |
 | 16  |               `Qwen/Qwen3-8B`               |                  |                 |                        |               |  2   |
 | 17  |              `Qwen/Qwen3-14B`               |                  |                 |                        |               |  2   |
 | 18  |              `Qwen/Qwen3-32B`               |                  |                 |                        |               |  4   |
