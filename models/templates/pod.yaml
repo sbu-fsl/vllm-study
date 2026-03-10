@@ -127,12 +127,10 @@ spec:
       - {{ .Values.configs.name | quote }}
       - --kubernetes__container
       - vllm-container
-      - --filter
-      - vllm
       - --rotate
       - --rotate_size
       - 200Mb
-      - --debug
+      - --disable_memory_map
   {{- end }}
   - name: vllm-container
     image: vllm/vllm-openai:{{ .Values.image.tag }}
