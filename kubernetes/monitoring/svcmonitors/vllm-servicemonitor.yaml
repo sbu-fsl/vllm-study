@@ -12,6 +12,10 @@ spec:
     port: http-vllm
     scheme: http
     interval: 5s
+  - path: /metrics
+    port: http-lmcache
+    scheme: http
+    interval: 5s  
   selector:
     matchLabels:
       app: vllm

@@ -161,6 +161,9 @@ spec:
 
     ports:
     - containerPort: 8000
+      name: vllm-api
+    - containerPort: 7000
+      name: lmcache-api
 
     resources:
       limits:
