@@ -51,16 +51,16 @@ Each model requires GPU cards based on the number of parameters it has. The requ
 |  9  |              `Qwen/Qwen3-0.6B`              |       2048       |      1.12       |          15%           |     1.00      |  1   |
 | 10  |              `Qwen/Qwen3-1.7B`              |       2048       |      3.22       |          30%           |     2.45      |  1   |
 | 11  |               `Qwen/Qwen3-4B`               |      20480       |      7.56       |          50%           |     2.83      |  1   |
-| 12  |               `Qwen/Qwen3-8B`               |                  |                 |                        |               |  2   |
-| 13  |              `Qwen/Qwen3-14B`               |                  |                 |                        |               |  2   |
-| 14  |              `Qwen/Qwen3-32B`               |                  |                 |                        |               |  4   |
-| 15  |     `meta-llama/Llama-3.2-1B-Instruct`      |                  |                 |                        |               |  1   |
-| 16  |     `meta-llama/Llama-3.2-3B-Instruct`      |                  |                 |                        |               |  1   |
-| 17  |     `meta-llama/Llama-3.1-8B-Instruct`      |                  |                 |                        |               |  1   |
-| 18  | `deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B` |                  |                 |                        |               |  1   |
-| 19  |  `deepseek-ai/DeepSeek-R1-Distill-Qwen-7B`  |                  |                 |                        |               |  1   |
-| 20  | `deepseek-ai/DeepSeek-R1-Distill-Qwen-14B`  |                  |                 |                        |               |  2   |
-| 21  | `deepseek-ai/DeepSeek-R1-Distill-Qwen-32B`  |                  |                 |                        |               |  4   |
+| 12  |               `Qwen/Qwen3-8B`               |      20480       |      7.64       |          50%           |     3.53      |  2   |
+| 13  |              `Qwen/Qwen3-14B`               |      20480       |      13.8       |          70%           |     1.86      |  2   |
+| 14  |              `Qwen/Qwen3-32B`               |      20480       |      15.4       |          80%           |     3.08      |  4   |
+| 15  |     `meta-llama/Llama-3.2-1B-Instruct`      |      36000       |      2.32       |          20%           |     1.20      |  1   |
+| 16  |     `meta-llama/Llama-3.2-3B-Instruct`      |      36000       |      6.02       |          50%           |     4.59      |  1   |
+| 17  |     `meta-llama/Llama-3.1-8B-Instruct`      |      36000       |      15.0       |          90%           |     5.06      |  1   |
+| 18  | `deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B` |      20480       |      3.35       |          30%           |     2.32      |  1   |
+| 19  |  `deepseek-ai/DeepSeek-R1-Distill-Qwen-7B`  |      20480       |      14.3       |          80%           |     3.20      |  1   |
+| 20  | `deepseek-ai/DeepSeek-R1-Distill-Qwen-14B`  |      20480       |      14.0       |          80%           |     4.16      |  2   |
+| 21  | `deepseek-ai/DeepSeek-R1-Distill-Qwen-32B`  |      20480       |      15.4       |          80%           |     3.05      |  4   |
 
 Based on our GPU hardware, the rule for setting **GPU Memory Utilization** is:
 

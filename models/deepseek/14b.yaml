@@ -8,6 +8,7 @@ namespace: llm-servings
 configs:
   name: deepseek-r1-14b
   model: deepseek-ai/DeepSeek-R1-Distill-Qwen-14B
+  gpu_memory_utilization: 0.8
   max_model_len: 36000
   max_num_seqs: 1
 

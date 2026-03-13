@@ -8,6 +8,7 @@ namespace: llm-servings
 configs:
   name: meta-llama-31-8b
   model: meta-llama/Llama-3.1-8B-Instruct
+  gpu_memory_utilization: 0.9
   max_model_len: 36000
 
 # gpu configs

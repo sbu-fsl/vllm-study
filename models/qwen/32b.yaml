@@ -8,6 +8,8 @@ namespace: llm-servings
 configs:
   name: qwen3-32b
   model: Qwen/Qwen3-32B
+  gpu_memory_utilization: 0.8
+  max_model_len: 20480
   max_num_seqs: 1
 
 # gpu configs
