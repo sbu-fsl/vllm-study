@@ -18,7 +18,7 @@ configs:
   # max_model_len: 1000
   # max_num_seqs: 1
   lmcache:
-    enable: false
+    enable: true
     cache_type: "local_storage"
   
 # resource configs
