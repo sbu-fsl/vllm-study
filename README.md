@@ -146,6 +146,20 @@ Using OpenAI API exported by vLLM to send our requests.
   - DCGM_FI_PROF_PCIE_TX_BYTES
 - vLLM startup latency (using its logs)
 
+## Experiments
+
+For each model:
+
+- If supporting both GPU types: do the experiments on both GPUs
+- Run small workloads such as Alpaca, NarrativeQA, QSUM, and WMT16
+  - scale the number of clients from 1 to 10 to 100
+  - use slow/fast clients
+- Run large workloads such as Shared Prefix
+  - use slow/fast clients
+
+* Must be able to collect computation metrics, such as the number of generated tokens, the number of cached tokens, and the number of lost tokens.
+* Must be able to collect GPU computation and energy metrics to describe the cost of token generation.
+
 ## NOTES
 
 ### helm
