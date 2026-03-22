@@ -145,6 +145,8 @@ spec:
       vllm serve {{ .Values.configs.model }} --host 0.0.0.0 --port 8000 --enable-prefix-caching --seed 0 --chat-template /templates/chat_template.jinja --gpu-memory-utilization {{ .Values.configs.gpu_memory_utilization }} --tensor-parallel-size {{ .Values.gpu.count }} {{- if .Values.configs.max_model_len }} --max-model-len {{ .Values.configs.max_model_len }} {{- end }} {{- if .Values.configs.max_num_seqs }} --max-num-seqs {{ .Values.configs.max_num_seqs }} {{- end }} {{- if .Values.configs.lmcache.enable }} --kv-transfer-config '{{ .Values.configs.kv_transfer_config }}' {{- end }}
 
     env:
+    - name: LD_PRELOAD
+      value: "/lib/x86_64-linux-gnu/libcuda.so.1 /lib/x86_64-linux-gnu/libnvidia-ptxjitcompiler.so.1 /lib/x86_64-linux-gnu/libnvidia-gpucomp.so"
     - name: HF_TOKEN
       valueFrom:
         secretKeyRef:
