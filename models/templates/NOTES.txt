@@ -1,3 +1,7 @@
-The vLLM instance for {{ .Values.configs.name }} is deployed.
-Run `kubectl get svc {{ .Values.configs.name }} -n {{ .Values.namespace }} -o wide` and get your service port number.
-The OpenAI API is exported on the `localhost:port`.
+Deployed {{ include "models.fullname" . }}.
+The vLLM instance is for model {{ .Values.configs.name }} ('{{ .Values.configs.model }}').
+{{ if .Values.configs.lmcache.enable }}
+LMCache type '{{ .Values.configs.lmcache.cache_type }}' is enabled.
+{{ end }}
+
+Run `kubectl get svc {{ include "models.fullname" . }} -n {{ .Values.namespace }} -o wide` and get your OpenAI service port number.

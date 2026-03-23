@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Values.configs.name }}
+  name: {{ include "models.fullname" . }}
   namespace: {{ .Values.namespace }}
   labels:
     app: vllm
