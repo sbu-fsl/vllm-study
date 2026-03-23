@@ -121,44 +121,28 @@ Using OpenAI API exported by vLLM to send our requests.
 - Summarization
   - LongBench/QMSum
 
-## Metrics
-
-- File System:
-  - container_fs_reads_bytes_total
-  - container_fs_writes_bytes_total
-  - container_fs_reads_total
-  - container_fs_writes_total
-  - container_file_descriptors
-- Disks:
-  - container_blkio_device_usage_total
-  - container_blkio_device_usage_total
-- Network:
-  - container_network_receive_bytes_total
-  - container_network_transmit_bytes_total
-  - container_network_receive_packets_total
-  - container_network_transmit_packets_total
-- GPU:
-  - DCGM_FI_DEV_FB_USED
-  - DCGM_FI_DEV_FB_FREE
-  - DCGM_FI_DEV_MEM_COPY_UTIL
-- PCIe:
-  - DCGM_FI_PROF_PCIE_RX_BYTES
-  - DCGM_FI_PROF_PCIE_TX_BYTES
-- vLLM startup latency (using its logs)
-
 ## Experiments
 
-For each model:
+We categorize our prompts into three buckets, in terms of size:
 
-- If supporting both GPU types: do the experiments on both GPUs
-- Run small workloads such as Alpaca, NarrativeQA, QSUM, and WMT16
-  - scale the number of clients from 1 to 10 to 100
-  - use slow/fast clients
-- Run large workloads such as Shared Prefix
-  - use slow/fast clients
+1. **Not cached**: Prompts with length smaller than a block size (16 tokens).
+2. **Cached but lost**: Prompts with length bigger than a block size, but smaller than GPU KV cache size.
+3. **Cached and saved**: Prompts with length bigger than both a block size and GPU KV cache size.
 
-* Must be able to collect computation metrics, such as the number of generated tokens, the number of cached tokens, and the number of lost tokens.
-* Must be able to collect GPU computation and energy metrics to describe the cost of token generation.
+We categorize our prompts into two buckets, in terms of prefix size:
+
+1. **No prefix**: Prompts with no common prefix.
+2. **With prefix**: Prompts with a shared prefix.
+
+We categorize our clients into two buckets, in terms of number:
+
+1. **Single client**: Processing one request at a time.
+2. **Multiple clients**: Processing more than one clients at a time.
+
+We categorize our clients into two buckets, in terms of request type:
+
+1. **Same request**: All clients sending same request.
+2. **Random requests**: Clients sending random requests.
 
 ## NOTES
 
