@@ -188,6 +188,7 @@ counts.txt
 results/
 images/
 plots/
+tobig/
 
 # system
 .vscode/

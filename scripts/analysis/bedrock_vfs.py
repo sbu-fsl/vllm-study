@@ -15,19 +15,19 @@ EVENT_RE = re.compile(
 FIELD_RE = re.compile(r"(fname|count|ret)=([^,}]+)")
 
 
-def parse_event(line: str) -> Dict[str, any] | None:
+def parse_event(line: str) -> Dict[str, any]:
     """Parse a single event line.
 
     Parameters
     ----------
     line : str
-            A single line from the VFS trace log.
+        A single line from the VFS trace log.
 
     Returns
     -------
     Dict[str, any] | None
-            A dictionary with keys: 'timestamp', 'op', 'fname', 'count', 'ret' if parsing is successful.
-            Returns None if the line does not match the expected format or is missing required fields.
+        A dictionary with parsed event data, or None if the line could not be parsed or is
+        missing required fields.
     """
 
     match = EVENT_RE.match(line.strip())
@@ -63,13 +63,13 @@ def get_extension(fname: str) -> str:
     Parameters
     ----------
     fname : str
-            The filename from which to extract the extension.
+        The filename from which to extract the extension.
 
     Returns
     -------
     str
-            The file extension in lowercase, including the dot (e.g., '.txt').
-            If the filename has no extension, returns the filename itself.
+        The file extension in lowercase, including the dot (e.g., '.txt').
+        If the filename has no extension, returns the filename itself.
     """
 
     _, ext = os.path.splitext(fname)
@@ -82,12 +82,12 @@ def load_events(log_path: str) -> List[Dict[str, any]]:
     Parameters
     ----------
     log_path : str
-            The path to the VFS trace log file.
+        The path to the VFS trace log file.
 
     Returns
     -------
     List[Dict[str, any]]
-            A list of parsed event dictionaries.
+        A list of parsed event dictionaries.
     """
 
     events = []
@@ -108,16 +108,16 @@ def filter_events_by_percent_range(
     Parameters
     ----------
     events : List[Dict[str, any]]
-            A list of parsed event dictionaries.
+        A list of parsed event dictionaries.
     start_pct : float
-            The starting percentage of the timeline.
+        The starting percentage of the timeline.
     end_pct : float
-            The ending percentage of the timeline.
+        The ending percentage of the timeline.
 
     Returns
     -------
     List[Dict[str, any]]
-            A list of filtered event dictionaries.
+        A list of filtered event dictionaries.
     """
 
     if not (0.0 <= start_pct < end_pct <= 100.0):
@@ -149,16 +149,16 @@ def bucketize(
     Parameters
     ----------
     events : List[Dict[str, any]]
-            A list of parsed event dictionaries.
+        A list of parsed event dictionaries.
     bucket_seconds : float
-            The size of each time bucket in seconds.
+        The size of each time bucket in seconds.
     base_ts : float | None
-            Optional base timestamp to use as the start of the timeline. If None, the minimum event timestamp will be used.
+        Optional base timestamp to use as the start of the timeline. If None, the minimum event timestamp will be used.
 
     Returns
     -------
     Tuple[List[float], List[int], List[int], List[int], List[int]]
-            A tuple containing:
+        A tuple containing:
             - time_axis: List[float] - The relative time for each bucket.
             - read_counts: List[int] - The count of read operations in each bucket.
             - write_counts: List[int] - The count of write operations in each bucket.
@@ -219,13 +219,13 @@ def extension_insights(
     Parameters
     ----------
     events : List[Dict[str, any]]
-            A list of parsed event dictionaries.
+        A list of parsed event dictionaries.
 
     Returns
     -------
     List[Tuple[str, int, int, int, int]]
-            A list of tuples containing extension insights.
-            Each tuple contains:
+        A list of tuples containing extension insights.
+        Each tuple contains:
             - extension: str - The file extension.
             - read_unique_files: int - The count of unique files read with this extension.
             - write_unique_files: int - The count of unique files written with this extension.
@@ -306,21 +306,21 @@ def plot_metrics(
     Parameters
     ----------
     time_axis : List[float]
-            Time values for x-axis.
+        Time values for x-axis.
     read_counts : List[int]
-            Read operation counts.
+        Read operation counts.
     write_counts : List[int]
-            Write operation counts.
+        Write operation counts.
     read_bytes : List[int]
-            Read bytes.
+        Read bytes.
     write_bytes : List[int]
-            Write bytes.
+        Write bytes.
     output_path : str
-            Path to save the output image.
+        Path to save the output image.
     show : bool
-            Whether to display the plot.
+        Whether to display the plot.
     use_log_scale : bool
-            Whether to use logarithmic scale for y-axis (default: False).
+        Whether to use logarithmic scale for y-axis (default: False).
     """
 
     plt.style.use("seaborn-v0_8-whitegrid")
