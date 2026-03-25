@@ -124,7 +124,7 @@ spec:
       - --kubernetes__namespace
       - {{ .Values.namespace | quote }}
       - --kubernetes__pod
-      - {{ .Values.configs.name | quote }}
+      - {{ include "models.fullname" . | quote }}
       - --kubernetes__container
       - vllm-container
       - --rotate
