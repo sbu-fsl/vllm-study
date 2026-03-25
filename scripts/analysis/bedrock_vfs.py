@@ -1,18 +1,36 @@
 import argparse
 import os
 import re
+from typing import Dict, List, Tuple
 from collections import defaultdict
 
 import matplotlib.pyplot as plt
 
 
+# regexes for parsing VFS trace logs
+# example log line:
+# 1234 {pid=0 tid=0 proc=sshd}{vfs_read}{fname=passwd, count=1024, ret=512}
 EVENT_RE = re.compile(
 	r"^(?P<ts>\d+)\s+\{[^}]*}\{(?P<op>vfs_read|vfs_write)}\{(?P<fields>.*)}$"
 )
 FIELD_RE = re.compile(r"(fname|count|ret)=([^,}]+)")
 
 
-def parse_event(line):
+def parse_event(line: str) -> Dict[str, any] | None:
+	"""Parse a single event line.
+	
+	Parameters
+	----------
+	line : str
+		A single line from the VFS trace log.
+
+	Returns
+	-------
+	Dict[str, any] | None
+		A dictionary with keys: 'timestamp', 'op', 'fname', 'count', 'ret' if parsing is successful.
+		Returns None if the line does not match the expected format or is missing required fields.
+	"""
+
 	match = EVENT_RE.match(line.strip())
 	if not match:
 		return None
@@ -40,22 +58,67 @@ def parse_event(line):
 	}
 
 
-def get_extension(fname):
+def get_extension(fname: str) -> str:
+	"""Extract the file extension from a filename.
+	
+	Parameters
+	----------
+	fname : str
+		The filename from which to extract the extension.
+
+	Returns
+	-------
+	str
+		The file extension in lowercase, including the dot (e.g., '.txt').
+		If the filename has no extension, returns the filename itself.
+	"""
+
 	_, ext = os.path.splitext(fname)
-	return ext.lower() if ext else "[no_ext]"
+	return ext.lower() if ext else fname
 
 
-def load_events(log_path):
+def load_events(log_path: str) -> List[Dict[str, any]]:
+	"""Load and parse events from a VFS trace log file.
+	
+	Parameters
+	----------
+	log_path : str
+		The path to the VFS trace log file.
+
+	Returns
+	-------
+	List[Dict[str, any]]
+		A list of parsed event dictionaries.
+	"""
+
 	events = []
 	with open(log_path, "r", encoding="utf-8", errors="replace") as handle:
 		for line in handle:
 			event = parse_event(line)
 			if event is not None:
 				events.append(event)
+	
 	return events
 
 
-def filter_events_by_percent_range(events, start_pct, end_pct):
+def filter_events_by_percent_range(events: List[Dict[str, any]], start_pct: float, end_pct: float) -> List[Dict[str, any]]:
+	"""Filter events to only include those within a specified percentage range of the timeline.
+	
+	Parameters
+	----------
+	events : List[Dict[str, any]]
+		A list of parsed event dictionaries.
+	start_pct : float
+		The starting percentage of the timeline.
+	end_pct : float
+		The ending percentage of the timeline.
+
+	Returns
+	-------
+	List[Dict[str, any]]
+		A list of filtered event dictionaries.
+	"""
+
 	if not (0.0 <= start_pct < end_pct <= 100.0):
 		raise ValueError("Range must satisfy 0 <= range-start-pct < range-end-pct <= 100")
 
@@ -75,7 +138,29 @@ def filter_events_by_percent_range(events, start_pct, end_pct):
 	return [event for event in events if start_ts <= event["timestamp"] < end_ts]
 
 
-def bucketize(events, bucket_seconds, base_ts=None):
+def bucketize(events: List[Dict[str, any]], bucket_seconds: float, base_ts: float | None = None) -> Tuple[List[float], List[int], List[int], List[int], List[int]]:
+	"""Aggregate events into time buckets for plotting.
+	
+	Parameters
+	----------
+	events : List[Dict[str, any]]
+		A list of parsed event dictionaries.
+	bucket_seconds : float
+		The size of each time bucket in seconds.
+	base_ts : float | None
+		Optional base timestamp to use as the start of the timeline. If None, the minimum event timestamp will be used.
+	
+	Returns
+	-------
+	Tuple[List[float], List[int], List[int], List[int], List[int]]
+		A tuple containing:
+		- time_axis: List[float] - The relative time for each bucket.
+		- read_counts: List[int] - The count of read operations in each bucket.
+		- write_counts: List[int] - The count of write operations in each bucket.
+		- read_bytes: List[int] - The total bytes read in each bucket.
+		- write_bytes: List[int] - The total bytes written in each bucket.
+	"""
+
 	first_ts = base_ts if base_ts is not None else min(event["timestamp"] for event in events)
 	bucket_ns = int(bucket_seconds * 1e9)
 	if bucket_ns <= 0:
@@ -119,7 +204,26 @@ def bucketize(events, bucket_seconds, base_ts=None):
 	return time_axis, read_counts, write_counts, read_bytes, write_bytes
 
 
-def extension_insights(events):
+def extension_insights(events: List[Dict[str, any]]) -> List[Tuple[str, int, int, int, int]]:
+	"""Aggregate insights by file extension.
+	
+	Parameters
+	----------
+	events : List[Dict[str, any]]
+		A list of parsed event dictionaries.
+	
+	Returns
+	-------
+	List[Tuple[str, int, int, int, int]]
+		A list of tuples containing extension insights.
+		Each tuple contains:
+		- extension: str - The file extension.
+		- read_unique_files: int - The count of unique files read with this extension.
+		- write_unique_files: int - The count of unique files written with this extension.
+		- read_events: int - The total count of read events for this extension.
+		- write_events: int - The total count of write events for this extension.
+	"""
+
 	by_ext = defaultdict(
 		lambda: {
 			"read_unique_files": set(),
@@ -159,6 +263,8 @@ def extension_insights(events):
 
 
 def print_extension_table(rows, top_n):
+	"""Print a table of extension insights."""
+
 	if not rows:
 		print("No positive-ret read/write events found for extension insights.")
 		return
@@ -176,7 +282,29 @@ def print_extension_table(rows, top_n):
 		)
 
 
-def plot_metrics(time_axis, read_counts, write_counts, read_bytes, write_bytes, output_path, show):
+def plot_metrics(time_axis, read_counts, write_counts, read_bytes, write_bytes, output_path, show, use_log_scale=False):
+	"""Plot read/write counts and bytes over time.
+	
+	Parameters
+	----------
+	time_axis : List[float]
+		Time values for x-axis.
+	read_counts : List[int]
+		Read operation counts.
+	write_counts : List[int]
+		Write operation counts.
+	read_bytes : List[int]
+		Read bytes.
+	write_bytes : List[int]
+		Write bytes.
+	output_path : str
+		Path to save the output image.
+	show : bool
+		Whether to display the plot.
+	use_log_scale : bool
+		Whether to use logarithmic scale for y-axis (default: False).
+	"""
+	
 	plt.style.use("seaborn-v0_8-whitegrid")
 	fig, axes = plt.subplots(2, 1, figsize=(12, 8), sharex=True)
 
@@ -184,6 +312,8 @@ def plot_metrics(time_axis, read_counts, write_counts, read_bytes, write_bytes, 
 	axes[0].plot(time_axis, write_counts, label="Write Count", linewidth=1.6)
 	axes[0].set_title("VFS Read/Write Operation Counts Over Relative Time")
 	axes[0].set_ylabel("Operation Count")
+	if use_log_scale:
+		axes[0].set_yscale("log")
 	axes[0].legend()
 
 	axes[1].plot(time_axis, read_bytes, label="Read Bytes", linewidth=1.6)
@@ -191,6 +321,8 @@ def plot_metrics(time_axis, read_counts, write_counts, read_bytes, write_bytes, 
 	axes[1].set_title("VFS Read/Write Bytes Over Relative Time")
 	axes[1].set_xlabel("Relative Time (seconds)")
 	axes[1].set_ylabel("Bytes")
+	if use_log_scale:
+		axes[1].set_yscale("log")
 	axes[1].legend()
 
 	fig.tight_layout()
@@ -211,9 +343,9 @@ def main():
 		)
 	)
 	parser.add_argument(
-		"--log",
-		default="logs/vfs/trace_0.log",
-		help="Path to VFS trace log file",
+		"--logs-dir",
+		default="logs",
+		help="Path to logs directory (will look for vfs/trace_#.log files inside)",
 	)
 	parser.add_argument(
 		"--bucket-seconds",
@@ -228,14 +360,19 @@ def main():
 		help="How many extension rows to print (0 for all)",
 	)
 	parser.add_argument(
-		"--output",
-		default="logs/vfs/vfs_rw_over_time.png",
-		help="Output PNG path for plots",
+		"--output-dir",
+		default="logs",
+		help="Output directory to store the plot image",
 	)
 	parser.add_argument(
 		"--show",
 		action="store_true",
 		help="Display plot window in addition to saving",
+	)
+	parser.add_argument(
+		"--log-scale",
+		action="store_true",
+		help="Use logarithmic scale for y-axis values",
 	)
 	parser.add_argument(
 		"--range-start-pct",
@@ -251,9 +388,34 @@ def main():
 	)
 	args = parser.parse_args()
 
-	events = load_events(args.log)
+	# find all trace_#.log files in vfs subdirectory
+	vfs_dir = os.path.join(args.logs_dir, "vfs")
+	if not os.path.isdir(vfs_dir):
+		raise SystemExit(f"VFS directory not found: {vfs_dir}")
+
+	trace_files = sorted(
+		[
+			os.path.join(vfs_dir, f)
+			for f in os.listdir(vfs_dir)
+			if re.match(r"trace_\d+\.log$", f)
+		],
+		key=lambda x: int(re.search(r"trace_(\d+)\.log$", x).group(1))
+	)
+
+	if not trace_files:
+		raise SystemExit(f"No trace_#.log files found in {vfs_dir}")
+
+	print(f"Found {len(trace_files)} trace files:")
+	for f in trace_files:
+		print(f"  - {os.path.basename(f)}")
+
+	# load and aggregate events from all trace files
+	events = []
+	for trace_file in trace_files:
+		events.extend(load_events(trace_file))
+
 	if not events:
-		raise SystemExit("No parseable VFS read/write events were found in the provided log.")
+		raise SystemExit("No parseable VFS read/write events were found in the trace logs.")
 
 	base_ts = min(event["timestamp"] for event in events)
 	events = filter_events_by_percent_range(
@@ -273,15 +435,17 @@ def main():
 	if not time_axis:
 		raise SystemExit("No positive-ret read/write events found to plot.")
 
-	os.makedirs(os.path.dirname(args.output) or ".", exist_ok=True)
+	os.makedirs(args.output_dir, exist_ok=True)
+	output_path = os.path.join(args.output_dir, "vfs_rw_over_time.png")
 	plot_metrics(
 		time_axis,
 		read_counts,
 		write_counts,
 		read_bytes,
 		write_bytes,
-		args.output,
+		output_path,
 		args.show,
+		use_log_scale=args.log_scale,
 	)
 
 	rows = extension_insights(events)
