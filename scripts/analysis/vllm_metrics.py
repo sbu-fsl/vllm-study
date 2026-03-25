@@ -3,6 +3,7 @@ import math
 import re
 from collections import defaultdict
 from itertools import cycle
+from typing import Dict, List
 from pathlib import Path
 
 import matplotlib.pyplot as plt
@@ -28,7 +29,20 @@ PREFILL_COMPUTED_METRIC = "request_prefill_kv_computed_tokens_sum"
 KV_STORED_METRIC = "kv_stored"
 
 
-def normalize_summary_name(raw_name):
+def normalize_summary_name(raw_name: str) -> str:
+    """Convert a summary metric name to a normalized form.
+    
+    Parameters
+    ----------
+    raw_name : str
+        The raw metric name extracted from the summary section of the log.
+    
+    Returns
+    -------
+    str
+        A normalized metric name suitable for use as a dictionary key or plot label.
+    """
+
     raw_name = raw_name.strip().lower()
     raw_name = raw_name.replace("%", "pct")
     raw_name = raw_name.replace(" ", "_")
@@ -36,7 +50,7 @@ def normalize_summary_name(raw_name):
     return raw_name
 
 
-def parse_log_metrics(log_file_path):
+def parse_log_metrics(log_file_path: Path):
     requests = []
     current_request = None
     in_summary = False
@@ -106,7 +120,9 @@ def parse_log_metrics(log_file_path):
     return requests, summary_metrics
 
 
-def discover_logs_by_name(models_root, model_glob):
+def discover_logs_by_name(models_root: Path, model_glob: str):
+    """Discover log files under model directories and group them by log filename."""
+
     grouped_logs = defaultdict(dict)
 
     for model_dir in sorted(models_root.glob(model_glob)):
@@ -120,7 +136,7 @@ def discover_logs_by_name(models_root, model_glob):
     return grouped_logs
 
 
-def collect_metric_series(requests):
+def collect_metric_series(requests: List[Dict]) -> Dict[str, List[float]]:
     metric_names = sorted({metric for request in requests for metric in request})
     series_by_metric = {}
 
@@ -132,12 +148,15 @@ def collect_metric_series(requests):
     return series_by_metric
 
 
-def sanitize_filename(value):
+def sanitize_filename(value: str) -> str:
+    """Sanitize a string to be safe for use as a filename."""
+
     return re.sub(r"[^A-Za-z0-9_.-]", "_", value)
 
 
-def transform_star_value(value):
+def transform_star_value(value: float) -> float:
     """Compress dynamic range for radar plots while preserving sign."""
+    
     return math.copysign(math.log1p(abs(value)), value)
 
 
