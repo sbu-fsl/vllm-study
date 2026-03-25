@@ -10,5 +10,6 @@ python bedrock_vfs.py --logs-dir /path/to/logs --output-dir /path/to/output --lo
 ## vLLM Metrics
 
 ```
-
+python vllm_metrics.py --help
+python vllm_metrics.py --output-dir plots logs
 ```

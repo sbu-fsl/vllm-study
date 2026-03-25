@@ -187,6 +187,7 @@ traces
 counts.txt
 results/
 images/
+plots/
 
 # system
 .vscode/

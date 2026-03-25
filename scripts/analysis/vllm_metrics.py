@@ -136,6 +136,11 @@ def sanitize_filename(value):
     return re.sub(r"[^A-Za-z0-9_.-]", "_", value)
 
 
+def transform_star_value(value):
+    """Compress dynamic range for radar plots while preserving sign."""
+    return math.copysign(math.log1p(abs(value)), value)
+
+
 def plot_metric_for_log(log_name, metric_name, model_series, output_dir, show_plots):
     plt.figure(figsize=(12, 6))
     line_styles = cycle(["-", "--", "-.", ":"])
@@ -167,7 +172,10 @@ def plot_metric_for_log(log_name, metric_name, model_series, output_dir, show_pl
         )
 
     if max_points > 0:
-        plt.xticks(list(range(1, max_points + 1)))
+        # show every 5th or 10th tick label to avoid overlapping
+        step = 10 if max_points > 50 else 5 if max_points > 20 else 1
+        tick_positions = list(range(1, max_points + 1))
+        plt.xticks(tick_positions, [str(x) if x == 1 else str(x - 1) if x % step == 1 else "" for x in tick_positions])
 
     plt.title(f"{log_name} | {metric_name}")
     plt.xlabel("Request Number")
@@ -216,7 +224,7 @@ def plot_summary_metric_for_log(
 
 
 def plot_summary_star_plot(log_name, model_to_summary_metrics, output_dir, show_plots):
-    """Create a star/radar plot with metrics as nodes and models as polygons."""
+    """Create a star/radar plot for each model showing all metrics."""
 
     # collect all metrics and their values
     all_metrics = set()
@@ -229,73 +237,72 @@ def plot_summary_star_plot(log_name, model_to_summary_metrics, output_dir, show_
     if not all_metrics or not model_names:
         return
 
-    # set up the star plot
-    fig = plt.figure(figsize=(12, 10))
-    ax = fig.add_subplot(111, projection="polar")
-
     # calculate angles for each metric (evenly distributed around the circle)
     num_metrics = len(all_metrics)
     angles = np.linspace(0, 2 * np.pi, num_metrics, endpoint=False).tolist()
     angles += angles[:1]  # complete the circle
 
-    # normalize values per metric to 0-1 scale for better visualization
-    metric_ranges = {}
-    for metric in all_metrics:
-        values = []
-        for summary_metrics in model_to_summary_metrics.values():
-            if metric in summary_metrics:
-                values.append(summary_metrics[metric])
-        if values:
-            min_val = min(values)
-            max_val = max(values)
-            metric_ranges[metric] = (min_val, max_val)
-        else:
-            metric_ranges[metric] = (0, 1)
+    # create one star plot per model
+    for model_name in model_names:
+        fig = plt.figure(figsize=(10, 10))
+        ax = fig.add_subplot(111, projection="polar")
 
-    # plot each model as a polygon
-    colors = plt.cm.tab10(np.linspace(0, 1, len(model_names)))
-    for model_idx, model_name in enumerate(model_names):
+        # scale each model against its own summary range so non-zero models do not
+        # collapse to all zeros when they happen to be the minimum across models.
+        model_metric_values = [
+            model_to_summary_metrics[model_name][metric]
+            for metric in all_metrics
+            if metric in model_to_summary_metrics[model_name]
+        ]
+        transformed_model_values = [
+            transform_star_value(metric_value) for metric_value in model_metric_values
+        ]
+        if transformed_model_values:
+            model_min = min(transformed_model_values)
+            model_max = max(transformed_model_values)
+        else:
+            model_min, model_max = 0.0, 1.0
+
         values = []
         for metric in all_metrics:
             if metric in model_to_summary_metrics[model_name]:
                 raw_value = model_to_summary_metrics[model_name][metric]
-                min_val, max_val = metric_ranges[metric]
+                transformed_value = transform_star_value(raw_value)
                 # normalize to 0-1, handling edge cases
-                if max_val - min_val == 0:
+                if model_max - model_min == 0:
                     normalized = 0.5
                 else:
-                    normalized = (raw_value - min_val) / (max_val - min_val)
+                    normalized = (transformed_value - model_min) / (model_max - model_min)
                 values.append(normalized)
             else:
                 values.append(0)
 
         values += values[:1]  # complete the polygon
-        ax.plot(
-            angles, values, "o-", linewidth=2, label=model_name, color=colors[model_idx]
-        )
-        ax.fill(angles, values, alpha=0.15, color=colors[model_idx])
 
-    # set labels and formatting
-    ax.set_xticks(angles[:-1])
-    ax.set_xticklabels(all_metrics, size=9)
-    ax.set_ylim(0, 1)
-    ax.set_yticks([0.2, 0.4, 0.6, 0.8, 1.0])
-    ax.set_yticklabels(["0.2", "0.4", "0.6", "0.8", "1.0"], size=8)
-    ax.grid(True, alpha=0.3)
-    plt.legend(loc="upper right", bbox_to_anchor=(1.3, 1.1))
-    plt.title(f"Summary Star Plot | {log_name}", size=12, pad=20)
-    plt.tight_layout()
+        # plot the model's metrics
+        ax.plot(angles, values, "o-", linewidth=2.5, markersize=7, color="#1f77b4")
+        ax.fill(angles, values, alpha=0.25, color="#1f77b4")
 
-    # save the plot
-    file_name = f"{sanitize_filename(Path(log_name).stem)}__summary__star_plot.png"
-    output_path = output_dir / file_name
-    plt.savefig(output_path, dpi=160, bbox_inches="tight")
-    print(f"Saved summary star plot: {output_path}")
+        # set labels and formatting
+        ax.set_xticks(angles[:-1])
+        ax.set_xticklabels(all_metrics, size=10)
+        ax.set_ylim(0, 1)
+        ax.set_yticks([0.2, 0.4, 0.6, 0.8, 1.0])
+        ax.set_yticklabels(["0.2", "0.4", "0.6", "0.8", "1.0"], size=8)
+        ax.grid(True, alpha=0.3)
+        plt.title(f"Summary Star Plot | {log_name} | {model_name}", size=12, pad=20)
+        plt.tight_layout()
 
-    if show_plots:
-        plt.show()
-    else:
-        plt.close()
+        # save the plot
+        file_name = f"{sanitize_filename(Path(log_name).stem)}__summary__{sanitize_filename(model_name)}__star_plot.png"
+        output_path = output_dir / file_name
+        plt.savefig(output_path, dpi=160, bbox_inches="tight")
+        print(f"Saved summary star plot: {output_path}")
+
+        if show_plots:
+            plt.show()
+        else:
+            plt.close()
 
 
 def build_plots(models_root, model_glob, output_dir, show_plots):
