@@ -20,6 +20,9 @@ configs:
   lmcache:
     enable: true
     cache_type: "local_storage"
+    cpu:
+      enable: true
+      max_size: 10.0
   
 # resource configs
 resources:
@@ -40,7 +43,7 @@ storage:
 
 # bedrock configs
 bedrock:
-  enable: false
+  enable: true
   image: ghcr.io/amirhnajafiz/bedrock-tracer:v0.0.6-beta
 
 # Kubernetes liveness and readiness probes

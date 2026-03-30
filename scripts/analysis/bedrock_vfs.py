@@ -142,7 +142,7 @@ def filter_events_by_percent_range(
 
 
 def bucketize(
-    events: List[Dict[str, any]], bucket_seconds: float, base_ts: float | None = None
+    events: List[Dict[str, any]], bucket_seconds: float, base_ts: float = None
 ) -> Tuple[List[float], List[int], List[int], List[int], List[int]]:
     """Aggregate events into time buckets for plotting.
 
