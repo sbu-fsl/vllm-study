@@ -15,6 +15,7 @@ configs:
   model: model-placeholder
   gpu_memory_utilization: 0.9
   kv_transfer_config: '{"kv_connector":"LMCacheConnectorV1", "kv_role":"kv_both"}'
+  # kv_transfer_config: '{"kv_connector":"MultiConnector", "kv_role":"kv_both", "kv_connector_extra_config": {"connectors": [{"kv_connector": "OffloadingConnector", "kv_role": "kv_both", "kv_connector_extra_config": {"cpu_bytes_to_use": 10737418240}}, {"kv_connector":"LMCacheConnectorV1", "kv_role":"kv_both"}]}}'
   # max_model_len: 1000
   # max_num_seqs: 1
   lmcache:
