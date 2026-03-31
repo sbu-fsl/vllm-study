@@ -9,7 +9,7 @@ data:
   lmcache.yaml: |
     internal_api_server_enabled: True
     internal_api_server_port_start: 6999
-    chunk_size: 256
+    chunk_size: 16
     {{- if eq .Values.configs.lmcache.cpu.enable true }}
     local_cpu: true
     max_local_cpu_size: {{ .Values.configs.lmcache.cpu.max_size }}

@@ -21,7 +21,7 @@ configs:
     enable: true
     cache_type: "local_storage"
     cpu:
-      enable: true
+      enable: false
       max_size: 10.0
   
 # resource configs
