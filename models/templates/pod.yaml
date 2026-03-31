@@ -7,6 +7,7 @@ metadata:
   labels:
     app: vllm
     model: {{ .Values.configs.name }}
+    name: {{ include "models.fullname" . }}
 spec:
   tolerations: # must have this to schedule on GPU nodes
   - key: "level"
