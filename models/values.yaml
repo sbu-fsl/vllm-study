@@ -21,6 +21,8 @@ configs:
   lmcache:
     enable: true
     cache_type: "local_storage"
+    chunk_size: 256
+    save_unfull_chunk: false
     cpu:
       enable: false
       max_size: 10.0
