@@ -161,8 +161,8 @@ spec:
     {{- if .Values.configs.lmcache.enable }}
     - name: LMCACHE_USE_EXPERIMENTAL
       value: "True"
-    # - name: LMCACHE_CONFIG_FILE
-    #   value: "/etc/lmcache/lmcache.yaml"
+    - name: LMCACHE_CONFIG_FILE
+      value: "/etc/lmcache/lmcache/lmcache.yaml"
     {{- end }}
 
     ports:
