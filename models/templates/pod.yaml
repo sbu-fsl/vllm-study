@@ -56,9 +56,6 @@ spec:
   - name: lmcache-config
     configMap:
       name: {{ include "models.fullname" . }}-lmcache-config
-  - name: lmcache-cpu-config
-    configMap:
-      name: {{ include "models.fullname" . }}-lmcache-cpu-config
   - name: lmcache-storage
     hostPath:
       {{- if eq .Values.configs.lmcache.cache_type "local_storage" }}
@@ -162,7 +159,7 @@ spec:
     - name: LMCACHE_USE_EXPERIMENTAL
       value: "True"
     - name: LMCACHE_CONFIG_FILE
-      value: "/etc/lmcache/lmcache/lmcache.yaml"
+      value: "/etc/lmcache/lmcache.yaml"
     {{- end }}
 
     ports:
@@ -193,10 +190,7 @@ spec:
       readOnly: true
     {{- if .Values.configs.lmcache.enable }}
     - name: lmcache-config
-      mountPath: /etc/lmcache/lmcache
-      readOnly: true
-    - name: lmcache-cpu-config
-      mountPath: /etc/lmcache/cpu
+      mountPath: /etc/lmcache
       readOnly: true
     - name: lmcache-storage
       {{- if eq .Values.configs.lmcache.cache_type "local_storage" }}

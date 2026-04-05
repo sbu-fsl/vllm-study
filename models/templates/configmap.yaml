@@ -1,21 +1,5 @@
+---
 {{- if .Values.configs.lmcache.enable }}
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: {{ include "models.fullname" . }}-lmcache-cpu-config
-  namespace: {{ .Values.namespace }}
-data:
-  lmcache.yaml: |
-    internal_api_server_enabled: true
-    internal_api_server_port_start: 8999
-
-    chunk_size: {{ .Values.configs.lmcache.chunk_size }}
-    save_unfull_chunk: {{ .Values.configs.lmcache.save_unfull_chunk }}
-
-    local_cpu: true
-    max_local_cpu_size: {{ .Values.configs.lmcache.cpu.max_size }}
----
 apiVersion: v1
 kind: ConfigMap
 metadata:
