@@ -7,8 +7,8 @@ metadata:
   namespace: {{ .Values.namespace }}
 data:
   lmcache.yaml: |
-    internal_api_server_enabled: True
-    internal_api_server_port_start: 7999
+    internal_api_server_enabled: true
+    internal_api_server_port_start: 8999
 
     chunk_size: {{ .Values.configs.lmcache.chunk_size }}
     save_unfull_chunk: {{ .Values.configs.lmcache.save_unfull_chunk }}
@@ -23,10 +23,12 @@ metadata:
   namespace: {{ .Values.namespace }}
 data:
   lmcache.yaml: |
-    internal_api_server_enabled: True
+    internal_api_server_enabled: true
     internal_api_server_port_start: 6999
+
     chunk_size: {{ .Values.configs.lmcache.chunk_size }}
     save_unfull_chunk: {{ .Values.configs.lmcache.save_unfull_chunk }}
+
     {{- if eq .Values.configs.lmcache.cpu.enable true }}
     local_cpu: true
     max_local_cpu_size: {{ .Values.configs.lmcache.cpu.max_size }}
