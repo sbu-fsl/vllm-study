@@ -19,7 +19,7 @@ configs:
   # max_model_len: 1000
   # max_num_seqs: 1
   lmcache:
-    enable: true
+    enable: false
     cache_type: "local_storage"
     chunk_size: 256
     save_unfull_chunk: false
@@ -46,7 +46,7 @@ storage:
 
 # bedrock configs
 bedrock:
-  enable: true
+  enable: false
   image: ghcr.io/amirhnajafiz/bedrock-tracer:v0.0.6-beta
 
 # Kubernetes liveness and readiness probes
