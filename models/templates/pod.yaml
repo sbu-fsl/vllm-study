@@ -143,6 +143,11 @@ spec:
       {{- if .Values.bedrock.enable }}
       sleep 30 &&
       {{- end }}
+      {{- if .Values.configs.lmcache.enable }}
+      if ! python -c "import importlib.metadata as m, sys; sys.exit(0 if m.version('lmcache') == '0.4.1' else 1)" 2>/dev/null; then
+        pip install --no-cache-dir lmcache==0.4.1;
+      fi &&
+      {{- end }}
       vllm serve {{ .Values.configs.model }} --host 0.0.0.0 --port 8000 --enable-prefix-caching --seed 0 --chat-template /templates/chat_template.jinja --gpu-memory-utilization {{ .Values.configs.gpu_memory_utilization }} --tensor-parallel-size {{ .Values.gpu.count }} {{- if .Values.configs.max_model_len }} --max-model-len {{ .Values.configs.max_model_len }} {{- end }} {{- if .Values.configs.max_num_seqs }} --max-num-seqs {{ .Values.configs.max_num_seqs }} {{- end }} {{- if .Values.configs.lmcache.enable }} --kv-transfer-config '{{ .Values.configs.kv_transfer_config }}' {{- end }}
 
     env:
@@ -153,6 +158,8 @@ spec:
         secretKeyRef:
           name: hf-token-secret
           key: token
+    - name: PYTHONHASHSEED
+      value: "0"
     - name: TZ
       value: UTC
     {{- if .Values.configs.lmcache.enable }}

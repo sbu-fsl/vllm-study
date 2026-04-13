@@ -19,10 +19,10 @@ configs:
   # max_model_len: 1000
   # max_num_seqs: 1
   lmcache:
-    enable: false
+    enable: true
     cache_type: "local_storage"
-    chunk_size: 256
-    save_unfull_chunk: false
+    chunk_size: 16
+    save_unfull_chunk: true
     cpu:
       enable: false
       max_size: 10.0
