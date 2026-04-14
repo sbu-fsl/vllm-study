@@ -12,13 +12,13 @@ data:
 
     chunk_size: {{ .Values.configs.lmcache.chunk_size }}
     save_unfull_chunk: {{ .Values.configs.lmcache.save_unfull_chunk }}
-    min_retrieve_tokens: {{ .Values.configs.lmcache.chunk_size }}
+    min_retrieve_tokens: 0
 
     {{- if eq .Values.configs.lmcache.cpu.enable true }}
-    local_cpu: true
+    local_cpu: True
     max_local_cpu_size: {{ .Values.configs.lmcache.cpu.max_size }}
     {{- else }}
-    local_cpu: false
+    local_cpu: False
     max_local_cpu_size: 5.0
     {{- end }}
 
