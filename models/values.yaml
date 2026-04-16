@@ -22,7 +22,8 @@ configs:
     enable: true
     cache_type: "local_storage"
     chunk_size: 16
-    save_unfull_chunk: true
+    save_unfull_chunk: false
+    save_decode_cache: true
     cpu:
       enable: false
       max_size: 10.0
