@@ -13,7 +13,7 @@ data:
     chunk_size: {{ .Values.configs.lmcache.chunk_size }}
     save_unfull_chunk: {{ .Values.configs.lmcache.save_unfull_chunk }}
     save_decode_cache: {{ .Values.configs.lmcache.save_decode_cache }}
-    min_retrieve_tokens: 0
+    min_retrieve_tokens: {{ .Values.configs.lmcache.min_retrieve_tokens }}
 
     {{- if eq .Values.configs.lmcache.cpu.enable true }}
     local_cpu: True
