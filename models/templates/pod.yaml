@@ -59,7 +59,13 @@ spec:
   - name: lmcache-storage
     hostPath:
       {{- if eq .Values.configs.lmcache.cache_type "local_storage" }}
-      path: /mnt/data/lmcache/localstorage/cache
+      {{- if eq .Values.configs.lmcache.cache_delay 1000 }}
+      path: /mnt/data/lmcache-1s/localstorage/cache
+      {{- else if eq .Values.configs.lmcache.cache_delay 500 }}
+      path: /mnt/data/lmcache-500ms/localstorage/cache
+      {{- else }}
+      path: /mnt/data/lmcache/localstorage/cache-delay
+      {{- end }}
       {{- else if eq .Values.configs.lmcache.cache_type "gds" }}
       path: /mnt/data/lmcache/gds/cache
       {{- else if eq .Values.configs.lmcache.cache_type "nixl_posix" }}

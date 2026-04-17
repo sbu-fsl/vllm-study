@@ -21,6 +21,7 @@ configs:
   lmcache:
     enable: true
     cache_type: "local_storage"
+    cache_delay: 0 # 500 or 1000 ms (only on iBM2)
     chunk_size: 16
     min_retrieve_tokens: 0
     save_unfull_chunk: false
