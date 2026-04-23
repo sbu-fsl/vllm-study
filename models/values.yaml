@@ -26,8 +26,8 @@ configs:
     save_unfull_chunk: false
     save_decode_cache: false
     cpu:
-      enable: false
-      max_size: 10.0
+      enable: true
+      max_size: 0.1
   
 # resource configs
 resources:
