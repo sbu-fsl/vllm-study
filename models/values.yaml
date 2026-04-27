@@ -27,8 +27,8 @@ configs:
     save_decode_cache: false
     cpu:
       enable: true
-      max_size: 1.0 # in GB
-  
+      max_size: 0.5 # in GB
+
 # resource configs
 resources:
   cpu_limit: "10"
